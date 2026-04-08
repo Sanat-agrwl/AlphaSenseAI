@@ -1,0 +1,236 @@
+"""
+Broker Layer — Paper Trading + Zerodha Kite Connect
+=====================================================
+Two modes controlled by EXECUTION_MODE in .env:
+  paper  — simulated execution with realistic slippage, state saved to disk
+  live   — real orders via Zerodha Kite Connect API
+
+IMPORTANT: Keep EXECUTION_MODE=paper until you have 4–6 months of paper
+trading track record. Never push --no-verify or skip risk checks.
+
+Usage:
+    from alphasense.broker.kite import Broker
+    broker = Broker()
+    broker.place("RELIANCE", "BUY", qty=100, price=2850.0)
+"""
+
+import sys, json
+from pathlib import Path
+from datetime import datetime
+from dataclasses import dataclass, field
+from typing import Optional
+
+import pandas as pd
+from loguru import logger
+
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from config.settings import cfg
+
+STATE_FILE = cfg.data_dir / "paper_state.json"
+
+
+@dataclass
+class Position:
+    symbol:     str
+    qty:        int
+    entry_price: float
+    entry_date: str
+    signal_id:  str = ""
+
+
+@dataclass
+class Trade:
+    symbol:     str
+    direction:  str
+    qty:        int
+    entry_price: float
+    exit_price:  float
+    entry_date:  str
+    exit_date:   str
+    pnl:         float
+    pnl_pct:     float
+    signal_id:   str = ""
+
+
+# ─── Paper Trading Engine ────────────────────────────────────────────────────
+
+class PaperEngine:
+    """Simulates order fills with slippage. State persists across runs."""
+
+    SLIPPAGE_BPS = 10       # 0.10%
+    MAX_ORDER_VALUE = 10_00_000   # ₹10L
+    MAX_DAILY_ORDERS = 20
+
+    def __init__(self):
+        self.positions:  dict[str, Position] = {}
+        self.trades:     list[Trade]         = []
+        self.order_count = 0
+        self._daily_count = 0
+        self._daily_date  = None
+        self._load()
+
+    def _load(self):
+        if STATE_FILE.exists():
+            try:
+                state = json.loads(STATE_FILE.read_text())
+                for sym, d in state.get("positions", {}).items():
+                    self.positions[sym] = Position(**d)
+                self.trades = [Trade(**t) for t in state.get("trades", [])]
+                self.order_count = state.get("order_count", 0)
+                logger.info(f"Paper state loaded: {len(self.positions)} positions, "
+                            f"{len(self.trades)} closed trades")
+            except Exception as e:
+                logger.warning(f"Could not load paper state: {e}")
+
+    def save(self):
+        state = {
+            "positions":   {s: p.__dict__ for s, p in self.positions.items()},
+            "trades":      [t.__dict__ for t in self.trades],
+            "order_count": self.order_count,
+        }
+        STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        STATE_FILE.write_text(json.dumps(state, indent=2))
+
+    def _reset_daily(self):
+        today = datetime.now().date()
+        if self._daily_date != today:
+            self._daily_count = 0
+            self._daily_date  = today
+
+    def place(self, symbol: str, direction: str, qty: int,
+              price: float, signal_id: str = "") -> Optional[str]:
+        self._reset_daily()
+        if self._daily_count >= self.MAX_DAILY_ORDERS:
+            logger.warning("Daily order limit reached")
+            return None
+
+        order_value = qty * price
+        if order_value > self.MAX_ORDER_VALUE:
+            qty          = int(self.MAX_ORDER_VALUE / price)
+            order_value  = qty * price
+            logger.info(f"  Order reduced to {qty} shares (₹{order_value:,.0f} limit)")
+
+        slip     = price * (self.SLIPPAGE_BPS / 10_000)
+        fill     = price + slip if direction == "BUY" else price - slip
+        fill     = round(fill, 2)
+        self.order_count  += 1
+        self._daily_count += 1
+        oid = f"PAPER-{self.order_count:06d}"
+
+        if direction == "BUY":
+            self.positions[symbol] = Position(
+                symbol=symbol, qty=qty, entry_price=fill,
+                entry_date=datetime.now().isoformat(), signal_id=signal_id,
+            )
+            logger.info(f"📗 BUY  {symbol} ×{qty} @ ₹{fill:,.2f} | {oid}")
+
+        elif direction == "SELL" and symbol in self.positions:
+            pos     = self.positions.pop(symbol)
+            pnl     = (fill - pos.entry_price) * pos.qty
+            pnl_pct = (fill - pos.entry_price) / pos.entry_price
+            self.trades.append(Trade(
+                symbol=symbol, direction="SELL", qty=pos.qty,
+                entry_price=pos.entry_price, exit_price=fill,
+                entry_date=pos.entry_date, exit_date=datetime.now().isoformat(),
+                pnl=round(pnl, 2), pnl_pct=round(pnl_pct, 4), signal_id=signal_id,
+            ))
+            emoji = "📈" if pnl > 0 else "📉"
+            logger.info(f"{emoji} SELL {symbol} ×{pos.qty} @ ₹{fill:,.2f} | "
+                        f"PnL ₹{pnl:,.0f} ({pnl_pct*100:.1f}%) | {oid}")
+        else:
+            logger.warning(f"No open position for SELL {symbol}")
+            return None
+
+        self.save()
+        return oid
+
+    def portfolio_value(self, current_prices: dict[str, float] = None) -> float:
+        if current_prices is None:
+            return sum(p.qty * p.entry_price for p in self.positions.values())
+        return sum(p.qty * current_prices.get(s, p.entry_price)
+                   for s, p in self.positions.items())
+
+    def trade_log(self) -> pd.DataFrame:
+        return pd.DataFrame([t.__dict__ for t in self.trades])
+
+
+# ─── Live Kite Connect ────────────────────────────────────────────────────────
+
+class KiteEngine:
+    """Live execution via Zerodha Kite Connect."""
+
+    def __init__(self):
+        self.kite = None
+
+    def connect(self, request_token: str):
+        try:
+            from kiteconnect import KiteConnect
+            kc = KiteConnect(api_key=cfg.kite.api_key)
+            sess = kc.generate_session(request_token, api_secret=cfg.kite.api_secret)
+            kc.set_access_token(sess["access_token"])
+            self.kite = kc
+            logger.info(f"Kite connected: {sess.get('user_name', '')}")
+        except ImportError:
+            logger.error("kiteconnect not installed — pip install kiteconnect")
+        except Exception as e:
+            logger.error(f"Kite connect failed: {e}")
+
+    def place(self, symbol: str, direction: str, qty: int,
+              price: float = 0, order_type: str = "MARKET") -> Optional[str]:
+        if self.kite is None:
+            logger.error("Not connected. Call connect(request_token) first.")
+            return None
+        try:
+            from kiteconnect import KiteConnect
+            txn  = self.kite.TRANSACTION_TYPE_BUY if direction == "BUY" \
+                   else self.kite.TRANSACTION_TYPE_SELL
+            otyp = self.kite.ORDER_TYPE_MARKET if order_type == "MARKET" \
+                   else self.kite.ORDER_TYPE_LIMIT
+            oid  = self.kite.place_order(
+                variety=self.kite.VARIETY_REGULAR,
+                exchange=self.kite.EXCHANGE_NSE,
+                tradingsymbol=symbol,
+                transaction_type=txn,
+                quantity=qty,
+                product=self.kite.PRODUCT_CNC,
+                order_type=otyp,
+                price=price if order_type == "LIMIT" else None,
+            )
+            logger.info(f"Live order placed: {direction} {symbol} ×{qty} → {oid}")
+            return oid
+        except Exception as e:
+            logger.error(f"Order failed: {e}")
+            return None
+
+    def positions(self) -> dict:
+        return self.kite.positions() if self.kite else {}
+
+    def holdings(self) -> list:
+        return self.kite.holdings() if self.kite else []
+
+
+# ─── Unified Broker ───────────────────────────────────────────────────────────
+
+class Broker:
+    """
+    Single entry point. Delegates to PaperEngine or KiteEngine
+    based on EXECUTION_MODE in .env.
+    """
+
+    def __init__(self):
+        mode = cfg.kite.mode
+        if mode == "live":
+            logger.warning("🔴 LIVE MODE — real money at risk")
+            self._engine = KiteEngine()
+        else:
+            logger.info("🔵 PAPER MODE")
+            self._engine = PaperEngine()
+        self.mode = mode
+
+    def place(self, symbol: str, direction: str, qty: int,
+              price: float, signal_id: str = "") -> Optional[str]:
+        return self._engine.place(symbol, direction, qty, price, signal_id)
+
+    @property
+    def paper(self) -> Optional[PaperEngine]:
+        return self._engine if isinstance(self._engine, PaperEngine) else None

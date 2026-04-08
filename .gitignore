@@ -1,0 +1,38 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Data (large files — track schema, not data)
+data/nse/
+data/bse/
+data/news/
+data/transcripts/
+data/*.parquet
+data/paper_state.json
+
+# Models (large — re-download from HuggingFace)
+models/
+
+# Logs
+logs/
+
+# Backtest results (keep these)
+# data/backtest_results/ — intentionally tracked
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# IDE
+.vscode/
+.idea/
+*.swp

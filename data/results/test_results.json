@@ -1,0 +1,7798 @@
+{
+  "period": "test",
+  "start_date": "2022-01-01",
+  "end_date": "2024-12-31",
+  "initial_capital": 10000000.0,
+  "final_capital": 20008701.705671728,
+  "total_return_pct": 100.09,
+  "annual_return_pct": 26.03,
+  "sharpe": 3.27,
+  "max_drawdown_pct": -15.22,
+  "n_trades": 598,
+  "win_rate": 53.2,
+  "avg_pnl_pct": 1.73,
+  "avg_holding_days": 0.0,
+  "profit_factor": 1.74,
+  "trades": [
+    {
+      "symbol": "MAXHEALTH",
+      "date": "2022-01-07 00:00:00",
+      "zscore": -2.13,
+      "net_return": -0.085,
+      "pnl": -68000.0,
+      "reason": "stop_loss",
+      "capital": 9932000.0
+    },
+    {
+      "symbol": "PERSISTENT",
+      "date": "2022-01-07 00:00:00",
+      "zscore": -2.05,
+      "net_return": -0.0692,
+      "pnl": -54984.0,
+      "reason": "time_stop",
+      "capital": 9877016.0
+    },
+    {
+      "symbol": "DMART",
+      "date": "2022-01-12 00:00:00",
+      "zscore": -2.19,
+      "net_return": -0.0315,
+      "pnl": -24890.0,
+      "reason": "time_stop",
+      "capital": 9852126.0
+    },
+    {
+      "symbol": "WIPRO",
+      "date": "2022-01-13 00:00:00",
+      "zscore": -2.31,
+      "net_return": -0.085,
+      "pnl": -66994.0,
+      "reason": "stop_loss",
+      "capital": 9785132.0
+    },
+    {
+      "symbol": "HCLTECH",
+      "date": "2022-01-18 00:00:00",
+      "zscore": -2.8,
+      "net_return": -0.0395,
+      "pnl": -30921.0,
+      "reason": "time_stop",
+      "capital": 9754211.0
+    },
+    {
+      "symbol": "NAUKRI",
+      "date": "2022-01-19 00:00:00",
+      "zscore": -2.06,
+      "net_return": -0.085,
+      "pnl": -66329.0,
+      "reason": "stop_loss",
+      "capital": 9687882.0
+    },
+    {
+      "symbol": "LALPATHLAB",
+      "date": "2022-01-19 00:00:00",
+      "zscore": -2.32,
+      "net_return": -0.085,
+      "pnl": -65878.0,
+      "reason": "stop_loss",
+      "capital": 9622005.0
+    },
+    {
+      "symbol": "OFSS",
+      "date": "2022-01-20 00:00:00",
+      "zscore": -3.08,
+      "net_return": -0.031,
+      "pnl": -23863.0,
+      "reason": "time_stop",
+      "capital": 9598142.0
+    },
+    {
+      "symbol": "AJANTPHARM",
+      "date": "2022-01-20 00:00:00",
+      "zscore": -2.15,
+      "net_return": -0.085,
+      "pnl": -65267.0,
+      "reason": "stop_loss",
+      "capital": 9532875.0
+    },
+    {
+      "symbol": "ZYDUSWELL",
+      "date": "2022-01-20 00:00:00",
+      "zscore": -2.12,
+      "net_return": -0.085,
+      "pnl": -64824.0,
+      "reason": "stop_loss",
+      "capital": 9468051.0
+    },
+    {
+      "symbol": "HINDUNILVR",
+      "date": "2022-01-20 00:00:00",
+      "zscore": -2.28,
+      "net_return": 0.0174,
+      "pnl": 13180.0,
+      "reason": "recovery",
+      "capital": 9481231.0
+    },
+    {
+      "symbol": "NESTLEIND",
+      "date": "2022-01-20 00:00:00",
+      "zscore": -2.25,
+      "net_return": -0.0437,
+      "pnl": -33146.0,
+      "reason": "time_stop",
+      "capital": 9448084.0
+    },
+    {
+      "symbol": "MFSL",
+      "date": "2022-01-20 00:00:00",
+      "zscore": -2.07,
+      "net_return": -0.085,
+      "pnl": -64247.0,
+      "reason": "stop_loss",
+      "capital": 9383837.0
+    },
+    {
+      "symbol": "MPHASIS",
+      "date": "2022-01-20 00:00:00",
+      "zscore": -2.11,
+      "net_return": -0.0145,
+      "pnl": -10885.0,
+      "reason": "time_stop",
+      "capital": 9372952.0
+    },
+    {
+      "symbol": "TECHM",
+      "date": "2022-01-21 00:00:00",
+      "zscore": -2.4,
+      "net_return": -0.085,
+      "pnl": -63736.0,
+      "reason": "stop_loss",
+      "capital": 9309216.0
+    },
+    {
+      "symbol": "RELIANCE",
+      "date": "2022-01-27 00:00:00",
+      "zscore": -2.08,
+      "net_return": -0.0402,
+      "pnl": -29938.0,
+      "reason": "time_stop",
+      "capital": 9279278.0
+    },
+    {
+      "symbol": "TRENT",
+      "date": "2022-01-27 00:00:00",
+      "zscore": -2.65,
+      "net_return": -0.0067,
+      "pnl": -4974.0,
+      "reason": "time_stop",
+      "capital": 9274304.0
+    },
+    {
+      "symbol": "HINDPETRO",
+      "date": "2022-02-04 00:00:00",
+      "zscore": -2.48,
+      "net_return": -0.0221,
+      "pnl": -16397.0,
+      "reason": "time_stop",
+      "capital": 9257907.0
+    },
+    {
+      "symbol": "SBILIFE",
+      "date": "2022-02-07 00:00:00",
+      "zscore": -2.61,
+      "net_return": -0.085,
+      "pnl": -62954.0,
+      "reason": "stop_loss",
+      "capital": 9194953.0
+    },
+    {
+      "symbol": "LUPIN",
+      "date": "2022-02-07 00:00:00",
+      "zscore": -2.73,
+      "net_return": -0.085,
+      "pnl": -62526.0,
+      "reason": "stop_loss",
+      "capital": 9132427.0
+    },
+    {
+      "symbol": "POLYMED",
+      "date": "2022-02-08 00:00:00",
+      "zscore": -2.61,
+      "net_return": 0.0391,
+      "pnl": 28566.0,
+      "reason": "recovery",
+      "capital": 9160994.0
+    },
+    {
+      "symbol": "ENDURANCE",
+      "date": "2022-02-09 00:00:00",
+      "zscore": -2.5,
+      "net_return": -0.085,
+      "pnl": -62295.0,
+      "reason": "stop_loss",
+      "capital": 9098699.0
+    },
+    {
+      "symbol": "BDL",
+      "date": "2022-02-10 00:00:00",
+      "zscore": -2.08,
+      "net_return": -0.085,
+      "pnl": -61871.0,
+      "reason": "stop_loss",
+      "capital": 9036828.0
+    },
+    {
+      "symbol": "JUBLPHARMA",
+      "date": "2022-02-11 00:00:00",
+      "zscore": -2.06,
+      "net_return": -0.085,
+      "pnl": -61450.0,
+      "reason": "stop_loss",
+      "capital": 8975377.0
+    },
+    {
+      "symbol": "POWERINDIA",
+      "date": "2022-02-11 00:00:00",
+      "zscore": -2.36,
+      "net_return": 0.1661,
+      "pnl": 119265.0,
+      "reason": "recovery",
+      "capital": 9094642.0
+    },
+    {
+      "symbol": "GODREJCP",
+      "date": "2022-02-11 00:00:00",
+      "zscore": -2.23,
+      "net_return": -0.085,
+      "pnl": -61844.0,
+      "reason": "stop_loss",
+      "capital": 9032799.0
+    },
+    {
+      "symbol": "EIDPARRY",
+      "date": "2022-02-14 00:00:00",
+      "zscore": -2.25,
+      "net_return": -0.0223,
+      "pnl": -16115.0,
+      "reason": "time_stop",
+      "capital": 9016684.0
+    },
+    {
+      "symbol": "JSL",
+      "date": "2022-02-14 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.085,
+      "pnl": -61313.0,
+      "reason": "stop_loss",
+      "capital": 8955371.0
+    },
+    {
+      "symbol": "PNB",
+      "date": "2022-02-14 00:00:00",
+      "zscore": -2.42,
+      "net_return": -0.0346,
+      "pnl": -24788.0,
+      "reason": "time_stop",
+      "capital": 8930582.0
+    },
+    {
+      "symbol": "CROMPTON",
+      "date": "2022-02-14 00:00:00",
+      "zscore": -2.76,
+      "net_return": 0.0579,
+      "pnl": 41366.0,
+      "reason": "recovery",
+      "capital": 8971949.0
+    },
+    {
+      "symbol": "ICICIGI",
+      "date": "2022-02-16 00:00:00",
+      "zscore": -2.02,
+      "net_return": -0.0188,
+      "pnl": -13494.0,
+      "reason": "time_stop",
+      "capital": 8958455.0
+    },
+    {
+      "symbol": "PERSISTENT",
+      "date": "2022-02-16 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.1105,
+      "pnl": 79193.0,
+      "reason": "recovery",
+      "capital": 9037648.0
+    },
+    {
+      "symbol": "MFSL",
+      "date": "2022-03-09 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0109,
+      "pnl": -7881.0,
+      "reason": "time_stop",
+      "capital": 9029767.0
+    },
+    {
+      "symbol": "POWERINDIA",
+      "date": "2022-03-10 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.0177,
+      "pnl": 12786.0,
+      "reason": "recovery",
+      "capital": 9042553.0
+    },
+    {
+      "symbol": "COFORGE",
+      "date": "2022-03-15 00:00:00",
+      "zscore": -2.58,
+      "net_return": -0.0028,
+      "pnl": -2026.0,
+      "reason": "time_stop",
+      "capital": 9040527.0
+    },
+    {
+      "symbol": "PATANJALI",
+      "date": "2022-03-23 00:00:00",
+      "zscore": -2.33,
+      "net_return": -0.085,
+      "pnl": -61476.0,
+      "reason": "stop_loss",
+      "capital": 8979052.0
+    },
+    {
+      "symbol": "MARICO",
+      "date": "2022-03-24 00:00:00",
+      "zscore": -2.55,
+      "net_return": 0.0637,
+      "pnl": 45757.0,
+      "reason": "recovery",
+      "capital": 9024809.0
+    },
+    {
+      "symbol": "NESTLEIND",
+      "date": "2022-03-25 00:00:00",
+      "zscore": -2.9,
+      "net_return": 0.0734,
+      "pnl": 52994.0,
+      "reason": "recovery",
+      "capital": 9077803.0
+    },
+    {
+      "symbol": "ABBOTINDIA",
+      "date": "2022-03-25 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.0899,
+      "pnl": 65288.0,
+      "reason": "recovery",
+      "capital": 9143090.0
+    },
+    {
+      "symbol": "ESCORTS",
+      "date": "2022-03-28 00:00:00",
+      "zscore": -2.39,
+      "net_return": -0.0592,
+      "pnl": -43302.0,
+      "reason": "time_stop",
+      "capital": 9099789.0
+    },
+    {
+      "symbol": "HEROMOTOCO",
+      "date": "2022-03-29 00:00:00",
+      "zscore": -2.49,
+      "net_return": 0.1337,
+      "pnl": 97331.0,
+      "reason": "recovery",
+      "capital": 9197120.0
+    },
+    {
+      "symbol": "BBTC",
+      "date": "2022-03-29 00:00:00",
+      "zscore": -2.1,
+      "net_return": 0.1788,
+      "pnl": 131556.0,
+      "reason": "recovery",
+      "capital": 9328676.0
+    },
+    {
+      "symbol": "VTL",
+      "date": "2022-03-30 00:00:00",
+      "zscore": -2.49,
+      "net_return": -0.051,
+      "pnl": -38061.0,
+      "reason": "time_stop",
+      "capital": 9290615.0
+    },
+    {
+      "symbol": "AJANTPHARM",
+      "date": "2022-03-31 00:00:00",
+      "zscore": -2.17,
+      "net_return": -0.0092,
+      "pnl": -6838.0,
+      "reason": "time_stop",
+      "capital": 9283777.0
+    },
+    {
+      "symbol": "JUBLPHARMA",
+      "date": "2022-03-31 00:00:00",
+      "zscore": -2.27,
+      "net_return": 0.1796,
+      "pnl": 133389.0,
+      "reason": "recovery",
+      "capital": 9417166.0
+    },
+    {
+      "symbol": "WOCKPHARMA",
+      "date": "2022-03-31 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.0223,
+      "pnl": 16800.0,
+      "reason": "recovery",
+      "capital": 9433966.0
+    },
+    {
+      "symbol": "INFY",
+      "date": "2022-04-11 00:00:00",
+      "zscore": -2.2,
+      "net_return": -0.085,
+      "pnl": -64151.0,
+      "reason": "stop_loss",
+      "capital": 9369815.0
+    },
+    {
+      "symbol": "HDFCBANK",
+      "date": "2022-04-11 00:00:00",
+      "zscore": -2.97,
+      "net_return": -0.085,
+      "pnl": -63715.0,
+      "reason": "stop_loss",
+      "capital": 9306100.0
+    },
+    {
+      "symbol": "MPHASIS",
+      "date": "2022-04-12 00:00:00",
+      "zscore": -2.03,
+      "net_return": -0.085,
+      "pnl": -63281.0,
+      "reason": "stop_loss",
+      "capital": 9242819.0
+    },
+    {
+      "symbol": "PERSISTENT",
+      "date": "2022-04-12 00:00:00",
+      "zscore": -2.62,
+      "net_return": -0.085,
+      "pnl": -62851.0,
+      "reason": "stop_loss",
+      "capital": 9179968.0
+    },
+    {
+      "symbol": "BAJAJHLDNG",
+      "date": "2022-04-13 00:00:00",
+      "zscore": -2.85,
+      "net_return": -0.085,
+      "pnl": -62424.0,
+      "reason": "stop_loss",
+      "capital": 9117544.0
+    },
+    {
+      "symbol": "TECHM",
+      "date": "2022-04-18 00:00:00",
+      "zscore": -2.16,
+      "net_return": -0.085,
+      "pnl": -61999.0,
+      "reason": "stop_loss",
+      "capital": 9055545.0
+    },
+    {
+      "symbol": "WIPRO",
+      "date": "2022-04-19 00:00:00",
+      "zscore": -2.34,
+      "net_return": -0.085,
+      "pnl": -61578.0,
+      "reason": "stop_loss",
+      "capital": 8993967.0
+    },
+    {
+      "symbol": "UBL",
+      "date": "2022-04-19 00:00:00",
+      "zscore": -2.1,
+      "net_return": 0.0208,
+      "pnl": 14966.0,
+      "reason": "recovery",
+      "capital": 9008933.0
+    },
+    {
+      "symbol": "HCLTECH",
+      "date": "2022-04-19 00:00:00",
+      "zscore": -2.23,
+      "net_return": 0.015,
+      "pnl": 10811.0,
+      "reason": "time_stop",
+      "capital": 9019744.0
+    },
+    {
+      "symbol": "PHOENIXLTD",
+      "date": "2022-04-19 00:00:00",
+      "zscore": -2.16,
+      "net_return": 0.0766,
+      "pnl": 55273.0,
+      "reason": "recovery",
+      "capital": 9075017.0
+    },
+    {
+      "symbol": "PIDILITIND",
+      "date": "2022-04-19 00:00:00",
+      "zscore": -2.23,
+      "net_return": -0.0761,
+      "pnl": -55249.0,
+      "reason": "time_stop",
+      "capital": 9019768.0
+    },
+    {
+      "symbol": "LT",
+      "date": "2022-04-19 00:00:00",
+      "zscore": -2.15,
+      "net_return": -0.0831,
+      "pnl": -59963.0,
+      "reason": "time_stop",
+      "capital": 8959805.0
+    },
+    {
+      "symbol": "LINDEINDIA",
+      "date": "2022-04-20 00:00:00",
+      "zscore": -2.08,
+      "net_return": -0.085,
+      "pnl": -60927.0,
+      "reason": "stop_loss",
+      "capital": 8898878.0
+    },
+    {
+      "symbol": "PCBL",
+      "date": "2022-04-20 00:00:00",
+      "zscore": -2.63,
+      "net_return": -0.0349,
+      "pnl": -24846.0,
+      "reason": "time_stop",
+      "capital": 8874032.0
+    },
+    {
+      "symbol": "CUMMINSIND",
+      "date": "2022-04-25 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.0119,
+      "pnl": 8448.0,
+      "reason": "time_stop",
+      "capital": 8882480.0
+    },
+    {
+      "symbol": "GMDCLTD",
+      "date": "2022-05-02 00:00:00",
+      "zscore": -2.05,
+      "net_return": -0.085,
+      "pnl": -60401.0,
+      "reason": "stop_loss",
+      "capital": 8822079.0
+    },
+    {
+      "symbol": "APOLLOHOSP",
+      "date": "2022-05-04 00:00:00",
+      "zscore": -2.49,
+      "net_return": -0.085,
+      "pnl": -59990.0,
+      "reason": "stop_loss",
+      "capital": 8762089.0
+    },
+    {
+      "symbol": "VTL",
+      "date": "2022-05-04 00:00:00",
+      "zscore": -2.62,
+      "net_return": -0.085,
+      "pnl": -59582.0,
+      "reason": "stop_loss",
+      "capital": 8702507.0
+    },
+    {
+      "symbol": "LALPATHLAB",
+      "date": "2022-05-04 00:00:00",
+      "zscore": -2.2,
+      "net_return": -0.085,
+      "pnl": -59177.0,
+      "reason": "stop_loss",
+      "capital": 8643330.0
+    },
+    {
+      "symbol": "AXISBANK",
+      "date": "2022-05-04 00:00:00",
+      "zscore": -2.3,
+      "net_return": -0.0349,
+      "pnl": -24132.0,
+      "reason": "time_stop",
+      "capital": 8619198.0
+    },
+    {
+      "symbol": "BHARATFORG",
+      "date": "2022-05-09 00:00:00",
+      "zscore": -2.03,
+      "net_return": 0.0135,
+      "pnl": 9309.0,
+      "reason": "time_stop",
+      "capital": 8628507.0
+    },
+    {
+      "symbol": "SCHNEIDER",
+      "date": "2022-05-09 00:00:00",
+      "zscore": -2.01,
+      "net_return": -0.085,
+      "pnl": -58674.0,
+      "reason": "stop_loss",
+      "capital": 8569833.0
+    },
+    {
+      "symbol": "TORNTPHARM",
+      "date": "2022-05-09 00:00:00",
+      "zscore": -2.19,
+      "net_return": 0.0747,
+      "pnl": 51213.0,
+      "reason": "recovery",
+      "capital": 8621046.0
+    },
+    {
+      "symbol": "SRF",
+      "date": "2022-05-09 00:00:00",
+      "zscore": -2.46,
+      "net_return": 0.0657,
+      "pnl": 45312.0,
+      "reason": "recovery",
+      "capital": 8666358.0
+    },
+    {
+      "symbol": "RAMCOCEM",
+      "date": "2022-05-09 00:00:00",
+      "zscore": -2.01,
+      "net_return": -0.085,
+      "pnl": -58931.0,
+      "reason": "stop_loss",
+      "capital": 8607427.0
+    },
+    {
+      "symbol": "SCI",
+      "date": "2022-05-09 00:00:00",
+      "zscore": -2.22,
+      "net_return": 0.0077,
+      "pnl": 5302.0,
+      "reason": "time_stop",
+      "capital": 8612729.0
+    },
+    {
+      "symbol": "MCX",
+      "date": "2022-05-09 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.0675,
+      "pnl": 46509.0,
+      "reason": "recovery",
+      "capital": 8659238.0
+    },
+    {
+      "symbol": "CGCL",
+      "date": "2022-05-10 00:00:00",
+      "zscore": -3.15,
+      "net_return": 0.0589,
+      "pnl": 40802.0,
+      "reason": "recovery",
+      "capital": 8700040.0
+    },
+    {
+      "symbol": "AMBER",
+      "date": "2022-05-10 00:00:00",
+      "zscore": -2.33,
+      "net_return": -0.085,
+      "pnl": -59160.0,
+      "reason": "stop_loss",
+      "capital": 8640880.0
+    },
+    {
+      "symbol": "LINDEINDIA",
+      "date": "2022-05-16 00:00:00",
+      "zscore": -2.33,
+      "net_return": -0.0183,
+      "pnl": -12650.0,
+      "reason": "time_stop",
+      "capital": 8628230.0
+    },
+    {
+      "symbol": "LUPIN",
+      "date": "2022-05-23 00:00:00",
+      "zscore": -2.21,
+      "net_return": -0.0239,
+      "pnl": -16497.0,
+      "reason": "time_stop",
+      "capital": 8611733.0
+    },
+    {
+      "symbol": "ICICIGI",
+      "date": "2022-05-24 00:00:00",
+      "zscore": -2.44,
+      "net_return": -0.0637,
+      "pnl": -43885.0,
+      "reason": "time_stop",
+      "capital": 8567847.0
+    },
+    {
+      "symbol": "GPIL",
+      "date": "2022-05-24 00:00:00",
+      "zscore": -2.41,
+      "net_return": -0.085,
+      "pnl": -58261.0,
+      "reason": "stop_loss",
+      "capital": 8509586.0
+    },
+    {
+      "symbol": "NH",
+      "date": "2022-05-24 00:00:00",
+      "zscore": -2.23,
+      "net_return": 0.0251,
+      "pnl": 17087.0,
+      "reason": "recovery",
+      "capital": 8526673.0
+    },
+    {
+      "symbol": "MANAPPURAM",
+      "date": "2022-05-24 00:00:00",
+      "zscore": -2.21,
+      "net_return": -0.0253,
+      "pnl": -17258.0,
+      "reason": "time_stop",
+      "capital": 8509415.0
+    },
+    {
+      "symbol": "ZFCVINDIA",
+      "date": "2022-05-31 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0398,
+      "pnl": -27094.0,
+      "reason": "time_stop",
+      "capital": 8482321.0
+    },
+    {
+      "symbol": "SUNPHARMA",
+      "date": "2022-06-01 00:00:00",
+      "zscore": -2.39,
+      "net_return": -0.0057,
+      "pnl": -3868.0,
+      "reason": "time_stop",
+      "capital": 8478453.0
+    },
+    {
+      "symbol": "ULTRACEMCO",
+      "date": "2022-06-06 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.0179,
+      "pnl": 12141.0,
+      "reason": "recovery",
+      "capital": 8490594.0
+    },
+    {
+      "symbol": "JKCEMENT",
+      "date": "2022-06-06 00:00:00",
+      "zscore": -2.29,
+      "net_return": 0.0479,
+      "pnl": 32536.0,
+      "reason": "recovery",
+      "capital": 8523130.0
+    },
+    {
+      "symbol": "HEROMOTOCO",
+      "date": "2022-06-06 00:00:00",
+      "zscore": -2.22,
+      "net_return": 0.0815,
+      "pnl": 55571.0,
+      "reason": "recovery",
+      "capital": 8578701.0
+    },
+    {
+      "symbol": "NAUKRI",
+      "date": "2022-06-07 00:00:00",
+      "zscore": -2.13,
+      "net_return": 0.0508,
+      "pnl": 34864.0,
+      "reason": "recovery",
+      "capital": 8613565.0
+    },
+    {
+      "symbol": "RAMCOCEM",
+      "date": "2022-06-07 00:00:00",
+      "zscore": -2.66,
+      "net_return": 0.0403,
+      "pnl": 27770.0,
+      "reason": "recovery",
+      "capital": 8641335.0
+    },
+    {
+      "symbol": "MRF",
+      "date": "2022-06-07 00:00:00",
+      "zscore": -2.4,
+      "net_return": -0.0111,
+      "pnl": -7674.0,
+      "reason": "time_stop",
+      "capital": 8633662.0
+    },
+    {
+      "symbol": "PAGEIND",
+      "date": "2022-06-07 00:00:00",
+      "zscore": -2.18,
+      "net_return": 0.0181,
+      "pnl": 12502.0,
+      "reason": "recovery",
+      "capital": 8646163.0
+    },
+    {
+      "symbol": "BRITANNIA",
+      "date": "2022-06-07 00:00:00",
+      "zscore": -2.54,
+      "net_return": 0.0944,
+      "pnl": 65296.0,
+      "reason": "recovery",
+      "capital": 8711459.0
+    },
+    {
+      "symbol": "ICICIBANK",
+      "date": "2022-06-13 00:00:00",
+      "zscore": -2.27,
+      "net_return": 0.1135,
+      "pnl": 79100.0,
+      "reason": "recovery",
+      "capital": 8790559.0
+    },
+    {
+      "symbol": "RBLBANK",
+      "date": "2022-06-13 00:00:00",
+      "zscore": -2.91,
+      "net_return": -0.085,
+      "pnl": -59776.0,
+      "reason": "stop_loss",
+      "capital": 8730783.0
+    },
+    {
+      "symbol": "CROMPTON",
+      "date": "2022-06-13 00:00:00",
+      "zscore": -2.59,
+      "net_return": 0.1286,
+      "pnl": 89822.0,
+      "reason": "recovery",
+      "capital": 8820605.0
+    },
+    {
+      "symbol": "LICHSGFIN",
+      "date": "2022-06-13 00:00:00",
+      "zscore": -2.49,
+      "net_return": 0.1074,
+      "pnl": 75787.0,
+      "reason": "recovery",
+      "capital": 8896392.0
+    },
+    {
+      "symbol": "BAJFINANCE",
+      "date": "2022-06-13 00:00:00",
+      "zscore": -2.41,
+      "net_return": 0.0929,
+      "pnl": 66118.0,
+      "reason": "recovery",
+      "capital": 8962510.0
+    },
+    {
+      "symbol": "NAVA",
+      "date": "2022-06-20 00:00:00",
+      "zscore": -2.37,
+      "net_return": 0.2096,
+      "pnl": 150283.0,
+      "reason": "recovery",
+      "capital": 9112793.0
+    },
+    {
+      "symbol": "KPRMILL",
+      "date": "2022-06-21 00:00:00",
+      "zscore": -2.41,
+      "net_return": 0.0121,
+      "pnl": 8821.0,
+      "reason": "time_stop",
+      "capital": 9121615.0
+    },
+    {
+      "symbol": "SRF",
+      "date": "2022-07-05 00:00:00",
+      "zscore": -2.12,
+      "net_return": 0.1923,
+      "pnl": 140327.0,
+      "reason": "recovery",
+      "capital": 9261942.0
+    },
+    {
+      "symbol": "RELIANCE",
+      "date": "2022-07-07 00:00:00",
+      "zscore": -2.17,
+      "net_return": 0.072,
+      "pnl": 53349.0,
+      "reason": "recovery",
+      "capital": 9315290.0
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "date": "2022-07-13 00:00:00",
+      "zscore": -2.19,
+      "net_return": 0.1029,
+      "pnl": 76683.0,
+      "reason": "recovery",
+      "capital": 9391974.0
+    },
+    {
+      "symbol": "HCLTECH",
+      "date": "2022-07-14 00:00:00",
+      "zscore": -2.22,
+      "net_return": 0.066,
+      "pnl": 49590.0,
+      "reason": "recovery",
+      "capital": 9441563.0
+    },
+    {
+      "symbol": "GLAND",
+      "date": "2022-07-25 00:00:00",
+      "zscore": -2.18,
+      "net_return": 0.0719,
+      "pnl": 54308.0,
+      "reason": "recovery",
+      "capital": 9495871.0
+    },
+    {
+      "symbol": "POWERINDIA",
+      "date": "2022-07-25 00:00:00",
+      "zscore": -2.3,
+      "net_return": 0.1341,
+      "pnl": 101872.0,
+      "reason": "recovery",
+      "capital": 9597743.0
+    },
+    {
+      "symbol": "ICICIGI",
+      "date": "2022-07-26 00:00:00",
+      "zscore": -2.38,
+      "net_return": 0.0889,
+      "pnl": 68259.0,
+      "reason": "recovery",
+      "capital": 9666002.0
+    },
+    {
+      "symbol": "NH",
+      "date": "2022-07-27 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.0889,
+      "pnl": 68745.0,
+      "reason": "recovery",
+      "capital": 9734747.0
+    },
+    {
+      "symbol": "M&MFIN",
+      "date": "2022-07-29 00:00:00",
+      "zscore": -2.21,
+      "net_return": 0.0962,
+      "pnl": 74919.0,
+      "reason": "recovery",
+      "capital": 9809665.0
+    },
+    {
+      "symbol": "GILLETTE",
+      "date": "2022-07-29 00:00:00",
+      "zscore": -2.46,
+      "net_return": 0.0507,
+      "pnl": 39788.0,
+      "reason": "recovery",
+      "capital": 9849453.0
+    },
+    {
+      "symbol": "INDUSTOWER",
+      "date": "2022-08-08 00:00:00",
+      "zscore": -2.32,
+      "net_return": 0.0115,
+      "pnl": 9061.0,
+      "reason": "time_stop",
+      "capital": 9858515.0
+    },
+    {
+      "symbol": "ALKEM",
+      "date": "2022-08-08 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.0572,
+      "pnl": 45113.0,
+      "reason": "recovery",
+      "capital": 9903627.0
+    },
+    {
+      "symbol": "GAIL",
+      "date": "2022-08-08 00:00:00",
+      "zscore": -2.08,
+      "net_return": 0.0361,
+      "pnl": 28602.0,
+      "reason": "recovery",
+      "capital": 9932229.0
+    },
+    {
+      "symbol": "MFSL",
+      "date": "2022-08-08 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.009,
+      "pnl": 7151.0,
+      "reason": "time_stop",
+      "capital": 9939380.0
+    },
+    {
+      "symbol": "PETRONET",
+      "date": "2022-08-08 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.0311,
+      "pnl": 24729.0,
+      "reason": "recovery",
+      "capital": 9964110.0
+    },
+    {
+      "symbol": "BALKRISIND",
+      "date": "2022-08-08 00:00:00",
+      "zscore": -2.01,
+      "net_return": -0.0802,
+      "pnl": -63930.0,
+      "reason": "time_stop",
+      "capital": 9900180.0
+    },
+    {
+      "symbol": "NEULANDLAB",
+      "date": "2022-08-08 00:00:00",
+      "zscore": -2.2,
+      "net_return": 0.0906,
+      "pnl": 71757.0,
+      "reason": "recovery",
+      "capital": 9971936.0
+    },
+    {
+      "symbol": "NATCOPHARM",
+      "date": "2022-08-10 00:00:00",
+      "zscore": -2.17,
+      "net_return": -0.085,
+      "pnl": -67809.0,
+      "reason": "stop_loss",
+      "capital": 9904127.0
+    },
+    {
+      "symbol": "BALRAMCHIN",
+      "date": "2022-08-10 00:00:00",
+      "zscore": -2.73,
+      "net_return": 0.1212,
+      "pnl": 96030.0,
+      "reason": "recovery",
+      "capital": 10000158.0
+    },
+    {
+      "symbol": "ASTERDM",
+      "date": "2022-08-16 00:00:00",
+      "zscore": -2.44,
+      "net_return": 0.1982,
+      "pnl": 158562.0,
+      "reason": "recovery",
+      "capital": 10158720.0
+    },
+    {
+      "symbol": "MUTHOOTFIN",
+      "date": "2022-08-16 00:00:00",
+      "zscore": -2.06,
+      "net_return": -0.0036,
+      "pnl": -2926.0,
+      "reason": "time_stop",
+      "capital": 10155794.0
+    },
+    {
+      "symbol": "EIDPARRY",
+      "date": "2022-08-22 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.1235,
+      "pnl": 100339.0,
+      "reason": "recovery",
+      "capital": 10256134.0
+    },
+    {
+      "symbol": "JBCHEPHARM",
+      "date": "2022-08-23 00:00:00",
+      "zscore": -2.19,
+      "net_return": 0.0832,
+      "pnl": 68265.0,
+      "reason": "recovery",
+      "capital": 10324398.0
+    },
+    {
+      "symbol": "ICICIGI",
+      "date": "2022-08-24 00:00:00",
+      "zscore": -2.11,
+      "net_return": -0.0446,
+      "pnl": -36837.0,
+      "reason": "time_stop",
+      "capital": 10287561.0
+    },
+    {
+      "symbol": "NAVA",
+      "date": "2022-08-25 00:00:00",
+      "zscore": -2.22,
+      "net_return": -0.085,
+      "pnl": -69955.0,
+      "reason": "stop_loss",
+      "capital": 10217606.0
+    },
+    {
+      "symbol": "MPHASIS",
+      "date": "2022-08-29 00:00:00",
+      "zscore": -2.23,
+      "net_return": -0.0216,
+      "pnl": -17656.0,
+      "reason": "time_stop",
+      "capital": 10199950.0
+    },
+    {
+      "symbol": "HOMEFIRST",
+      "date": "2022-09-07 00:00:00",
+      "zscore": -2.53,
+      "net_return": 0.0263,
+      "pnl": 21461.0,
+      "reason": "recovery",
+      "capital": 10221410.0
+    },
+    {
+      "symbol": "BAYERCROP",
+      "date": "2022-09-16 00:00:00",
+      "zscore": -2.27,
+      "net_return": -0.0454,
+      "pnl": -37124.0,
+      "reason": "time_stop",
+      "capital": 10184286.0
+    },
+    {
+      "symbol": "ZFCVINDIA",
+      "date": "2022-09-16 00:00:00",
+      "zscore": -2.1,
+      "net_return": 0.1031,
+      "pnl": 84000.0,
+      "reason": "recovery",
+      "capital": 10268286.0
+    },
+    {
+      "symbol": "INFY",
+      "date": "2022-09-16 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.077,
+      "pnl": 63253.0,
+      "reason": "recovery",
+      "capital": 10331539.0
+    },
+    {
+      "symbol": "AJANTPHARM",
+      "date": "2022-09-16 00:00:00",
+      "zscore": -2.09,
+      "net_return": -0.0226,
+      "pnl": -18679.0,
+      "reason": "time_stop",
+      "capital": 10312859.0
+    },
+    {
+      "symbol": "TIMKEN",
+      "date": "2022-09-16 00:00:00",
+      "zscore": -2.51,
+      "net_return": 0.0429,
+      "pnl": 35394.0,
+      "reason": "recovery",
+      "capital": 10348253.0
+    },
+    {
+      "symbol": "UNOMINDA",
+      "date": "2022-09-19 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.0189,
+      "pnl": 15647.0,
+      "reason": "recovery",
+      "capital": 10363900.0
+    },
+    {
+      "symbol": "ELGIEQUIP",
+      "date": "2022-09-19 00:00:00",
+      "zscore": -2.01,
+      "net_return": -0.085,
+      "pnl": -70475.0,
+      "reason": "stop_loss",
+      "capital": 10293425.0
+    },
+    {
+      "symbol": "HUDCO",
+      "date": "2022-09-19 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0241,
+      "pnl": -19846.0,
+      "reason": "time_stop",
+      "capital": 10273579.0
+    },
+    {
+      "symbol": "SCHAEFFLER",
+      "date": "2022-09-20 00:00:00",
+      "zscore": -2.09,
+      "net_return": -0.0425,
+      "pnl": -34930.0,
+      "reason": "time_stop",
+      "capital": 10238649.0
+    },
+    {
+      "symbol": "CANFINHOME",
+      "date": "2022-09-20 00:00:00",
+      "zscore": -2.36,
+      "net_return": -0.085,
+      "pnl": -69623.0,
+      "reason": "stop_loss",
+      "capital": 10169026.0
+    },
+    {
+      "symbol": "POWERGRID",
+      "date": "2022-09-22 00:00:00",
+      "zscore": -2.31,
+      "net_return": -0.0177,
+      "pnl": -14399.0,
+      "reason": "time_stop",
+      "capital": 10154627.0
+    },
+    {
+      "symbol": "SHREECEM",
+      "date": "2022-09-22 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0404,
+      "pnl": -32820.0,
+      "reason": "time_stop",
+      "capital": 10121807.0
+    },
+    {
+      "symbol": "FORTIS",
+      "date": "2022-09-22 00:00:00",
+      "zscore": -3.02,
+      "net_return": 0.0285,
+      "pnl": 23078.0,
+      "reason": "recovery",
+      "capital": 10144885.0
+    },
+    {
+      "symbol": "MRF",
+      "date": "2022-09-22 00:00:00",
+      "zscore": -2.42,
+      "net_return": 0.0153,
+      "pnl": 12417.0,
+      "reason": "recovery",
+      "capital": 10157302.0
+    },
+    {
+      "symbol": "NTPC",
+      "date": "2022-09-27 00:00:00",
+      "zscore": -2.03,
+      "net_return": 0.0683,
+      "pnl": 55499.0,
+      "reason": "recovery",
+      "capital": 10212802.0
+    },
+    {
+      "symbol": "DABUR",
+      "date": "2022-10-10 00:00:00",
+      "zscore": -2.31,
+      "net_return": 0.047,
+      "pnl": 38400.0,
+      "reason": "recovery",
+      "capital": 10251202.0
+    },
+    {
+      "symbol": "LUPIN",
+      "date": "2022-10-12 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.0947,
+      "pnl": 77663.0,
+      "reason": "recovery",
+      "capital": 10328865.0
+    },
+    {
+      "symbol": "BIOCON",
+      "date": "2022-10-12 00:00:00",
+      "zscore": -2.32,
+      "net_return": 0.0459,
+      "pnl": 37928.0,
+      "reason": "recovery",
+      "capital": 10366793.0
+    },
+    {
+      "symbol": "HAVELLS",
+      "date": "2022-10-13 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.0021,
+      "pnl": 1742.0,
+      "reason": "time_stop",
+      "capital": 10368534.0
+    },
+    {
+      "symbol": "AKZOINDIA",
+      "date": "2022-10-14 00:00:00",
+      "zscore": -3.14,
+      "net_return": 0.119,
+      "pnl": 98708.0,
+      "reason": "recovery",
+      "capital": 10467243.0
+    },
+    {
+      "symbol": "ZFCVINDIA",
+      "date": "2022-10-19 00:00:00",
+      "zscore": -2.05,
+      "net_return": -0.0486,
+      "pnl": -40697.0,
+      "reason": "time_stop",
+      "capital": 10426546.0
+    },
+    {
+      "symbol": "SCHAEFFLER",
+      "date": "2022-10-20 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.0335,
+      "pnl": 27943.0,
+      "reason": "recovery",
+      "capital": 10454489.0
+    },
+    {
+      "symbol": "HOMEFIRST",
+      "date": "2022-10-25 00:00:00",
+      "zscore": -2.6,
+      "net_return": -0.0351,
+      "pnl": -29356.0,
+      "reason": "time_stop",
+      "capital": 10425133.0
+    },
+    {
+      "symbol": "LAURUSLABS",
+      "date": "2022-10-25 00:00:00",
+      "zscore": -2.12,
+      "net_return": -0.0116,
+      "pnl": -9675.0,
+      "reason": "time_stop",
+      "capital": 10415458.0
+    },
+    {
+      "symbol": "GLAND",
+      "date": "2022-10-27 00:00:00",
+      "zscore": -2.99,
+      "net_return": -0.085,
+      "pnl": -70825.0,
+      "reason": "stop_loss",
+      "capital": 10344633.0
+    },
+    {
+      "symbol": "EIDPARRY",
+      "date": "2022-10-28 00:00:00",
+      "zscore": -2.2,
+      "net_return": 0.0389,
+      "pnl": 32192.0,
+      "reason": "recovery",
+      "capital": 10376826.0
+    },
+    {
+      "symbol": "PAGEIND",
+      "date": "2022-10-28 00:00:00",
+      "zscore": -2.31,
+      "net_return": -0.0421,
+      "pnl": -34949.0,
+      "reason": "time_stop",
+      "capital": 10341877.0
+    },
+    {
+      "symbol": "BANDHANBNK",
+      "date": "2022-10-31 00:00:00",
+      "zscore": -2.17,
+      "net_return": -0.0234,
+      "pnl": -19360.0,
+      "reason": "time_stop",
+      "capital": 10322517.0
+    },
+    {
+      "symbol": "BLUEDART",
+      "date": "2022-11-01 00:00:00",
+      "zscore": -2.93,
+      "net_return": 0.03,
+      "pnl": 24774.0,
+      "reason": "recovery",
+      "capital": 10347291.0
+    },
+    {
+      "symbol": "LICHSGFIN",
+      "date": "2022-11-02 00:00:00",
+      "zscore": -2.39,
+      "net_return": 0.0696,
+      "pnl": 57614.0,
+      "reason": "recovery",
+      "capital": 10404904.0
+    },
+    {
+      "symbol": "PCBL",
+      "date": "2022-11-02 00:00:00",
+      "zscore": -2.05,
+      "net_return": 0.1303,
+      "pnl": 108461.0,
+      "reason": "recovery",
+      "capital": 10513365.0
+    },
+    {
+      "symbol": "NH",
+      "date": "2022-11-07 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.0141,
+      "pnl": 11859.0,
+      "reason": "time_stop",
+      "capital": 10525224.0
+    },
+    {
+      "symbol": "POWERGRID",
+      "date": "2022-11-09 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.0297,
+      "pnl": 25008.0,
+      "reason": "recovery",
+      "capital": 10550232.0
+    },
+    {
+      "symbol": "DIVISLAB",
+      "date": "2022-11-09 00:00:00",
+      "zscore": -3.17,
+      "net_return": 0.007,
+      "pnl": 5908.0,
+      "reason": "time_stop",
+      "capital": 10556140.0
+    },
+    {
+      "symbol": "AUROPHARMA",
+      "date": "2022-11-10 00:00:00",
+      "zscore": -3.08,
+      "net_return": -0.0447,
+      "pnl": -37749.0,
+      "reason": "time_stop",
+      "capital": 10518392.0
+    },
+    {
+      "symbol": "RAMCOCEM",
+      "date": "2022-11-10 00:00:00",
+      "zscore": -2.26,
+      "net_return": 0.1241,
+      "pnl": 104427.0,
+      "reason": "recovery",
+      "capital": 10622818.0
+    },
+    {
+      "symbol": "ZYDUSWELL",
+      "date": "2022-11-11 00:00:00",
+      "zscore": -2.08,
+      "net_return": -0.0211,
+      "pnl": -17931.0,
+      "reason": "time_stop",
+      "capital": 10604887.0
+    },
+    {
+      "symbol": "DCMSHRIRAM",
+      "date": "2022-11-14 00:00:00",
+      "zscore": -2.1,
+      "net_return": -0.085,
+      "pnl": -72113.0,
+      "reason": "stop_loss",
+      "capital": 10532774.0
+    },
+    {
+      "symbol": "SUNTV",
+      "date": "2022-11-14 00:00:00",
+      "zscore": -2.14,
+      "net_return": -0.0049,
+      "pnl": -4129.0,
+      "reason": "time_stop",
+      "capital": 10528645.0
+    },
+    {
+      "symbol": "MAXHEALTH",
+      "date": "2022-11-17 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.0317,
+      "pnl": 26701.0,
+      "reason": "recovery",
+      "capital": 10555345.0
+    },
+    {
+      "symbol": "CHALET",
+      "date": "2022-11-18 00:00:00",
+      "zscore": -2.26,
+      "net_return": 0.107,
+      "pnl": 90354.0,
+      "reason": "recovery",
+      "capital": 10645699.0
+    },
+    {
+      "symbol": "KALYANKJIL",
+      "date": "2022-11-22 00:00:00",
+      "zscore": -2.47,
+      "net_return": 0.432,
+      "pnl": 367915.0,
+      "reason": "recovery",
+      "capital": 11013615.0
+    },
+    {
+      "symbol": "LAURUSLABS",
+      "date": "2022-11-29 00:00:00",
+      "zscore": -2.17,
+      "net_return": -0.085,
+      "pnl": -74893.0,
+      "reason": "stop_loss",
+      "capital": 10938722.0
+    },
+    {
+      "symbol": "SUNPHARMA",
+      "date": "2022-12-08 00:00:00",
+      "zscore": -2.17,
+      "net_return": 0.0311,
+      "pnl": 27216.0,
+      "reason": "recovery",
+      "capital": 10965937.0
+    },
+    {
+      "symbol": "HCLTECH",
+      "date": "2022-12-09 00:00:00",
+      "zscore": -2.51,
+      "net_return": 0.0002,
+      "pnl": 175.0,
+      "reason": "time_stop",
+      "capital": 10966113.0
+    },
+    {
+      "symbol": "BANKINDIA",
+      "date": "2022-12-20 00:00:00",
+      "zscore": -2.19,
+      "net_return": 0.0504,
+      "pnl": 44215.0,
+      "reason": "recovery",
+      "capital": 11010328.0
+    },
+    {
+      "symbol": "CASTROLIND",
+      "date": "2022-12-21 00:00:00",
+      "zscore": -2.16,
+      "net_return": -0.0247,
+      "pnl": -21756.0,
+      "reason": "time_stop",
+      "capital": 10988572.0
+    },
+    {
+      "symbol": "POLYCAB",
+      "date": "2022-12-21 00:00:00",
+      "zscore": -2.53,
+      "net_return": 0.0266,
+      "pnl": 23384.0,
+      "reason": "recovery",
+      "capital": 11011956.0
+    },
+    {
+      "symbol": "MAHABANK",
+      "date": "2022-12-21 00:00:00",
+      "zscore": -2.24,
+      "net_return": 0.0634,
+      "pnl": 55853.0,
+      "reason": "recovery",
+      "capital": 11067808.0
+    },
+    {
+      "symbol": "CUB",
+      "date": "2022-12-21 00:00:00",
+      "zscore": -2.65,
+      "net_return": -0.085,
+      "pnl": -75261.0,
+      "reason": "stop_loss",
+      "capital": 10992547.0
+    },
+    {
+      "symbol": "UNIONBANK",
+      "date": "2022-12-21 00:00:00",
+      "zscore": -2.38,
+      "net_return": -0.0044,
+      "pnl": -3869.0,
+      "reason": "time_stop",
+      "capital": 10988678.0
+    },
+    {
+      "symbol": "JMFINANCIL",
+      "date": "2022-12-21 00:00:00",
+      "zscore": -2.17,
+      "net_return": -0.0499,
+      "pnl": -43867.0,
+      "reason": "time_stop",
+      "capital": 10944811.0
+    },
+    {
+      "symbol": "GVT&D",
+      "date": "2022-12-22 00:00:00",
+      "zscore": -2.07,
+      "net_return": 0.034,
+      "pnl": 29770.0,
+      "reason": "recovery",
+      "capital": 10974581.0
+    },
+    {
+      "symbol": "CEATLTD",
+      "date": "2022-12-22 00:00:00",
+      "zscore": -2.11,
+      "net_return": -0.0319,
+      "pnl": -28007.0,
+      "reason": "time_stop",
+      "capital": 10946574.0
+    },
+    {
+      "symbol": "DEEPAKFERT",
+      "date": "2022-12-22 00:00:00",
+      "zscore": -2.35,
+      "net_return": 0.032,
+      "pnl": 28023.0,
+      "reason": "recovery",
+      "capital": 10974597.0
+    },
+    {
+      "symbol": "IFCI",
+      "date": "2022-12-22 00:00:00",
+      "zscore": -2.33,
+      "net_return": 0.0025,
+      "pnl": 2195.0,
+      "reason": "time_stop",
+      "capital": 10976792.0
+    },
+    {
+      "symbol": "TRITURBINE",
+      "date": "2022-12-22 00:00:00",
+      "zscore": -2.22,
+      "net_return": 0.0471,
+      "pnl": 41361.0,
+      "reason": "recovery",
+      "capital": 11018152.0
+    },
+    {
+      "symbol": "LEMONTREE",
+      "date": "2022-12-22 00:00:00",
+      "zscore": -2.03,
+      "net_return": -0.0368,
+      "pnl": -32437.0,
+      "reason": "time_stop",
+      "capital": 10985715.0
+    },
+    {
+      "symbol": "NH",
+      "date": "2023-01-06 00:00:00",
+      "zscore": -2.05,
+      "net_return": 0.0113,
+      "pnl": 9931.0,
+      "reason": "time_stop",
+      "capital": 10995646.0
+    },
+    {
+      "symbol": "BAJFINANCE",
+      "date": "2023-01-10 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.0708,
+      "pnl": 62279.0,
+      "reason": "recovery",
+      "capital": 11057925.0
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "date": "2023-01-11 00:00:00",
+      "zscore": -2.02,
+      "net_return": -0.0036,
+      "pnl": -3185.0,
+      "reason": "time_stop",
+      "capital": 11054741.0
+    },
+    {
+      "symbol": "NYKAA",
+      "date": "2023-01-18 00:00:00",
+      "zscore": -2.12,
+      "net_return": 0.0729,
+      "pnl": 64471.0,
+      "reason": "recovery",
+      "capital": 11119212.0
+    },
+    {
+      "symbol": "ICICIGI",
+      "date": "2023-01-20 00:00:00",
+      "zscore": -2.14,
+      "net_return": -0.0395,
+      "pnl": -35137.0,
+      "reason": "time_stop",
+      "capital": 11084075.0
+    },
+    {
+      "symbol": "ATUL",
+      "date": "2023-01-24 00:00:00",
+      "zscore": -2.01,
+      "net_return": -0.0037,
+      "pnl": -3281.0,
+      "reason": "time_stop",
+      "capital": 11080794.0
+    },
+    {
+      "symbol": "INDUSTOWER",
+      "date": "2023-01-25 00:00:00",
+      "zscore": -2.41,
+      "net_return": -0.085,
+      "pnl": -75349.0,
+      "reason": "stop_loss",
+      "capital": 11005445.0
+    },
+    {
+      "symbol": "CUMMINSIND",
+      "date": "2023-01-25 00:00:00",
+      "zscore": -2.05,
+      "net_return": 0.1573,
+      "pnl": 138493.0,
+      "reason": "recovery",
+      "capital": 11143937.0
+    },
+    {
+      "symbol": "SHREECEM",
+      "date": "2023-01-27 00:00:00",
+      "zscore": -2.28,
+      "net_return": 0.1574,
+      "pnl": 140324.0,
+      "reason": "recovery",
+      "capital": 11284262.0
+    },
+    {
+      "symbol": "SBIN",
+      "date": "2023-01-27 00:00:00",
+      "zscore": -2.48,
+      "net_return": -0.04,
+      "pnl": -36110.0,
+      "reason": "time_stop",
+      "capital": 11248152.0
+    },
+    {
+      "symbol": "GLENMARK",
+      "date": "2023-01-27 00:00:00",
+      "zscore": -2.59,
+      "net_return": 0.1453,
+      "pnl": 130749.0,
+      "reason": "recovery",
+      "capital": 11378901.0
+    },
+    {
+      "symbol": "PFC",
+      "date": "2023-01-27 00:00:00",
+      "zscore": -2.66,
+      "net_return": 0.084,
+      "pnl": 76466.0,
+      "reason": "recovery",
+      "capital": 11455367.0
+    },
+    {
+      "symbol": "BLUEDART",
+      "date": "2023-01-27 00:00:00",
+      "zscore": -2.02,
+      "net_return": -0.0525,
+      "pnl": -48113.0,
+      "reason": "time_stop",
+      "capital": 11407255.0
+    },
+    {
+      "symbol": "BEL",
+      "date": "2023-01-27 00:00:00",
+      "zscore": -2.08,
+      "net_return": 0.0125,
+      "pnl": 11407.0,
+      "reason": "time_stop",
+      "capital": 11418662.0
+    },
+    {
+      "symbol": "BANKBARODA",
+      "date": "2023-01-27 00:00:00",
+      "zscore": -2.39,
+      "net_return": -0.0219,
+      "pnl": -20005.0,
+      "reason": "time_stop",
+      "capital": 11398656.0
+    },
+    {
+      "symbol": "PNB",
+      "date": "2023-01-27 00:00:00",
+      "zscore": -2.08,
+      "net_return": -0.069,
+      "pnl": -62921.0,
+      "reason": "time_stop",
+      "capital": 11335736.0
+    },
+    {
+      "symbol": "KALYANKJIL",
+      "date": "2023-01-30 00:00:00",
+      "zscore": -2.44,
+      "net_return": 0.0936,
+      "pnl": 84882.0,
+      "reason": "recovery",
+      "capital": 11420618.0
+    },
+    {
+      "symbol": "ADANIPOWER",
+      "date": "2023-01-31 00:00:00",
+      "zscore": -2.02,
+      "net_return": -0.085,
+      "pnl": -77660.0,
+      "reason": "stop_loss",
+      "capital": 11342957.0
+    },
+    {
+      "symbol": "GABRIEL",
+      "date": "2023-02-07 00:00:00",
+      "zscore": -2.07,
+      "net_return": -0.0341,
+      "pnl": -30944.0,
+      "reason": "time_stop",
+      "capital": 11312014.0
+    },
+    {
+      "symbol": "BALKRISIND",
+      "date": "2023-02-13 00:00:00",
+      "zscore": -2.48,
+      "net_return": -0.0463,
+      "pnl": -41900.0,
+      "reason": "time_stop",
+      "capital": 11270114.0
+    },
+    {
+      "symbol": "UBL",
+      "date": "2023-02-13 00:00:00",
+      "zscore": -2.2,
+      "net_return": -0.0149,
+      "pnl": -13434.0,
+      "reason": "time_stop",
+      "capital": 11256680.0
+    },
+    {
+      "symbol": "PHOENIXLTD",
+      "date": "2023-02-14 00:00:00",
+      "zscore": -2.67,
+      "net_return": -0.0585,
+      "pnl": -52681.0,
+      "reason": "time_stop",
+      "capital": 11203999.0
+    },
+    {
+      "symbol": "CHOLAHLDNG",
+      "date": "2023-02-15 00:00:00",
+      "zscore": -2.23,
+      "net_return": -0.085,
+      "pnl": -76187.0,
+      "reason": "stop_loss",
+      "capital": 11127812.0
+    },
+    {
+      "symbol": "AKZOINDIA",
+      "date": "2023-02-17 00:00:00",
+      "zscore": -2.28,
+      "net_return": 0.0464,
+      "pnl": 41306.0,
+      "reason": "recovery",
+      "capital": 11169118.0
+    },
+    {
+      "symbol": "CIPLA",
+      "date": "2023-02-20 00:00:00",
+      "zscore": -2.05,
+      "net_return": -0.085,
+      "pnl": -75950.0,
+      "reason": "stop_loss",
+      "capital": 11093168.0
+    },
+    {
+      "symbol": "GVT&D",
+      "date": "2023-02-23 00:00:00",
+      "zscore": -2.07,
+      "net_return": 0.1096,
+      "pnl": 97265.0,
+      "reason": "recovery",
+      "capital": 11190433.0
+    },
+    {
+      "symbol": "BIOCON",
+      "date": "2023-02-23 00:00:00",
+      "zscore": -2.11,
+      "net_return": -0.085,
+      "pnl": -76095.0,
+      "reason": "stop_loss",
+      "capital": 11114338.0
+    },
+    {
+      "symbol": "DATAPATTNS",
+      "date": "2023-02-24 00:00:00",
+      "zscore": -2.17,
+      "net_return": 0.0922,
+      "pnl": 81979.0,
+      "reason": "recovery",
+      "capital": 11196317.0
+    },
+    {
+      "symbol": "INDIANB",
+      "date": "2023-02-27 00:00:00",
+      "zscore": -2.11,
+      "net_return": 0.0737,
+      "pnl": 66013.0,
+      "reason": "recovery",
+      "capital": 11262331.0
+    },
+    {
+      "symbol": "BAJAJ-AUTO",
+      "date": "2023-02-27 00:00:00",
+      "zscore": -2.13,
+      "net_return": 0.0367,
+      "pnl": 33066.0,
+      "reason": "recovery",
+      "capital": 11295397.0
+    },
+    {
+      "symbol": "PRESTIGE",
+      "date": "2023-02-27 00:00:00",
+      "zscore": -2.01,
+      "net_return": -0.001,
+      "pnl": -904.0,
+      "reason": "time_stop",
+      "capital": 11294494.0
+    },
+    {
+      "symbol": "MOTILALOFS",
+      "date": "2023-02-27 00:00:00",
+      "zscore": -2.03,
+      "net_return": -0.0805,
+      "pnl": -72737.0,
+      "reason": "time_stop",
+      "capital": 11221757.0
+    },
+    {
+      "symbol": "CARTRADE",
+      "date": "2023-02-28 00:00:00",
+      "zscore": -2.3,
+      "net_return": -0.085,
+      "pnl": -76308.0,
+      "reason": "stop_loss",
+      "capital": 11145449.0
+    },
+    {
+      "symbol": "VEDL",
+      "date": "2023-02-28 00:00:00",
+      "zscore": -2.13,
+      "net_return": 0.0449,
+      "pnl": 40034.0,
+      "reason": "recovery",
+      "capital": 11185484.0
+    },
+    {
+      "symbol": "PHOENIXLTD",
+      "date": "2023-03-09 00:00:00",
+      "zscore": -2.01,
+      "net_return": -0.0117,
+      "pnl": -10470.0,
+      "reason": "time_stop",
+      "capital": 11175014.0
+    },
+    {
+      "symbol": "HOMEFIRST",
+      "date": "2023-03-10 00:00:00",
+      "zscore": -2.17,
+      "net_return": 0.0492,
+      "pnl": 43985.0,
+      "reason": "recovery",
+      "capital": 11218999.0
+    },
+    {
+      "symbol": "ZFCVINDIA",
+      "date": "2023-03-14 00:00:00",
+      "zscore": -2.2,
+      "net_return": -0.0013,
+      "pnl": -1167.0,
+      "reason": "time_stop",
+      "capital": 11217832.0
+    },
+    {
+      "symbol": "M&M",
+      "date": "2023-03-14 00:00:00",
+      "zscore": -2.52,
+      "net_return": 0.0399,
+      "pnl": 35807.0,
+      "reason": "recovery",
+      "capital": 11253639.0
+    },
+    {
+      "symbol": "GILLETTE",
+      "date": "2023-03-14 00:00:00",
+      "zscore": -2.33,
+      "net_return": -0.0235,
+      "pnl": -21157.0,
+      "reason": "time_stop",
+      "capital": 11232482.0
+    },
+    {
+      "symbol": "CRAFTSMAN",
+      "date": "2023-03-14 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.0285,
+      "pnl": 25610.0,
+      "reason": "recovery",
+      "capital": 11258093.0
+    },
+    {
+      "symbol": "RELIANCE",
+      "date": "2023-03-15 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.0412,
+      "pnl": 37107.0,
+      "reason": "recovery",
+      "capital": 11295199.0
+    },
+    {
+      "symbol": "TVSMOTOR",
+      "date": "2023-03-15 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.1036,
+      "pnl": 93615.0,
+      "reason": "recovery",
+      "capital": 11388814.0
+    },
+    {
+      "symbol": "JINDALSAW",
+      "date": "2023-03-16 00:00:00",
+      "zscore": -2.44,
+      "net_return": 0.065,
+      "pnl": 59222.0,
+      "reason": "recovery",
+      "capital": 11448036.0
+    },
+    {
+      "symbol": "GABRIEL",
+      "date": "2023-03-21 00:00:00",
+      "zscore": -2.16,
+      "net_return": 0.099,
+      "pnl": 90668.0,
+      "reason": "recovery",
+      "capital": 11538704.0
+    },
+    {
+      "symbol": "SARDAEN",
+      "date": "2023-03-22 00:00:00",
+      "zscore": -2.2,
+      "net_return": 0.0293,
+      "pnl": 27047.0,
+      "reason": "recovery",
+      "capital": 11565751.0
+    },
+    {
+      "symbol": "NH",
+      "date": "2023-03-24 00:00:00",
+      "zscore": -2.61,
+      "net_return": 0.0141,
+      "pnl": 13046.0,
+      "reason": "time_stop",
+      "capital": 11578797.0
+    },
+    {
+      "symbol": "GMRAIRPORT",
+      "date": "2023-03-24 00:00:00",
+      "zscore": -2.02,
+      "net_return": 0.1589,
+      "pnl": 147190.0,
+      "reason": "recovery",
+      "capital": 11725987.0
+    },
+    {
+      "symbol": "ABSLAMC",
+      "date": "2023-03-27 00:00:00",
+      "zscore": -3.31,
+      "net_return": 0.0779,
+      "pnl": 73076.0,
+      "reason": "recovery",
+      "capital": 11799063.0
+    },
+    {
+      "symbol": "CHOLAHLDNG",
+      "date": "2023-03-27 00:00:00",
+      "zscore": -2.29,
+      "net_return": 0.172,
+      "pnl": 162355.0,
+      "reason": "recovery",
+      "capital": 11961418.0
+    },
+    {
+      "symbol": "KALYANKJIL",
+      "date": "2023-03-31 00:00:00",
+      "zscore": -2.06,
+      "net_return": -0.0022,
+      "pnl": -2105.0,
+      "reason": "time_stop",
+      "capital": 11959313.0
+    },
+    {
+      "symbol": "MAXHEALTH",
+      "date": "2023-04-05 00:00:00",
+      "zscore": -2.23,
+      "net_return": 0.1368,
+      "pnl": 130883.0,
+      "reason": "recovery",
+      "capital": 12090196.0
+    },
+    {
+      "symbol": "RADICO",
+      "date": "2023-04-11 00:00:00",
+      "zscore": -2.41,
+      "net_return": 0.023,
+      "pnl": 22246.0,
+      "reason": "recovery",
+      "capital": 12112442.0
+    },
+    {
+      "symbol": "INFY",
+      "date": "2023-04-17 00:00:00",
+      "zscore": -2.92,
+      "net_return": -0.0002,
+      "pnl": -194.0,
+      "reason": "time_stop",
+      "capital": 12112248.0
+    },
+    {
+      "symbol": "NTPC",
+      "date": "2023-04-19 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.0429,
+      "pnl": 41569.0,
+      "reason": "recovery",
+      "capital": 12153817.0
+    },
+    {
+      "symbol": "AAVAS",
+      "date": "2023-04-21 00:00:00",
+      "zscore": -2.68,
+      "net_return": -0.085,
+      "pnl": -82646.0,
+      "reason": "stop_loss",
+      "capital": 12071171.0
+    },
+    {
+      "symbol": "CROMPTON",
+      "date": "2023-04-25 00:00:00",
+      "zscore": -2.91,
+      "net_return": 0.0596,
+      "pnl": 57555.0,
+      "reason": "recovery",
+      "capital": 12128726.0
+    },
+    {
+      "symbol": "IPCALAB",
+      "date": "2023-04-25 00:00:00",
+      "zscore": -3.53,
+      "net_return": -0.0809,
+      "pnl": -78497.0,
+      "reason": "time_stop",
+      "capital": 12050229.0
+    },
+    {
+      "symbol": "GODREJCP",
+      "date": "2023-04-28 00:00:00",
+      "zscore": -2.73,
+      "net_return": 0.1491,
+      "pnl": 143735.0,
+      "reason": "recovery",
+      "capital": 12193964.0
+    },
+    {
+      "symbol": "GALLANTT",
+      "date": "2023-05-02 00:00:00",
+      "zscore": -2.63,
+      "net_return": 0.0074,
+      "pnl": 7219.0,
+      "reason": "time_stop",
+      "capital": 12201183.0
+    },
+    {
+      "symbol": "SHRIRAMFIN",
+      "date": "2023-05-03 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.0562,
+      "pnl": 54857.0,
+      "reason": "recovery",
+      "capital": 12256040.0
+    },
+    {
+      "symbol": "MANAPPURAM",
+      "date": "2023-05-03 00:00:00",
+      "zscore": -2.27,
+      "net_return": -0.0309,
+      "pnl": -30297.0,
+      "reason": "time_stop",
+      "capital": 12225743.0
+    },
+    {
+      "symbol": "BBTC",
+      "date": "2023-05-05 00:00:00",
+      "zscore": -2.16,
+      "net_return": 0.0039,
+      "pnl": 3814.0,
+      "reason": "time_stop",
+      "capital": 12229557.0
+    },
+    {
+      "symbol": "INDIANB",
+      "date": "2023-05-09 00:00:00",
+      "zscore": -2.14,
+      "net_return": -0.0586,
+      "pnl": -57332.0,
+      "reason": "time_stop",
+      "capital": 12172225.0
+    },
+    {
+      "symbol": "UPL",
+      "date": "2023-05-10 00:00:00",
+      "zscore": -2.02,
+      "net_return": 0.016,
+      "pnl": 15580.0,
+      "reason": "recovery",
+      "capital": 12187806.0
+    },
+    {
+      "symbol": "FEDERALBNK",
+      "date": "2023-05-11 00:00:00",
+      "zscore": -2.23,
+      "net_return": -0.0183,
+      "pnl": -17843.0,
+      "reason": "time_stop",
+      "capital": 12169963.0
+    },
+    {
+      "symbol": "ABBOTINDIA",
+      "date": "2023-05-11 00:00:00",
+      "zscore": -2.19,
+      "net_return": 0.0143,
+      "pnl": 13922.0,
+      "reason": "time_stop",
+      "capital": 12183885.0
+    },
+    {
+      "symbol": "APARINDS",
+      "date": "2023-05-11 00:00:00",
+      "zscore": -2.02,
+      "net_return": 0.1026,
+      "pnl": 100005.0,
+      "reason": "recovery",
+      "capital": 12283890.0
+    },
+    {
+      "symbol": "DRREDDY",
+      "date": "2023-05-11 00:00:00",
+      "zscore": -3.24,
+      "net_return": 0.0209,
+      "pnl": 20539.0,
+      "reason": "recovery",
+      "capital": 12304429.0
+    },
+    {
+      "symbol": "LT",
+      "date": "2023-05-12 00:00:00",
+      "zscore": -2.31,
+      "net_return": 0.0589,
+      "pnl": 57978.0,
+      "reason": "recovery",
+      "capital": 12362407.0
+    },
+    {
+      "symbol": "ALKEM",
+      "date": "2023-05-16 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0121,
+      "pnl": -11967.0,
+      "reason": "time_stop",
+      "capital": 12350441.0
+    },
+    {
+      "symbol": "JBCHEPHARM",
+      "date": "2023-05-17 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.0982,
+      "pnl": 97025.0,
+      "reason": "recovery",
+      "capital": 12447466.0
+    },
+    {
+      "symbol": "DMART",
+      "date": "2023-05-18 00:00:00",
+      "zscore": -2.26,
+      "net_return": 0.158,
+      "pnl": 157336.0,
+      "reason": "recovery",
+      "capital": 12604802.0
+    },
+    {
+      "symbol": "BAJAJHLDNG",
+      "date": "2023-05-18 00:00:00",
+      "zscore": -2.16,
+      "net_return": 0.0991,
+      "pnl": 99100.0,
+      "reason": "recovery",
+      "capital": 12703902.0
+    },
+    {
+      "symbol": "SIEMENS",
+      "date": "2023-05-22 00:00:00",
+      "zscore": -3.61,
+      "net_return": 0.115,
+      "pnl": 115000.0,
+      "reason": "recovery",
+      "capital": 12818902.0
+    },
+    {
+      "symbol": "COCHINSHIP",
+      "date": "2023-05-23 00:00:00",
+      "zscore": -2.22,
+      "net_return": 0.2177,
+      "pnl": 217700.0,
+      "reason": "recovery",
+      "capital": 13036602.0
+    },
+    {
+      "symbol": "COROMANDEL",
+      "date": "2023-05-24 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.0168,
+      "pnl": 16800.0,
+      "reason": "recovery",
+      "capital": 13053402.0
+    },
+    {
+      "symbol": "GVT&D",
+      "date": "2023-05-25 00:00:00",
+      "zscore": -3.43,
+      "net_return": 0.1155,
+      "pnl": 115500.0,
+      "reason": "recovery",
+      "capital": 13168902.0
+    },
+    {
+      "symbol": "CUB",
+      "date": "2023-05-29 00:00:00",
+      "zscore": -2.12,
+      "net_return": -0.0329,
+      "pnl": -32900.0,
+      "reason": "time_stop",
+      "capital": 13136002.0
+    },
+    {
+      "symbol": "COALINDIA",
+      "date": "2023-06-05 00:00:00",
+      "zscore": -2.18,
+      "net_return": 0.0041,
+      "pnl": 4100.0,
+      "reason": "time_stop",
+      "capital": 13140102.0
+    },
+    {
+      "symbol": "TECHNOE",
+      "date": "2023-06-05 00:00:00",
+      "zscore": -2.33,
+      "net_return": 0.0059,
+      "pnl": 5900.0,
+      "reason": "time_stop",
+      "capital": 13146002.0
+    },
+    {
+      "symbol": "IEX",
+      "date": "2023-06-08 00:00:00",
+      "zscore": -2.28,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 13061002.0
+    },
+    {
+      "symbol": "SRF",
+      "date": "2023-06-12 00:00:00",
+      "zscore": -2.08,
+      "net_return": -0.0745,
+      "pnl": -74500.0,
+      "reason": "time_stop",
+      "capital": 12986502.0
+    },
+    {
+      "symbol": "CGCL",
+      "date": "2023-06-22 00:00:00",
+      "zscore": -3.02,
+      "net_return": 0.0812,
+      "pnl": 81200.0,
+      "reason": "recovery",
+      "capital": 13067702.0
+    },
+    {
+      "symbol": "DMART",
+      "date": "2023-06-23 00:00:00",
+      "zscore": -2.19,
+      "net_return": -0.0253,
+      "pnl": -25300.0,
+      "reason": "time_stop",
+      "capital": 13042402.0
+    },
+    {
+      "symbol": "SHREECEM",
+      "date": "2023-06-26 00:00:00",
+      "zscore": -2.49,
+      "net_return": -0.0059,
+      "pnl": -5900.0,
+      "reason": "time_stop",
+      "capital": 13036502.0
+    },
+    {
+      "symbol": "BDL",
+      "date": "2023-06-27 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.0997,
+      "pnl": 99700.0,
+      "reason": "recovery",
+      "capital": 13136202.0
+    },
+    {
+      "symbol": "NH",
+      "date": "2023-06-28 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.0635,
+      "pnl": 63500.0,
+      "reason": "recovery",
+      "capital": 13199702.0
+    },
+    {
+      "symbol": "CREDITACC",
+      "date": "2023-07-03 00:00:00",
+      "zscore": -2.07,
+      "net_return": 0.1481,
+      "pnl": 148100.0,
+      "reason": "recovery",
+      "capital": 13347802.0
+    },
+    {
+      "symbol": "CHOICEIN",
+      "date": "2023-07-04 00:00:00",
+      "zscore": -2.91,
+      "net_return": 0.0593,
+      "pnl": 59300.0,
+      "reason": "recovery",
+      "capital": 13407102.0
+    },
+    {
+      "symbol": "MCX",
+      "date": "2023-07-04 00:00:00",
+      "zscore": -2.13,
+      "net_return": 0.0909,
+      "pnl": 90900.0,
+      "reason": "recovery",
+      "capital": 13498002.0
+    },
+    {
+      "symbol": "EICHERMOT",
+      "date": "2023-07-06 00:00:00",
+      "zscore": -2.75,
+      "net_return": 0.0439,
+      "pnl": 43900.0,
+      "reason": "recovery",
+      "capital": 13541902.0
+    },
+    {
+      "symbol": "HCLTECH",
+      "date": "2023-07-11 00:00:00",
+      "zscore": -2.31,
+      "net_return": 0.0276,
+      "pnl": 27600.0,
+      "reason": "recovery",
+      "capital": 13569502.0
+    },
+    {
+      "symbol": "SUMICHEM",
+      "date": "2023-07-12 00:00:00",
+      "zscore": -2.03,
+      "net_return": -0.0019,
+      "pnl": -1900.0,
+      "reason": "time_stop",
+      "capital": 13567602.0
+    },
+    {
+      "symbol": "POWERGRID",
+      "date": "2023-07-13 00:00:00",
+      "zscore": -2.56,
+      "net_return": 0.0091,
+      "pnl": 9100.0,
+      "reason": "time_stop",
+      "capital": 13576702.0
+    },
+    {
+      "symbol": "CCL",
+      "date": "2023-07-17 00:00:00",
+      "zscore": -2.19,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 13491702.0
+    },
+    {
+      "symbol": "ANGELONE",
+      "date": "2023-07-18 00:00:00",
+      "zscore": -2.65,
+      "net_return": 0.2153,
+      "pnl": 215300.0,
+      "reason": "recovery",
+      "capital": 13707002.0
+    },
+    {
+      "symbol": "TARIL",
+      "date": "2023-07-20 00:00:00",
+      "zscore": -3.07,
+      "net_return": 0.2313,
+      "pnl": 231300.0,
+      "reason": "recovery",
+      "capital": 13938302.0
+    },
+    {
+      "symbol": "ICICIPRULI",
+      "date": "2023-07-20 00:00:00",
+      "zscore": -2.17,
+      "net_return": -0.0237,
+      "pnl": -23700.0,
+      "reason": "time_stop",
+      "capital": 13914602.0
+    },
+    {
+      "symbol": "GILLETTE",
+      "date": "2023-07-24 00:00:00",
+      "zscore": -2.03,
+      "net_return": -0.02,
+      "pnl": -20000.0,
+      "reason": "time_stop",
+      "capital": 13894602.0
+    },
+    {
+      "symbol": "DALBHARAT",
+      "date": "2023-07-24 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.0218,
+      "pnl": 21800.0,
+      "reason": "recovery",
+      "capital": 13916402.0
+    },
+    {
+      "symbol": "INFY",
+      "date": "2023-07-25 00:00:00",
+      "zscore": -2.49,
+      "net_return": 0.05,
+      "pnl": 50000.0,
+      "reason": "recovery",
+      "capital": 13966402.0
+    },
+    {
+      "symbol": "ZFCVINDIA",
+      "date": "2023-07-25 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.1099,
+      "pnl": 109900.0,
+      "reason": "recovery",
+      "capital": 14076302.0
+    },
+    {
+      "symbol": "BIOCON",
+      "date": "2023-07-25 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.0546,
+      "pnl": 54600.0,
+      "reason": "recovery",
+      "capital": 14130902.0
+    },
+    {
+      "symbol": "BAYERCROP",
+      "date": "2023-07-26 00:00:00",
+      "zscore": -2.33,
+      "net_return": 0.0708,
+      "pnl": 70800.0,
+      "reason": "recovery",
+      "capital": 14201702.0
+    },
+    {
+      "symbol": "SAREGAMA",
+      "date": "2023-07-26 00:00:00",
+      "zscore": -2.48,
+      "net_return": -0.0596,
+      "pnl": -59600.0,
+      "reason": "time_stop",
+      "capital": 14142102.0
+    },
+    {
+      "symbol": "TEGA",
+      "date": "2023-07-26 00:00:00",
+      "zscore": -2.05,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 14057102.0
+    },
+    {
+      "symbol": "KEI",
+      "date": "2023-07-31 00:00:00",
+      "zscore": -2.2,
+      "net_return": 0.073,
+      "pnl": 73000.0,
+      "reason": "recovery",
+      "capital": 14130102.0
+    },
+    {
+      "symbol": "BLUEDART",
+      "date": "2023-08-02 00:00:00",
+      "zscore": -2.53,
+      "net_return": -0.0426,
+      "pnl": -42600.0,
+      "reason": "time_stop",
+      "capital": 14087502.0
+    },
+    {
+      "symbol": "HINDPETRO",
+      "date": "2023-08-02 00:00:00",
+      "zscore": -2.1,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 14002502.0
+    },
+    {
+      "symbol": "VTL",
+      "date": "2023-08-07 00:00:00",
+      "zscore": -2.33,
+      "net_return": 0.2218,
+      "pnl": 221800.0,
+      "reason": "recovery",
+      "capital": 14224302.0
+    },
+    {
+      "symbol": "BAJAJ-AUTO",
+      "date": "2023-08-07 00:00:00",
+      "zscore": -2.17,
+      "net_return": 0.0017,
+      "pnl": 1700.0,
+      "reason": "time_stop",
+      "capital": 14226002.0
+    },
+    {
+      "symbol": "JMFINANCIL",
+      "date": "2023-08-09 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.25,
+      "pnl": 250000.0,
+      "reason": "recovery",
+      "capital": 14476002.0
+    },
+    {
+      "symbol": "BRITANNIA",
+      "date": "2023-08-10 00:00:00",
+      "zscore": -2.18,
+      "net_return": -0.005,
+      "pnl": -5000.0,
+      "reason": "time_stop",
+      "capital": 14471002.0
+    },
+    {
+      "symbol": "TORNTPHARM",
+      "date": "2023-08-14 00:00:00",
+      "zscore": -2.1,
+      "net_return": -0.063,
+      "pnl": -63000.0,
+      "reason": "time_stop",
+      "capital": 14408002.0
+    },
+    {
+      "symbol": "MUTHOOTFIN",
+      "date": "2023-08-14 00:00:00",
+      "zscore": -2.09,
+      "net_return": -0.0133,
+      "pnl": -13300.0,
+      "reason": "time_stop",
+      "capital": 14394702.0
+    },
+    {
+      "symbol": "GRANULES",
+      "date": "2023-08-14 00:00:00",
+      "zscore": -2.64,
+      "net_return": 0.0495,
+      "pnl": 49500.0,
+      "reason": "recovery",
+      "capital": 14444202.0
+    },
+    {
+      "symbol": "SAIL",
+      "date": "2023-08-14 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.0713,
+      "pnl": 71300.0,
+      "reason": "recovery",
+      "capital": 14515502.0
+    },
+    {
+      "symbol": "PRESTIGE",
+      "date": "2023-08-16 00:00:00",
+      "zscore": -2.19,
+      "net_return": 0.1271,
+      "pnl": 127100.0,
+      "reason": "recovery",
+      "capital": 14642602.0
+    },
+    {
+      "symbol": "NATIONALUM",
+      "date": "2023-08-17 00:00:00",
+      "zscore": -2.69,
+      "net_return": 0.126,
+      "pnl": 126000.0,
+      "reason": "recovery",
+      "capital": 14768602.0
+    },
+    {
+      "symbol": "JKCEMENT",
+      "date": "2023-08-17 00:00:00",
+      "zscore": -2.74,
+      "net_return": 0.0825,
+      "pnl": 82500.0,
+      "reason": "recovery",
+      "capital": 14851102.0
+    },
+    {
+      "symbol": "ERIS",
+      "date": "2023-08-17 00:00:00",
+      "zscore": -2.2,
+      "net_return": 0.0226,
+      "pnl": 22600.0,
+      "reason": "recovery",
+      "capital": 14873702.0
+    },
+    {
+      "symbol": "HINDCOPPER",
+      "date": "2023-08-21 00:00:00",
+      "zscore": -2.74,
+      "net_return": 0.1461,
+      "pnl": 146100.0,
+      "reason": "recovery",
+      "capital": 15019802.0
+    },
+    {
+      "symbol": "RAINBOW",
+      "date": "2023-08-29 00:00:00",
+      "zscore": -2.64,
+      "net_return": -0.0027,
+      "pnl": -2700.0,
+      "reason": "time_stop",
+      "capital": 15017102.0
+    },
+    {
+      "symbol": "DRREDDY",
+      "date": "2023-08-30 00:00:00",
+      "zscore": -2.23,
+      "net_return": -0.0441,
+      "pnl": -44100.0,
+      "reason": "time_stop",
+      "capital": 14973002.0
+    },
+    {
+      "symbol": "360ONE",
+      "date": "2023-09-01 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.0448,
+      "pnl": 44800.0,
+      "reason": "recovery",
+      "capital": 15017802.0
+    },
+    {
+      "symbol": "PGEL",
+      "date": "2023-09-08 00:00:00",
+      "zscore": -2.1,
+      "net_return": 0.0425,
+      "pnl": 42500.0,
+      "reason": "recovery",
+      "capital": 15060302.0
+    },
+    {
+      "symbol": "DATAPATTNS",
+      "date": "2023-09-08 00:00:00",
+      "zscore": -2.26,
+      "net_return": -0.0458,
+      "pnl": -45800.0,
+      "reason": "time_stop",
+      "capital": 15014502.0
+    },
+    {
+      "symbol": "NATCOPHARM",
+      "date": "2023-09-11 00:00:00",
+      "zscore": -2.8,
+      "net_return": 0.0412,
+      "pnl": 41200.0,
+      "reason": "recovery",
+      "capital": 15055702.0
+    },
+    {
+      "symbol": "ELECON",
+      "date": "2023-09-11 00:00:00",
+      "zscore": -2.28,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 14970702.0
+    },
+    {
+      "symbol": "SARDAEN",
+      "date": "2023-09-12 00:00:00",
+      "zscore": -2.16,
+      "net_return": 0.0049,
+      "pnl": 4900.0,
+      "reason": "time_stop",
+      "capital": 14975602.0
+    },
+    {
+      "symbol": "APLAPOLLO",
+      "date": "2023-09-12 00:00:00",
+      "zscore": -2.54,
+      "net_return": 0.0271,
+      "pnl": 27100.0,
+      "reason": "recovery",
+      "capital": 15002702.0
+    },
+    {
+      "symbol": "SHYAMMETL",
+      "date": "2023-09-12 00:00:00",
+      "zscore": -2.64,
+      "net_return": 0.0488,
+      "pnl": 48800.0,
+      "reason": "recovery",
+      "capital": 15051502.0
+    },
+    {
+      "symbol": "GABRIEL",
+      "date": "2023-09-12 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.1943,
+      "pnl": 194300.0,
+      "reason": "recovery",
+      "capital": 15245802.0
+    },
+    {
+      "symbol": "LINDEINDIA",
+      "date": "2023-09-12 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.0942,
+      "pnl": 94200.0,
+      "reason": "recovery",
+      "capital": 15340002.0
+    },
+    {
+      "symbol": "CAPLIPOINT",
+      "date": "2023-09-12 00:00:00",
+      "zscore": -3.57,
+      "net_return": 0.1433,
+      "pnl": 143300.0,
+      "reason": "recovery",
+      "capital": 15483302.0
+    },
+    {
+      "symbol": "IFCI",
+      "date": "2023-09-12 00:00:00",
+      "zscore": -2.19,
+      "net_return": 0.6354,
+      "pnl": 635400.0,
+      "reason": "recovery",
+      "capital": 16118702.0
+    },
+    {
+      "symbol": "ENGINERSIN",
+      "date": "2023-09-12 00:00:00",
+      "zscore": -2.21,
+      "net_return": -0.0431,
+      "pnl": -43100.0,
+      "reason": "time_stop",
+      "capital": 16075602.0
+    },
+    {
+      "symbol": "KIRLOSENG",
+      "date": "2023-09-18 00:00:00",
+      "zscore": -2.03,
+      "net_return": 0.1699,
+      "pnl": 169900.0,
+      "reason": "recovery",
+      "capital": 16245502.0
+    },
+    {
+      "symbol": "MAXHEALTH",
+      "date": "2023-09-20 00:00:00",
+      "zscore": -2.52,
+      "net_return": 0.0415,
+      "pnl": 41500.0,
+      "reason": "recovery",
+      "capital": 16287002.0
+    },
+    {
+      "symbol": "HDFCBANK",
+      "date": "2023-09-21 00:00:00",
+      "zscore": -2.18,
+      "net_return": -0.0247,
+      "pnl": -24700.0,
+      "reason": "time_stop",
+      "capital": 16262302.0
+    },
+    {
+      "symbol": "OFSS",
+      "date": "2023-09-28 00:00:00",
+      "zscore": -2.09,
+      "net_return": -0.0497,
+      "pnl": -49700.0,
+      "reason": "time_stop",
+      "capital": 16212602.0
+    },
+    {
+      "symbol": "ICICIGI",
+      "date": "2023-09-28 00:00:00",
+      "zscore": -2.1,
+      "net_return": 0.0619,
+      "pnl": 61900.0,
+      "reason": "recovery",
+      "capital": 16274502.0
+    },
+    {
+      "symbol": "BAJAJHLDNG",
+      "date": "2023-10-05 00:00:00",
+      "zscore": -2.18,
+      "net_return": 0.0325,
+      "pnl": 32500.0,
+      "reason": "recovery",
+      "capital": 16307002.0
+    },
+    {
+      "symbol": "MARICO",
+      "date": "2023-10-05 00:00:00",
+      "zscore": -2.79,
+      "net_return": -0.0315,
+      "pnl": -31500.0,
+      "reason": "time_stop",
+      "capital": 16275502.0
+    },
+    {
+      "symbol": "FINCABLES",
+      "date": "2023-10-06 00:00:00",
+      "zscore": -2.22,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 16190502.0
+    },
+    {
+      "symbol": "SAIL",
+      "date": "2023-10-09 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0172,
+      "pnl": -17200.0,
+      "reason": "time_stop",
+      "capital": 16173302.0
+    },
+    {
+      "symbol": "PETRONET",
+      "date": "2023-10-09 00:00:00",
+      "zscore": -2.56,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 16088302.0
+    },
+    {
+      "symbol": "DALBHARAT",
+      "date": "2023-10-09 00:00:00",
+      "zscore": -2.08,
+      "net_return": -0.0616,
+      "pnl": -61600.0,
+      "reason": "time_stop",
+      "capital": 16026702.0
+    },
+    {
+      "symbol": "ONGC",
+      "date": "2023-10-09 00:00:00",
+      "zscore": -2.34,
+      "net_return": 0.0583,
+      "pnl": 58300.0,
+      "reason": "recovery",
+      "capital": 16085002.0
+    },
+    {
+      "symbol": "THERMAX",
+      "date": "2023-10-10 00:00:00",
+      "zscore": -2.08,
+      "net_return": 0.0023,
+      "pnl": 2300.0,
+      "reason": "time_stop",
+      "capital": 16087302.0
+    },
+    {
+      "symbol": "TRITURBINE",
+      "date": "2023-10-10 00:00:00",
+      "zscore": -2.24,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 16002302.0
+    },
+    {
+      "symbol": "CGPOWER",
+      "date": "2023-10-10 00:00:00",
+      "zscore": -2.17,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 15917302.0
+    },
+    {
+      "symbol": "KPRMILL",
+      "date": "2023-10-10 00:00:00",
+      "zscore": -2.03,
+      "net_return": 0.0653,
+      "pnl": 65300.0,
+      "reason": "recovery",
+      "capital": 15982602.0
+    },
+    {
+      "symbol": "PNB",
+      "date": "2023-10-10 00:00:00",
+      "zscore": -2.03,
+      "net_return": 0.0023,
+      "pnl": 2300.0,
+      "reason": "time_stop",
+      "capital": 15984902.0
+    },
+    {
+      "symbol": "BIOCON",
+      "date": "2023-10-18 00:00:00",
+      "zscore": -2.07,
+      "net_return": -0.0297,
+      "pnl": -29700.0,
+      "reason": "time_stop",
+      "capital": 15955202.0
+    },
+    {
+      "symbol": "JBCHEPHARM",
+      "date": "2023-10-18 00:00:00",
+      "zscore": -2.16,
+      "net_return": 0.0859,
+      "pnl": 85900.0,
+      "reason": "recovery",
+      "capital": 16041102.0
+    },
+    {
+      "symbol": "HUDCO",
+      "date": "2023-10-18 00:00:00",
+      "zscore": -2.37,
+      "net_return": 0.0006,
+      "pnl": 600.0,
+      "reason": "time_stop",
+      "capital": 16041702.0
+    },
+    {
+      "symbol": "CHOLAFIN",
+      "date": "2023-10-25 00:00:00",
+      "zscore": -2.11,
+      "net_return": -0.0329,
+      "pnl": -32900.0,
+      "reason": "time_stop",
+      "capital": 16008802.0
+    },
+    {
+      "symbol": "MAZDOCK",
+      "date": "2023-10-25 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.0765,
+      "pnl": 76500.0,
+      "reason": "recovery",
+      "capital": 16085302.0
+    },
+    {
+      "symbol": "JMFINANCIL",
+      "date": "2023-10-26 00:00:00",
+      "zscore": -2.18,
+      "net_return": 0.0183,
+      "pnl": 18300.0,
+      "reason": "recovery",
+      "capital": 16103602.0
+    },
+    {
+      "symbol": "M&MFIN",
+      "date": "2023-10-30 00:00:00",
+      "zscore": -2.39,
+      "net_return": 0.1135,
+      "pnl": 113500.0,
+      "reason": "recovery",
+      "capital": 16217102.0
+    },
+    {
+      "symbol": "M&M",
+      "date": "2023-10-31 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.1247,
+      "pnl": 124700.0,
+      "reason": "recovery",
+      "capital": 16341802.0
+    },
+    {
+      "symbol": "AAVAS",
+      "date": "2023-10-31 00:00:00",
+      "zscore": -2.24,
+      "net_return": 0.0176,
+      "pnl": 17600.0,
+      "reason": "recovery",
+      "capital": 16359402.0
+    },
+    {
+      "symbol": "DCMSHRIRAM",
+      "date": "2023-11-01 00:00:00",
+      "zscore": -2.66,
+      "net_return": 0.1136,
+      "pnl": 113600.0,
+      "reason": "recovery",
+      "capital": 16473002.0
+    },
+    {
+      "symbol": "NATCOPHARM",
+      "date": "2023-11-01 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.0558,
+      "pnl": 55800.0,
+      "reason": "recovery",
+      "capital": 16528802.0
+    },
+    {
+      "symbol": "SCHAEFFLER",
+      "date": "2023-11-02 00:00:00",
+      "zscore": -2.42,
+      "net_return": 0.1042,
+      "pnl": 104200.0,
+      "reason": "recovery",
+      "capital": 16633002.0
+    },
+    {
+      "symbol": "RAINBOW",
+      "date": "2023-11-06 00:00:00",
+      "zscore": -2.23,
+      "net_return": 0.0629,
+      "pnl": 62900.0,
+      "reason": "recovery",
+      "capital": 16695902.0
+    },
+    {
+      "symbol": "ENDURANCE",
+      "date": "2023-11-13 00:00:00",
+      "zscore": -2.29,
+      "net_return": 0.052,
+      "pnl": 52000.0,
+      "reason": "recovery",
+      "capital": 16747902.0
+    },
+    {
+      "symbol": "THERMAX",
+      "date": "2023-11-22 00:00:00",
+      "zscore": -2.45,
+      "net_return": 0.1401,
+      "pnl": 140100.0,
+      "reason": "recovery",
+      "capital": 16888002.0
+    },
+    {
+      "symbol": "HOMEFIRST",
+      "date": "2023-11-23 00:00:00",
+      "zscore": -2.16,
+      "net_return": 0.1288,
+      "pnl": 128800.0,
+      "reason": "recovery",
+      "capital": 17016802.0
+    },
+    {
+      "symbol": "SUNDARMFIN",
+      "date": "2023-11-23 00:00:00",
+      "zscore": -2.2,
+      "net_return": 0.1222,
+      "pnl": 122200.0,
+      "reason": "recovery",
+      "capital": 17139002.0
+    },
+    {
+      "symbol": "SOLARINDS",
+      "date": "2023-11-24 00:00:00",
+      "zscore": -2.08,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 17054002.0
+    },
+    {
+      "symbol": "JBCHEPHARM",
+      "date": "2023-11-28 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.1615,
+      "pnl": 161500.0,
+      "reason": "recovery",
+      "capital": 17215502.0
+    },
+    {
+      "symbol": "BALRAMCHIN",
+      "date": "2023-12-06 00:00:00",
+      "zscore": -2.4,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 17130502.0
+    },
+    {
+      "symbol": "PAYTM",
+      "date": "2023-12-07 00:00:00",
+      "zscore": -4.16,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 17045502.0
+    },
+    {
+      "symbol": "TORNTPHARM",
+      "date": "2023-12-08 00:00:00",
+      "zscore": -2.23,
+      "net_return": 0.127,
+      "pnl": 127000.0,
+      "reason": "recovery",
+      "capital": 17172502.0
+    },
+    {
+      "symbol": "ERIS",
+      "date": "2023-12-08 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.0404,
+      "pnl": 40400.0,
+      "reason": "recovery",
+      "capital": 17212902.0
+    },
+    {
+      "symbol": "DRREDDY",
+      "date": "2023-12-11 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.0455,
+      "pnl": 45500.0,
+      "reason": "recovery",
+      "capital": 17258402.0
+    },
+    {
+      "symbol": "CANFINHOME",
+      "date": "2023-12-11 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.0233,
+      "pnl": 23300.0,
+      "reason": "recovery",
+      "capital": 17281702.0
+    },
+    {
+      "symbol": "USHAMART",
+      "date": "2023-12-12 00:00:00",
+      "zscore": -2.27,
+      "net_return": 0.054,
+      "pnl": 54000.0,
+      "reason": "recovery",
+      "capital": 17335702.0
+    },
+    {
+      "symbol": "ONGC",
+      "date": "2023-12-13 00:00:00",
+      "zscore": -2.03,
+      "net_return": 0.0918,
+      "pnl": 91800.0,
+      "reason": "recovery",
+      "capital": 17427502.0
+    },
+    {
+      "symbol": "MFSL",
+      "date": "2023-12-19 00:00:00",
+      "zscore": -2.02,
+      "net_return": -0.0414,
+      "pnl": -41400.0,
+      "reason": "time_stop",
+      "capital": 17386102.0
+    },
+    {
+      "symbol": "DALBHARAT",
+      "date": "2023-12-20 00:00:00",
+      "zscore": -2.11,
+      "net_return": -0.0063,
+      "pnl": -6300.0,
+      "reason": "time_stop",
+      "capital": 17379802.0
+    },
+    {
+      "symbol": "CESC",
+      "date": "2023-12-20 00:00:00",
+      "zscore": -2.05,
+      "net_return": 0.2198,
+      "pnl": 219800.0,
+      "reason": "recovery",
+      "capital": 17599602.0
+    },
+    {
+      "symbol": "HDFCLIFE",
+      "date": "2023-12-20 00:00:00",
+      "zscore": -2.12,
+      "net_return": -0.0614,
+      "pnl": -61400.0,
+      "reason": "time_stop",
+      "capital": 17538202.0
+    },
+    {
+      "symbol": "CHAMBLFERT",
+      "date": "2023-12-20 00:00:00",
+      "zscore": -2.27,
+      "net_return": 0.157,
+      "pnl": 157000.0,
+      "reason": "recovery",
+      "capital": 17695202.0
+    },
+    {
+      "symbol": "PARADEEP",
+      "date": "2023-12-20 00:00:00",
+      "zscore": -2.05,
+      "net_return": 0.1505,
+      "pnl": 150500.0,
+      "reason": "recovery",
+      "capital": 17845702.0
+    },
+    {
+      "symbol": "PFC",
+      "date": "2023-12-20 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.0234,
+      "pnl": 23400.0,
+      "reason": "recovery",
+      "capital": 17869102.0
+    },
+    {
+      "symbol": "SUNDARMFIN",
+      "date": "2023-12-26 00:00:00",
+      "zscore": -2.79,
+      "net_return": 0.0233,
+      "pnl": 23300.0,
+      "reason": "recovery",
+      "capital": 17892402.0
+    },
+    {
+      "symbol": "CGCL",
+      "date": "2024-01-01 00:00:00",
+      "zscore": -12.95,
+      "net_return": 0.2179,
+      "pnl": 217900.0,
+      "reason": "recovery",
+      "capital": 18110302.0
+    },
+    {
+      "symbol": "GPIL",
+      "date": "2024-01-01 00:00:00",
+      "zscore": -10.93,
+      "net_return": -0.0231,
+      "pnl": -23100.0,
+      "reason": "time_stop",
+      "capital": 18087202.0
+    },
+    {
+      "symbol": "MOTILALOFS",
+      "date": "2024-01-01 00:00:00",
+      "zscore": -10.77,
+      "net_return": 0.4143,
+      "pnl": 414300.0,
+      "reason": "recovery",
+      "capital": 18501502.0
+    },
+    {
+      "symbol": "KPRMILL",
+      "date": "2024-01-04 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.0176,
+      "pnl": 17600.0,
+      "reason": "recovery",
+      "capital": 18519102.0
+    },
+    {
+      "symbol": "JSWSTEEL",
+      "date": "2024-01-05 00:00:00",
+      "zscore": -2.02,
+      "net_return": -0.0178,
+      "pnl": -17800.0,
+      "reason": "time_stop",
+      "capital": 18501302.0
+    },
+    {
+      "symbol": "NLCINDIA",
+      "date": "2024-01-05 00:00:00",
+      "zscore": -2.26,
+      "net_return": 0.2535,
+      "pnl": 253500.0,
+      "reason": "recovery",
+      "capital": 18754802.0
+    },
+    {
+      "symbol": "ULTRACEMCO",
+      "date": "2024-01-05 00:00:00",
+      "zscore": -2.03,
+      "net_return": -0.0017,
+      "pnl": -1700.0,
+      "reason": "time_stop",
+      "capital": 18753102.0
+    },
+    {
+      "symbol": "WIPRO",
+      "date": "2024-01-08 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.0969,
+      "pnl": 96900.0,
+      "reason": "recovery",
+      "capital": 18850002.0
+    },
+    {
+      "symbol": "SRF",
+      "date": "2024-01-09 00:00:00",
+      "zscore": -2.48,
+      "net_return": -0.0101,
+      "pnl": -10100.0,
+      "reason": "time_stop",
+      "capital": 18839902.0
+    },
+    {
+      "symbol": "FLUOROCHEM",
+      "date": "2024-01-09 00:00:00",
+      "zscore": -2.74,
+      "net_return": 0.0183,
+      "pnl": 18300.0,
+      "reason": "recovery",
+      "capital": 18858202.0
+    },
+    {
+      "symbol": "NAVINFLUOR",
+      "date": "2024-01-09 00:00:00",
+      "zscore": -2.42,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18773202.0
+    },
+    {
+      "symbol": "DMART",
+      "date": "2024-01-09 00:00:00",
+      "zscore": -2.12,
+      "net_return": -0.0259,
+      "pnl": -25900.0,
+      "reason": "time_stop",
+      "capital": 18747302.0
+    },
+    {
+      "symbol": "PAGEIND",
+      "date": "2024-01-09 00:00:00",
+      "zscore": -2.48,
+      "net_return": 0.0029,
+      "pnl": 2900.0,
+      "reason": "time_stop",
+      "capital": 18750202.0
+    },
+    {
+      "symbol": "HINDALCO",
+      "date": "2024-01-09 00:00:00",
+      "zscore": -2.02,
+      "net_return": 0.039,
+      "pnl": 39000.0,
+      "reason": "recovery",
+      "capital": 18789202.0
+    },
+    {
+      "symbol": "SUNTV",
+      "date": "2024-01-16 00:00:00",
+      "zscore": -2.26,
+      "net_return": -0.083,
+      "pnl": -83000.0,
+      "reason": "time_stop",
+      "capital": 18706202.0
+    },
+    {
+      "symbol": "HINDUNILVR",
+      "date": "2024-01-23 00:00:00",
+      "zscore": -3.9,
+      "net_return": 0.0083,
+      "pnl": 8300.0,
+      "reason": "time_stop",
+      "capital": 18714502.0
+    },
+    {
+      "symbol": "DABUR",
+      "date": "2024-01-23 00:00:00",
+      "zscore": -2.44,
+      "net_return": 0.036,
+      "pnl": 36000.0,
+      "reason": "recovery",
+      "capital": 18750502.0
+    },
+    {
+      "symbol": "ATUL",
+      "date": "2024-01-23 00:00:00",
+      "zscore": -2.99,
+      "net_return": 0.0171,
+      "pnl": 17100.0,
+      "reason": "recovery",
+      "capital": 18767602.0
+    },
+    {
+      "symbol": "CREDITACC",
+      "date": "2024-01-24 00:00:00",
+      "zscore": -2.07,
+      "net_return": -0.0613,
+      "pnl": -61300.0,
+      "reason": "time_stop",
+      "capital": 18706302.0
+    },
+    {
+      "symbol": "LAURUSLABS",
+      "date": "2024-01-25 00:00:00",
+      "zscore": -2.03,
+      "net_return": 0.0471,
+      "pnl": 47100.0,
+      "reason": "recovery",
+      "capital": 18753402.0
+    },
+    {
+      "symbol": "GLAXO",
+      "date": "2024-01-29 00:00:00",
+      "zscore": -2.02,
+      "net_return": -0.0104,
+      "pnl": -10400.0,
+      "reason": "time_stop",
+      "capital": 18743002.0
+    },
+    {
+      "symbol": "AUBANK",
+      "date": "2024-01-29 00:00:00",
+      "zscore": -3.37,
+      "net_return": -0.0691,
+      "pnl": -69100.0,
+      "reason": "time_stop",
+      "capital": 18673902.0
+    },
+    {
+      "symbol": "POWERINDIA",
+      "date": "2024-01-30 00:00:00",
+      "zscore": -2.08,
+      "net_return": 0.0381,
+      "pnl": 38100.0,
+      "reason": "recovery",
+      "capital": 18712002.0
+    },
+    {
+      "symbol": "PNBHOUSING",
+      "date": "2024-01-30 00:00:00",
+      "zscore": -2.62,
+      "net_return": -0.068,
+      "pnl": -68000.0,
+      "reason": "time_stop",
+      "capital": 18644002.0
+    },
+    {
+      "symbol": "BALKRISIND",
+      "date": "2024-01-30 00:00:00",
+      "zscore": -2.09,
+      "net_return": -0.0699,
+      "pnl": -69900.0,
+      "reason": "time_stop",
+      "capital": 18574102.0
+    },
+    {
+      "symbol": "BAJFINANCE",
+      "date": "2024-01-30 00:00:00",
+      "zscore": -2.09,
+      "net_return": -0.0433,
+      "pnl": -43300.0,
+      "reason": "time_stop",
+      "capital": 18530802.0
+    },
+    {
+      "symbol": "LT",
+      "date": "2024-02-01 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.0184,
+      "pnl": 18400.0,
+      "reason": "recovery",
+      "capital": 18549202.0
+    },
+    {
+      "symbol": "CHOLAFIN",
+      "date": "2024-02-01 00:00:00",
+      "zscore": -2.23,
+      "net_return": -0.0527,
+      "pnl": -52700.0,
+      "reason": "time_stop",
+      "capital": 18496502.0
+    },
+    {
+      "symbol": "ASAHIINDIA",
+      "date": "2024-02-01 00:00:00",
+      "zscore": -2.57,
+      "net_return": 0.0319,
+      "pnl": 31900.0,
+      "reason": "recovery",
+      "capital": 18528402.0
+    },
+    {
+      "symbol": "UPL",
+      "date": "2024-02-05 00:00:00",
+      "zscore": -3.65,
+      "net_return": -0.0045,
+      "pnl": -4500.0,
+      "reason": "time_stop",
+      "capital": 18523902.0
+    },
+    {
+      "symbol": "NBCC",
+      "date": "2024-02-12 00:00:00",
+      "zscore": -2.8,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18438902.0
+    },
+    {
+      "symbol": "NLCINDIA",
+      "date": "2024-02-12 00:00:00",
+      "zscore": -3.95,
+      "net_return": 0.0357,
+      "pnl": 35700.0,
+      "reason": "recovery",
+      "capital": 18474602.0
+    },
+    {
+      "symbol": "WELCORP",
+      "date": "2024-02-12 00:00:00",
+      "zscore": -2.02,
+      "net_return": -0.0366,
+      "pnl": -36600.0,
+      "reason": "time_stop",
+      "capital": 18438002.0
+    },
+    {
+      "symbol": "NATIONALUM",
+      "date": "2024-02-13 00:00:00",
+      "zscore": -2.69,
+      "net_return": -0.0338,
+      "pnl": -33800.0,
+      "reason": "time_stop",
+      "capital": 18404202.0
+    },
+    {
+      "symbol": "FINCABLES",
+      "date": "2024-02-14 00:00:00",
+      "zscore": -2.2,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18319202.0
+    },
+    {
+      "symbol": "COALINDIA",
+      "date": "2024-02-21 00:00:00",
+      "zscore": -2.05,
+      "net_return": -0.0071,
+      "pnl": -7100.0,
+      "reason": "time_stop",
+      "capital": 18312102.0
+    },
+    {
+      "symbol": "FEDERALBNK",
+      "date": "2024-02-23 00:00:00",
+      "zscore": -2.43,
+      "net_return": -0.0224,
+      "pnl": -22400.0,
+      "reason": "time_stop",
+      "capital": 18289702.0
+    },
+    {
+      "symbol": "ALKEM",
+      "date": "2024-02-26 00:00:00",
+      "zscore": -2.38,
+      "net_return": -0.0164,
+      "pnl": -16400.0,
+      "reason": "time_stop",
+      "capital": 18273302.0
+    },
+    {
+      "symbol": "MRPL",
+      "date": "2024-02-26 00:00:00",
+      "zscore": -2.25,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18188302.0
+    },
+    {
+      "symbol": "CAPLIPOINT",
+      "date": "2024-02-27 00:00:00",
+      "zscore": -2.01,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18103302.0
+    },
+    {
+      "symbol": "IOC",
+      "date": "2024-02-27 00:00:00",
+      "zscore": -2.07,
+      "net_return": -0.0367,
+      "pnl": -36700.0,
+      "reason": "time_stop",
+      "capital": 18066602.0
+    },
+    {
+      "symbol": "APOLLOHOSP",
+      "date": "2024-02-28 00:00:00",
+      "zscore": -2.38,
+      "net_return": 0.0099,
+      "pnl": 9900.0,
+      "reason": "time_stop",
+      "capital": 18076502.0
+    },
+    {
+      "symbol": "HOMEFIRST",
+      "date": "2024-02-29 00:00:00",
+      "zscore": -2.02,
+      "net_return": 0.084,
+      "pnl": 84000.0,
+      "reason": "recovery",
+      "capital": 18160502.0
+    },
+    {
+      "symbol": "OIL",
+      "date": "2024-02-29 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.1658,
+      "pnl": 165800.0,
+      "reason": "recovery",
+      "capital": 18326302.0
+    },
+    {
+      "symbol": "BAJAJ-AUTO",
+      "date": "2024-02-29 00:00:00",
+      "zscore": -2.83,
+      "net_return": 0.1678,
+      "pnl": 167800.0,
+      "reason": "recovery",
+      "capital": 18494102.0
+    },
+    {
+      "symbol": "BAYERCROP",
+      "date": "2024-03-04 00:00:00",
+      "zscore": -2.03,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18409102.0
+    },
+    {
+      "symbol": "NH",
+      "date": "2024-03-05 00:00:00",
+      "zscore": -2.65,
+      "net_return": 0.027,
+      "pnl": 27000.0,
+      "reason": "recovery",
+      "capital": 18436102.0
+    },
+    {
+      "symbol": "RAINBOW",
+      "date": "2024-03-05 00:00:00",
+      "zscore": -2.61,
+      "net_return": 0.1611,
+      "pnl": 161100.0,
+      "reason": "recovery",
+      "capital": 18597202.0
+    },
+    {
+      "symbol": "KIMS",
+      "date": "2024-03-05 00:00:00",
+      "zscore": -2.14,
+      "net_return": -0.0447,
+      "pnl": -44700.0,
+      "reason": "time_stop",
+      "capital": 18552502.0
+    },
+    {
+      "symbol": "IIFL",
+      "date": "2024-03-05 00:00:00",
+      "zscore": -4.82,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18467502.0
+    },
+    {
+      "symbol": "ANANTRAJ",
+      "date": "2024-03-12 00:00:00",
+      "zscore": -3.32,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18382502.0
+    },
+    {
+      "symbol": "KAJARIACER",
+      "date": "2024-03-14 00:00:00",
+      "zscore": -2.08,
+      "net_return": 0.0268,
+      "pnl": 26800.0,
+      "reason": "recovery",
+      "capital": 18409302.0
+    },
+    {
+      "symbol": "TORNTPHARM",
+      "date": "2024-03-18 00:00:00",
+      "zscore": -2.44,
+      "net_return": -0.0168,
+      "pnl": -16800.0,
+      "reason": "time_stop",
+      "capital": 18392502.0
+    },
+    {
+      "symbol": "GVT&D",
+      "date": "2024-03-18 00:00:00",
+      "zscore": -2.17,
+      "net_return": 0.1193,
+      "pnl": 119300.0,
+      "reason": "recovery",
+      "capital": 18511802.0
+    },
+    {
+      "symbol": "GODREJIND",
+      "date": "2024-03-18 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.1128,
+      "pnl": 112800.0,
+      "reason": "recovery",
+      "capital": 18624602.0
+    },
+    {
+      "symbol": "COFORGE",
+      "date": "2024-03-18 00:00:00",
+      "zscore": -2.24,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18539602.0
+    },
+    {
+      "symbol": "TATACONSUM",
+      "date": "2024-03-19 00:00:00",
+      "zscore": -2.53,
+      "net_return": 0.0165,
+      "pnl": 16500.0,
+      "reason": "recovery",
+      "capital": 18556102.0
+    },
+    {
+      "symbol": "INFY",
+      "date": "2024-03-22 00:00:00",
+      "zscore": -2.25,
+      "net_return": -0.0517,
+      "pnl": -51700.0,
+      "reason": "time_stop",
+      "capital": 18504402.0
+    },
+    {
+      "symbol": "HCLTECH",
+      "date": "2024-03-22 00:00:00",
+      "zscore": -2.13,
+      "net_return": -0.0395,
+      "pnl": -39500.0,
+      "reason": "time_stop",
+      "capital": 18464902.0
+    },
+    {
+      "symbol": "ABBOTINDIA",
+      "date": "2024-03-26 00:00:00",
+      "zscore": -2.34,
+      "net_return": -0.0352,
+      "pnl": -35200.0,
+      "reason": "time_stop",
+      "capital": 18429702.0
+    },
+    {
+      "symbol": "DABUR",
+      "date": "2024-04-08 00:00:00",
+      "zscore": -2.24,
+      "net_return": 0.0939,
+      "pnl": 93900.0,
+      "reason": "recovery",
+      "capital": 18523602.0
+    },
+    {
+      "symbol": "NESTLEIND",
+      "date": "2024-04-09 00:00:00",
+      "zscore": -2.32,
+      "net_return": 0.0071,
+      "pnl": 7100.0,
+      "reason": "time_stop",
+      "capital": 18530702.0
+    },
+    {
+      "symbol": "TITAN",
+      "date": "2024-04-12 00:00:00",
+      "zscore": -2.1,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18445702.0
+    },
+    {
+      "symbol": "SUNPHARMA",
+      "date": "2024-04-12 00:00:00",
+      "zscore": -2.5,
+      "net_return": -0.0016,
+      "pnl": -1600.0,
+      "reason": "time_stop",
+      "capital": 18444102.0
+    },
+    {
+      "symbol": "GRANULES",
+      "date": "2024-04-15 00:00:00",
+      "zscore": -2.64,
+      "net_return": -0.0359,
+      "pnl": -35900.0,
+      "reason": "time_stop",
+      "capital": 18408202.0
+    },
+    {
+      "symbol": "UNIONBANK",
+      "date": "2024-04-15 00:00:00",
+      "zscore": -2.36,
+      "net_return": -0.0487,
+      "pnl": -48700.0,
+      "reason": "time_stop",
+      "capital": 18359502.0
+    },
+    {
+      "symbol": "GESHIP",
+      "date": "2024-04-15 00:00:00",
+      "zscore": -2.23,
+      "net_return": 0.0807,
+      "pnl": 80700.0,
+      "reason": "recovery",
+      "capital": 18440202.0
+    },
+    {
+      "symbol": "BANDHANBNK",
+      "date": "2024-04-15 00:00:00",
+      "zscore": -2.44,
+      "net_return": 0.0743,
+      "pnl": 74300.0,
+      "reason": "recovery",
+      "capital": 18514502.0
+    },
+    {
+      "symbol": "PFIZER",
+      "date": "2024-04-15 00:00:00",
+      "zscore": -2.12,
+      "net_return": 0.0452,
+      "pnl": 45200.0,
+      "reason": "recovery",
+      "capital": 18559702.0
+    },
+    {
+      "symbol": "ZYDUSLIFE",
+      "date": "2024-04-15 00:00:00",
+      "zscore": -2.82,
+      "net_return": 0.0612,
+      "pnl": 61200.0,
+      "reason": "recovery",
+      "capital": 18620902.0
+    },
+    {
+      "symbol": "LT",
+      "date": "2024-04-16 00:00:00",
+      "zscore": -2.55,
+      "net_return": -0.0284,
+      "pnl": -28400.0,
+      "reason": "time_stop",
+      "capital": 18592502.0
+    },
+    {
+      "symbol": "PIDILITIND",
+      "date": "2024-04-16 00:00:00",
+      "zscore": -2.4,
+      "net_return": 0.0433,
+      "pnl": 43300.0,
+      "reason": "recovery",
+      "capital": 18635802.0
+    },
+    {
+      "symbol": "NAUKRI",
+      "date": "2024-04-16 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.0159,
+      "pnl": 15900.0,
+      "reason": "recovery",
+      "capital": 18651702.0
+    },
+    {
+      "symbol": "GRAVITA",
+      "date": "2024-04-16 00:00:00",
+      "zscore": -2.15,
+      "net_return": -0.0267,
+      "pnl": -26700.0,
+      "reason": "time_stop",
+      "capital": 18625002.0
+    },
+    {
+      "symbol": "TVSMOTOR",
+      "date": "2024-04-16 00:00:00",
+      "zscore": -2.65,
+      "net_return": 0.0721,
+      "pnl": 72100.0,
+      "reason": "recovery",
+      "capital": 18697102.0
+    },
+    {
+      "symbol": "MFSL",
+      "date": "2024-04-29 00:00:00",
+      "zscore": -2.32,
+      "net_return": -0.0092,
+      "pnl": -9200.0,
+      "reason": "time_stop",
+      "capital": 18687902.0
+    },
+    {
+      "symbol": "TATACONSUM",
+      "date": "2024-04-29 00:00:00",
+      "zscore": -2.52,
+      "net_return": -0.023,
+      "pnl": -23000.0,
+      "reason": "time_stop",
+      "capital": 18664902.0
+    },
+    {
+      "symbol": "DALBHARAT",
+      "date": "2024-05-02 00:00:00",
+      "zscore": -2.05,
+      "net_return": -0.0136,
+      "pnl": -13600.0,
+      "reason": "time_stop",
+      "capital": 18651302.0
+    },
+    {
+      "symbol": "NESTLEIND",
+      "date": "2024-05-03 00:00:00",
+      "zscore": -2.11,
+      "net_return": -0.0461,
+      "pnl": -46100.0,
+      "reason": "time_stop",
+      "capital": 18605202.0
+    },
+    {
+      "symbol": "TITAN",
+      "date": "2024-05-06 00:00:00",
+      "zscore": -3.56,
+      "net_return": -0.0176,
+      "pnl": -17600.0,
+      "reason": "time_stop",
+      "capital": 18587602.0
+    },
+    {
+      "symbol": "PATANJALI",
+      "date": "2024-05-06 00:00:00",
+      "zscore": -2.22,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18502602.0
+    },
+    {
+      "symbol": "GESHIP",
+      "date": "2024-05-06 00:00:00",
+      "zscore": -2.13,
+      "net_return": -0.0126,
+      "pnl": -12600.0,
+      "reason": "time_stop",
+      "capital": 18490002.0
+    },
+    {
+      "symbol": "SUNDARMFIN",
+      "date": "2024-05-07 00:00:00",
+      "zscore": -2.01,
+      "net_return": -0.0149,
+      "pnl": -14900.0,
+      "reason": "time_stop",
+      "capital": 18475102.0
+    },
+    {
+      "symbol": "HAL",
+      "date": "2024-05-07 00:00:00",
+      "zscore": -2.15,
+      "net_return": 0.1699,
+      "pnl": 169900.0,
+      "reason": "recovery",
+      "capital": 18645002.0
+    },
+    {
+      "symbol": "TORNTPOWER",
+      "date": "2024-05-07 00:00:00",
+      "zscore": -2.21,
+      "net_return": 0.0434,
+      "pnl": 43400.0,
+      "reason": "recovery",
+      "capital": 18688402.0
+    },
+    {
+      "symbol": "CHENNPETRO",
+      "date": "2024-05-07 00:00:00",
+      "zscore": -2.1,
+      "net_return": -0.0283,
+      "pnl": -28300.0,
+      "reason": "time_stop",
+      "capital": 18660102.0
+    },
+    {
+      "symbol": "RELIANCE",
+      "date": "2024-05-07 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.0088,
+      "pnl": 8800.0,
+      "reason": "time_stop",
+      "capital": 18668902.0
+    },
+    {
+      "symbol": "NLCINDIA",
+      "date": "2024-05-07 00:00:00",
+      "zscore": -2.09,
+      "net_return": -0.0702,
+      "pnl": -70200.0,
+      "reason": "time_stop",
+      "capital": 18598702.0
+    },
+    {
+      "symbol": "CHAMBLFERT",
+      "date": "2024-05-07 00:00:00",
+      "zscore": -2.35,
+      "net_return": -0.001,
+      "pnl": -1000.0,
+      "reason": "time_stop",
+      "capital": 18597702.0
+    },
+    {
+      "symbol": "LICHSGFIN",
+      "date": "2024-05-07 00:00:00",
+      "zscore": -2.13,
+      "net_return": -0.0064,
+      "pnl": -6400.0,
+      "reason": "time_stop",
+      "capital": 18591302.0
+    },
+    {
+      "symbol": "DELHIVERY",
+      "date": "2024-05-21 00:00:00",
+      "zscore": -3.41,
+      "net_return": 0.0222,
+      "pnl": 22200.0,
+      "reason": "recovery",
+      "capital": 18613502.0
+    },
+    {
+      "symbol": "JBCHEPHARM",
+      "date": "2024-05-24 00:00:00",
+      "zscore": -2.23,
+      "net_return": 0.0467,
+      "pnl": 46700.0,
+      "reason": "recovery",
+      "capital": 18660202.0
+    },
+    {
+      "symbol": "SUNPHARMA",
+      "date": "2024-05-27 00:00:00",
+      "zscore": -2.13,
+      "net_return": 0.0217,
+      "pnl": 21700.0,
+      "reason": "recovery",
+      "capital": 18681902.0
+    },
+    {
+      "symbol": "SARDAEN",
+      "date": "2024-05-27 00:00:00",
+      "zscore": -2.07,
+      "net_return": -0.0373,
+      "pnl": -37300.0,
+      "reason": "time_stop",
+      "capital": 18644602.0
+    },
+    {
+      "symbol": "HEG",
+      "date": "2024-05-28 00:00:00",
+      "zscore": -2.2,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 18559602.0
+    },
+    {
+      "symbol": "LUPIN",
+      "date": "2024-05-28 00:00:00",
+      "zscore": -2.1,
+      "net_return": -0.0173,
+      "pnl": -17300.0,
+      "reason": "time_stop",
+      "capital": 18542302.0
+    },
+    {
+      "symbol": "BAYERCROP",
+      "date": "2024-05-28 00:00:00",
+      "zscore": -2.4,
+      "net_return": 0.2467,
+      "pnl": 246700.0,
+      "reason": "recovery",
+      "capital": 18789002.0
+    },
+    {
+      "symbol": "KIRLOSENG",
+      "date": "2024-05-28 00:00:00",
+      "zscore": -2.07,
+      "net_return": 0.1386,
+      "pnl": 138600.0,
+      "reason": "recovery",
+      "capital": 18927602.0
+    },
+    {
+      "symbol": "POLICYBZR",
+      "date": "2024-05-29 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.1677,
+      "pnl": 167700.0,
+      "reason": "recovery",
+      "capital": 19095302.0
+    },
+    {
+      "symbol": "NH",
+      "date": "2024-05-29 00:00:00",
+      "zscore": -2.36,
+      "net_return": 0.0413,
+      "pnl": 41300.0,
+      "reason": "recovery",
+      "capital": 19136602.0
+    },
+    {
+      "symbol": "NYKAA",
+      "date": "2024-05-29 00:00:00",
+      "zscore": -2.11,
+      "net_return": 0.0871,
+      "pnl": 87100.0,
+      "reason": "recovery",
+      "capital": 19223702.0
+    },
+    {
+      "symbol": "NAUKRI",
+      "date": "2024-05-29 00:00:00",
+      "zscore": -2.02,
+      "net_return": 0.1322,
+      "pnl": 132200.0,
+      "reason": "recovery",
+      "capital": 19355902.0
+    },
+    {
+      "symbol": "INDIGO",
+      "date": "2024-05-29 00:00:00",
+      "zscore": -2.44,
+      "net_return": 0.0432,
+      "pnl": 43200.0,
+      "reason": "recovery",
+      "capital": 19399102.0
+    },
+    {
+      "symbol": "SCHNEIDER",
+      "date": "2024-05-29 00:00:00",
+      "zscore": -2.68,
+      "net_return": 0.1908,
+      "pnl": 190800.0,
+      "reason": "recovery",
+      "capital": 19589902.0
+    },
+    {
+      "symbol": "DMART",
+      "date": "2024-05-29 00:00:00",
+      "zscore": -2.17,
+      "net_return": 0.0895,
+      "pnl": 89500.0,
+      "reason": "recovery",
+      "capital": 19679402.0
+    },
+    {
+      "symbol": "ADANIPOWER",
+      "date": "2024-06-10 00:00:00",
+      "zscore": -2.09,
+      "net_return": -0.0631,
+      "pnl": -63100.0,
+      "reason": "time_stop",
+      "capital": 19616302.0
+    },
+    {
+      "symbol": "PFIZER",
+      "date": "2024-06-21 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.0815,
+      "pnl": 81500.0,
+      "reason": "recovery",
+      "capital": 19697802.0
+    },
+    {
+      "symbol": "UBL",
+      "date": "2024-06-26 00:00:00",
+      "zscore": -2.08,
+      "net_return": 0.0742,
+      "pnl": 74200.0,
+      "reason": "recovery",
+      "capital": 19772002.0
+    },
+    {
+      "symbol": "ZYDUSWELL",
+      "date": "2024-06-27 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.3267,
+      "pnl": 326700.0,
+      "reason": "recovery",
+      "capital": 20098702.0
+    },
+    {
+      "symbol": "CHAMBLFERT",
+      "date": "2024-06-27 00:00:00",
+      "zscore": -2.26,
+      "net_return": -0.0116,
+      "pnl": -11600.0,
+      "reason": "time_stop",
+      "capital": 20087102.0
+    },
+    {
+      "symbol": "PARADEEP",
+      "date": "2024-06-27 00:00:00",
+      "zscore": -2.13,
+      "net_return": 0.0122,
+      "pnl": 12200.0,
+      "reason": "time_stop",
+      "capital": 20099302.0
+    },
+    {
+      "symbol": "CREDITACC",
+      "date": "2024-06-27 00:00:00",
+      "zscore": -2.12,
+      "net_return": -0.0106,
+      "pnl": -10600.0,
+      "reason": "time_stop",
+      "capital": 20088702.0
+    },
+    {
+      "symbol": "NMDC",
+      "date": "2024-06-27 00:00:00",
+      "zscore": -2.22,
+      "net_return": -0.0333,
+      "pnl": -33300.0,
+      "reason": "time_stop",
+      "capital": 20055402.0
+    },
+    {
+      "symbol": "INDHOTEL",
+      "date": "2024-07-02 00:00:00",
+      "zscore": -2.66,
+      "net_return": 0.0585,
+      "pnl": 58500.0,
+      "reason": "recovery",
+      "capital": 20113902.0
+    },
+    {
+      "symbol": "ASHOKLEY",
+      "date": "2024-07-04 00:00:00",
+      "zscore": -2.03,
+      "net_return": 0.0964,
+      "pnl": 96400.0,
+      "reason": "recovery",
+      "capital": 20210302.0
+    },
+    {
+      "symbol": "CHOLAHLDNG",
+      "date": "2024-07-08 00:00:00",
+      "zscore": -2.31,
+      "net_return": -0.0081,
+      "pnl": -8100.0,
+      "reason": "time_stop",
+      "capital": 20202202.0
+    },
+    {
+      "symbol": "TITAN",
+      "date": "2024-07-08 00:00:00",
+      "zscore": -2.79,
+      "net_return": 0.0517,
+      "pnl": 51700.0,
+      "reason": "recovery",
+      "capital": 20253902.0
+    },
+    {
+      "symbol": "HDFCBANK",
+      "date": "2024-07-10 00:00:00",
+      "zscore": -2.6,
+      "net_return": 0.0052,
+      "pnl": 5200.0,
+      "reason": "time_stop",
+      "capital": 20259102.0
+    },
+    {
+      "symbol": "UNOMINDA",
+      "date": "2024-07-10 00:00:00",
+      "zscore": -2.26,
+      "net_return": -0.0755,
+      "pnl": -75500.0,
+      "reason": "time_stop",
+      "capital": 20183602.0
+    },
+    {
+      "symbol": "SCHAEFFLER",
+      "date": "2024-07-10 00:00:00",
+      "zscore": -2.18,
+      "net_return": -0.0682,
+      "pnl": -68200.0,
+      "reason": "time_stop",
+      "capital": 20115402.0
+    },
+    {
+      "symbol": "BANDHANBNK",
+      "date": "2024-07-10 00:00:00",
+      "zscore": -2.02,
+      "net_return": 0.0301,
+      "pnl": 30100.0,
+      "reason": "recovery",
+      "capital": 20145502.0
+    },
+    {
+      "symbol": "BANKBARODA",
+      "date": "2024-07-12 00:00:00",
+      "zscore": -2.2,
+      "net_return": -0.0279,
+      "pnl": -27900.0,
+      "reason": "time_stop",
+      "capital": 20117602.0
+    },
+    {
+      "symbol": "SIEMENS",
+      "date": "2024-07-18 00:00:00",
+      "zscore": -2.58,
+      "net_return": 0.0045,
+      "pnl": 4500.0,
+      "reason": "time_stop",
+      "capital": 20122102.0
+    },
+    {
+      "symbol": "CHALET",
+      "date": "2024-07-18 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.008,
+      "pnl": 8000.0,
+      "reason": "time_stop",
+      "capital": 20130102.0
+    },
+    {
+      "symbol": "CUMMINSIND",
+      "date": "2024-07-19 00:00:00",
+      "zscore": -2.98,
+      "net_return": 0.0499,
+      "pnl": 49900.0,
+      "reason": "recovery",
+      "capital": 20180002.0
+    },
+    {
+      "symbol": "GESHIP",
+      "date": "2024-07-19 00:00:00",
+      "zscore": -2.51,
+      "net_return": 0.0743,
+      "pnl": 74300.0,
+      "reason": "recovery",
+      "capital": 20254302.0
+    },
+    {
+      "symbol": "ABB",
+      "date": "2024-07-19 00:00:00",
+      "zscore": -2.16,
+      "net_return": 0.0215,
+      "pnl": 21500.0,
+      "reason": "recovery",
+      "capital": 20275802.0
+    },
+    {
+      "symbol": "BHEL",
+      "date": "2024-07-19 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0054,
+      "pnl": -5400.0,
+      "reason": "time_stop",
+      "capital": 20270402.0
+    },
+    {
+      "symbol": "GVT&D",
+      "date": "2024-07-22 00:00:00",
+      "zscore": -2.06,
+      "net_return": 0.2387,
+      "pnl": 238700.0,
+      "reason": "recovery",
+      "capital": 20509102.0
+    },
+    {
+      "symbol": "BLUEDART",
+      "date": "2024-07-24 00:00:00",
+      "zscore": -2.7,
+      "net_return": 0.0267,
+      "pnl": 26700.0,
+      "reason": "recovery",
+      "capital": 20535802.0
+    },
+    {
+      "symbol": "POLYMED",
+      "date": "2024-08-01 00:00:00",
+      "zscore": -2.03,
+      "net_return": 0.2641,
+      "pnl": 264100.0,
+      "reason": "recovery",
+      "capital": 20799902.0
+    },
+    {
+      "symbol": "EICHERMOT",
+      "date": "2024-08-02 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.0457,
+      "pnl": 45700.0,
+      "reason": "recovery",
+      "capital": 20845602.0
+    },
+    {
+      "symbol": "MPHASIS",
+      "date": "2024-08-02 00:00:00",
+      "zscore": -2.19,
+      "net_return": 0.1129,
+      "pnl": 112900.0,
+      "reason": "recovery",
+      "capital": 20958502.0
+    },
+    {
+      "symbol": "GRASIM",
+      "date": "2024-08-02 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0071,
+      "pnl": -7100.0,
+      "reason": "time_stop",
+      "capital": 20951402.0
+    },
+    {
+      "symbol": "LICHSGFIN",
+      "date": "2024-08-05 00:00:00",
+      "zscore": -3.36,
+      "net_return": 0.02,
+      "pnl": 20000.0,
+      "reason": "recovery",
+      "capital": 20971402.0
+    },
+    {
+      "symbol": "VTL",
+      "date": "2024-08-05 00:00:00",
+      "zscore": -3.13,
+      "net_return": -0.0235,
+      "pnl": -23500.0,
+      "reason": "time_stop",
+      "capital": 20947902.0
+    },
+    {
+      "symbol": "HINDALCO",
+      "date": "2024-08-05 00:00:00",
+      "zscore": -2.24,
+      "net_return": 0.1065,
+      "pnl": 106500.0,
+      "reason": "recovery",
+      "capital": 21054402.0
+    },
+    {
+      "symbol": "MRF",
+      "date": "2024-08-07 00:00:00",
+      "zscore": -2.12,
+      "net_return": 0.0055,
+      "pnl": 5500.0,
+      "reason": "time_stop",
+      "capital": 21059902.0
+    },
+    {
+      "symbol": "SHREECEM",
+      "date": "2024-08-07 00:00:00",
+      "zscore": -3.17,
+      "net_return": 0.0175,
+      "pnl": 17500.0,
+      "reason": "recovery",
+      "capital": 21077402.0
+    },
+    {
+      "symbol": "TATAPOWER",
+      "date": "2024-08-08 00:00:00",
+      "zscore": -2.34,
+      "net_return": -0.0073,
+      "pnl": -7300.0,
+      "reason": "time_stop",
+      "capital": 21070102.0
+    },
+    {
+      "symbol": "ULTRACEMCO",
+      "date": "2024-08-08 00:00:00",
+      "zscore": -2.12,
+      "net_return": 0.0105,
+      "pnl": 10500.0,
+      "reason": "time_stop",
+      "capital": 21080602.0
+    },
+    {
+      "symbol": "BAJAJFINSV",
+      "date": "2024-08-08 00:00:00",
+      "zscore": -2.15,
+      "net_return": 0.2009,
+      "pnl": 200900.0,
+      "reason": "recovery",
+      "capital": 21281502.0
+    },
+    {
+      "symbol": "LEMONTREE",
+      "date": "2024-08-08 00:00:00",
+      "zscore": -3.12,
+      "net_return": 0.0244,
+      "pnl": 24400.0,
+      "reason": "recovery",
+      "capital": 21305902.0
+    },
+    {
+      "symbol": "BALKRISIND",
+      "date": "2024-08-12 00:00:00",
+      "zscore": -2.45,
+      "net_return": 0.0783,
+      "pnl": 78300.0,
+      "reason": "recovery",
+      "capital": 21384202.0
+    },
+    {
+      "symbol": "TIMKEN",
+      "date": "2024-08-13 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0224,
+      "pnl": -22400.0,
+      "reason": "time_stop",
+      "capital": 21361802.0
+    },
+    {
+      "symbol": "MINDACORP",
+      "date": "2024-08-30 00:00:00",
+      "zscore": -2.74,
+      "net_return": 0.0572,
+      "pnl": 57200.0,
+      "reason": "recovery",
+      "capital": 21419002.0
+    },
+    {
+      "symbol": "KFINTECH",
+      "date": "2024-09-03 00:00:00",
+      "zscore": -2.14,
+      "net_return": 0.1173,
+      "pnl": 117300.0,
+      "reason": "recovery",
+      "capital": 21536302.0
+    },
+    {
+      "symbol": "OIL",
+      "date": "2024-09-06 00:00:00",
+      "zscore": -2.61,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 21451302.0
+    },
+    {
+      "symbol": "DRREDDY",
+      "date": "2024-09-06 00:00:00",
+      "zscore": -2.03,
+      "net_return": -0.0136,
+      "pnl": -13600.0,
+      "reason": "time_stop",
+      "capital": 21437702.0
+    },
+    {
+      "symbol": "ONGC",
+      "date": "2024-09-09 00:00:00",
+      "zscore": -2.28,
+      "net_return": -0.0232,
+      "pnl": -23200.0,
+      "reason": "time_stop",
+      "capital": 21414502.0
+    },
+    {
+      "symbol": "HDFCLIFE",
+      "date": "2024-09-10 00:00:00",
+      "zscore": -2.35,
+      "net_return": 0.0155,
+      "pnl": 15500.0,
+      "reason": "recovery",
+      "capital": 21430002.0
+    },
+    {
+      "symbol": "UNOMINDA",
+      "date": "2024-09-10 00:00:00",
+      "zscore": -2.43,
+      "net_return": -0.0272,
+      "pnl": -27200.0,
+      "reason": "time_stop",
+      "capital": 21402802.0
+    },
+    {
+      "symbol": "CCL",
+      "date": "2024-09-11 00:00:00",
+      "zscore": -2.96,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 21317802.0
+    },
+    {
+      "symbol": "BAJAJHLDNG",
+      "date": "2024-09-11 00:00:00",
+      "zscore": -2.12,
+      "net_return": 0.0432,
+      "pnl": 43200.0,
+      "reason": "recovery",
+      "capital": 21361002.0
+    },
+    {
+      "symbol": "ICICIGI",
+      "date": "2024-09-11 00:00:00",
+      "zscore": -2.26,
+      "net_return": -0.0285,
+      "pnl": -28500.0,
+      "reason": "time_stop",
+      "capital": 21332502.0
+    },
+    {
+      "symbol": "GRANULES",
+      "date": "2024-09-12 00:00:00",
+      "zscore": -4.34,
+      "net_return": 0.064,
+      "pnl": 64000.0,
+      "reason": "recovery",
+      "capital": 21396502.0
+    },
+    {
+      "symbol": "AJANTPHARM",
+      "date": "2024-09-17 00:00:00",
+      "zscore": -2.18,
+      "net_return": 0.0554,
+      "pnl": 55400.0,
+      "reason": "recovery",
+      "capital": 21451902.0
+    },
+    {
+      "symbol": "PFIZER",
+      "date": "2024-09-19 00:00:00",
+      "zscore": -2.51,
+      "net_return": -0.004,
+      "pnl": -4000.0,
+      "reason": "time_stop",
+      "capital": 21447902.0
+    },
+    {
+      "symbol": "ZYDUSWELL",
+      "date": "2024-09-19 00:00:00",
+      "zscore": -2.24,
+      "net_return": -0.0573,
+      "pnl": -57300.0,
+      "reason": "time_stop",
+      "capital": 21390602.0
+    },
+    {
+      "symbol": "BLS",
+      "date": "2024-09-19 00:00:00",
+      "zscore": -2.52,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 21305602.0
+    },
+    {
+      "symbol": "INDUSTOWER",
+      "date": "2024-09-19 00:00:00",
+      "zscore": -2.12,
+      "net_return": -0.0185,
+      "pnl": -18500.0,
+      "reason": "time_stop",
+      "capital": 21287102.0
+    },
+    {
+      "symbol": "BLUEDART",
+      "date": "2024-09-24 00:00:00",
+      "zscore": -2.79,
+      "net_return": -0.0259,
+      "pnl": -25900.0,
+      "reason": "time_stop",
+      "capital": 21261202.0
+    },
+    {
+      "symbol": "POLICYBZR",
+      "date": "2024-09-26 00:00:00",
+      "zscore": -2.24,
+      "net_return": -0.0324,
+      "pnl": -32400.0,
+      "reason": "time_stop",
+      "capital": 21228802.0
+    },
+    {
+      "symbol": "DABUR",
+      "date": "2024-09-26 00:00:00",
+      "zscore": -2.14,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 21143802.0
+    },
+    {
+      "symbol": "SBFC",
+      "date": "2024-09-30 00:00:00",
+      "zscore": -2.58,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 21058802.0
+    },
+    {
+      "symbol": "HEROMOTOCO",
+      "date": "2024-09-30 00:00:00",
+      "zscore": -2.38,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20973802.0
+    },
+    {
+      "symbol": "ETERNAL",
+      "date": "2024-09-30 00:00:00",
+      "zscore": -2.02,
+      "net_return": -0.082,
+      "pnl": -82000.0,
+      "reason": "time_stop",
+      "capital": 20891802.0
+    },
+    {
+      "symbol": "HOMEFIRST",
+      "date": "2024-10-01 00:00:00",
+      "zscore": -2.18,
+      "net_return": 0.0171,
+      "pnl": 17100.0,
+      "reason": "recovery",
+      "capital": 20908902.0
+    },
+    {
+      "symbol": "JUBLFOOD",
+      "date": "2024-10-01 00:00:00",
+      "zscore": -2.29,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20823902.0
+    },
+    {
+      "symbol": "DMART",
+      "date": "2024-10-01 00:00:00",
+      "zscore": -2.53,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20738902.0
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "date": "2024-10-03 00:00:00",
+      "zscore": -2.09,
+      "net_return": -0.0414,
+      "pnl": -41400.0,
+      "reason": "time_stop",
+      "capital": 20697502.0
+    },
+    {
+      "symbol": "SBICARD",
+      "date": "2024-10-07 00:00:00",
+      "zscore": -2.64,
+      "net_return": -0.0631,
+      "pnl": -63100.0,
+      "reason": "time_stop",
+      "capital": 20634402.0
+    },
+    {
+      "symbol": "BRITANNIA",
+      "date": "2024-10-09 00:00:00",
+      "zscore": -2.41,
+      "net_return": -0.071,
+      "pnl": -71000.0,
+      "reason": "time_stop",
+      "capital": 20563402.0
+    },
+    {
+      "symbol": "HINDUNILVR",
+      "date": "2024-10-09 00:00:00",
+      "zscore": -2.13,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20478402.0
+    },
+    {
+      "symbol": "JKCEMENT",
+      "date": "2024-10-10 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.0479,
+      "pnl": -47900.0,
+      "reason": "time_stop",
+      "capital": 20430502.0
+    },
+    {
+      "symbol": "JUBLINGREA",
+      "date": "2024-10-10 00:00:00",
+      "zscore": -2.2,
+      "net_return": 0.0122,
+      "pnl": 12200.0,
+      "reason": "time_stop",
+      "capital": 20442702.0
+    },
+    {
+      "symbol": "SAREGAMA",
+      "date": "2024-10-15 00:00:00",
+      "zscore": -2.38,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20357702.0
+    },
+    {
+      "symbol": "CIPLA",
+      "date": "2024-10-16 00:00:00",
+      "zscore": -2.71,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20272702.0
+    },
+    {
+      "symbol": "CREDITACC",
+      "date": "2024-10-16 00:00:00",
+      "zscore": -2.26,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20187702.0
+    },
+    {
+      "symbol": "CGPOWER",
+      "date": "2024-10-21 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20102702.0
+    },
+    {
+      "symbol": "RBLBANK",
+      "date": "2024-10-21 00:00:00",
+      "zscore": -2.7,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20017702.0
+    },
+    {
+      "symbol": "ELECON",
+      "date": "2024-10-21 00:00:00",
+      "zscore": -2.4,
+      "net_return": -0.0401,
+      "pnl": -40100.0,
+      "reason": "time_stop",
+      "capital": 19977602.0
+    },
+    {
+      "symbol": "KOTAKBANK",
+      "date": "2024-10-21 00:00:00",
+      "zscore": -2.27,
+      "net_return": -0.0393,
+      "pnl": -39300.0,
+      "reason": "time_stop",
+      "capital": 19938302.0
+    },
+    {
+      "symbol": "KAJARIACER",
+      "date": "2024-10-22 00:00:00",
+      "zscore": -2.06,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 19853302.0
+    },
+    {
+      "symbol": "KALYANKJIL",
+      "date": "2024-10-22 00:00:00",
+      "zscore": -2.13,
+      "net_return": 0.048,
+      "pnl": 48000.0,
+      "reason": "recovery",
+      "capital": 19901302.0
+    },
+    {
+      "symbol": "SBFC",
+      "date": "2024-10-23 00:00:00",
+      "zscore": -2.32,
+      "net_return": 0.0738,
+      "pnl": 73800.0,
+      "reason": "recovery",
+      "capital": 19975102.0
+    },
+    {
+      "symbol": "MANKIND",
+      "date": "2024-10-28 00:00:00",
+      "zscore": -2.09,
+      "net_return": 0.0487,
+      "pnl": 48700.0,
+      "reason": "recovery",
+      "capital": 20023802.0
+    },
+    {
+      "symbol": "HEROMOTOCO",
+      "date": "2024-10-29 00:00:00",
+      "zscore": -2.05,
+      "net_return": -0.0058,
+      "pnl": -5800.0,
+      "reason": "time_stop",
+      "capital": 20018002.0
+    },
+    {
+      "symbol": "DRREDDY",
+      "date": "2024-10-30 00:00:00",
+      "zscore": -2.2,
+      "net_return": -0.043,
+      "pnl": -43000.0,
+      "reason": "time_stop",
+      "capital": 19975002.0
+    },
+    {
+      "symbol": "TECHM",
+      "date": "2024-10-31 00:00:00",
+      "zscore": -2.19,
+      "net_return": 0.0804,
+      "pnl": 80400.0,
+      "reason": "recovery",
+      "capital": 20055402.0
+    },
+    {
+      "symbol": "STARHEALTH",
+      "date": "2024-10-31 00:00:00",
+      "zscore": -2.31,
+      "net_return": -0.0774,
+      "pnl": -77400.0,
+      "reason": "time_stop",
+      "capital": 19978002.0
+    },
+    {
+      "symbol": "HCLTECH",
+      "date": "2024-11-04 00:00:00",
+      "zscore": -2.04,
+      "net_return": 0.0714,
+      "pnl": 71400.0,
+      "reason": "recovery",
+      "capital": 20049402.0
+    },
+    {
+      "symbol": "TRENT",
+      "date": "2024-11-07 00:00:00",
+      "zscore": -2.02,
+      "net_return": 0.0633,
+      "pnl": 63300.0,
+      "reason": "recovery",
+      "capital": 20112702.0
+    },
+    {
+      "symbol": "GRASIM",
+      "date": "2024-11-08 00:00:00",
+      "zscore": -2.07,
+      "net_return": 0.0384,
+      "pnl": 38400.0,
+      "reason": "recovery",
+      "capital": 20151102.0
+    },
+    {
+      "symbol": "AUROPHARMA",
+      "date": "2024-11-11 00:00:00",
+      "zscore": -2.36,
+      "net_return": -0.054,
+      "pnl": -54000.0,
+      "reason": "time_stop",
+      "capital": 20097102.0
+    },
+    {
+      "symbol": "SUNDARMFIN",
+      "date": "2024-11-11 00:00:00",
+      "zscore": -2.84,
+      "net_return": 0.0117,
+      "pnl": 11700.0,
+      "reason": "time_stop",
+      "capital": 20108802.0
+    },
+    {
+      "symbol": "BOSCHLTD",
+      "date": "2024-11-12 00:00:00",
+      "zscore": -2.27,
+      "net_return": 0.0849,
+      "pnl": 84900.0,
+      "reason": "recovery",
+      "capital": 20193702.0
+    },
+    {
+      "symbol": "MOTHERSON",
+      "date": "2024-11-12 00:00:00",
+      "zscore": -2.33,
+      "net_return": -0.0125,
+      "pnl": -12500.0,
+      "reason": "time_stop",
+      "capital": 20181202.0
+    },
+    {
+      "symbol": "GLENMARK",
+      "date": "2024-11-12 00:00:00",
+      "zscore": -2.53,
+      "net_return": -0.0316,
+      "pnl": -31600.0,
+      "reason": "time_stop",
+      "capital": 20149602.0
+    },
+    {
+      "symbol": "ELGIEQUIP",
+      "date": "2024-11-13 00:00:00",
+      "zscore": -2.25,
+      "net_return": 0.0536,
+      "pnl": 53600.0,
+      "reason": "recovery",
+      "capital": 20203202.0
+    },
+    {
+      "symbol": "TATAPOWER",
+      "date": "2024-11-13 00:00:00",
+      "zscore": -2.46,
+      "net_return": 0.0679,
+      "pnl": 67900.0,
+      "reason": "recovery",
+      "capital": 20271102.0
+    },
+    {
+      "symbol": "BAJAJFINSV",
+      "date": "2024-11-18 00:00:00",
+      "zscore": -2.3,
+      "net_return": 0.0118,
+      "pnl": 11800.0,
+      "reason": "time_stop",
+      "capital": 20282902.0
+    },
+    {
+      "symbol": "VIJAYA",
+      "date": "2024-11-18 00:00:00",
+      "zscore": -2.45,
+      "net_return": 0.052,
+      "pnl": 52000.0,
+      "reason": "recovery",
+      "capital": 20334902.0
+    },
+    {
+      "symbol": "THERMAX",
+      "date": "2024-11-19 00:00:00",
+      "zscore": -2.22,
+      "net_return": 0.0197,
+      "pnl": 19700.0,
+      "reason": "recovery",
+      "capital": 20354602.0
+    },
+    {
+      "symbol": "VTL",
+      "date": "2024-11-21 00:00:00",
+      "zscore": -2.35,
+      "net_return": 0.234,
+      "pnl": 234000.0,
+      "reason": "recovery",
+      "capital": 20588602.0
+    },
+    {
+      "symbol": "ADANIPOWER",
+      "date": "2024-11-21 00:00:00",
+      "zscore": -2.43,
+      "net_return": 0.0625,
+      "pnl": 62500.0,
+      "reason": "recovery",
+      "capital": 20651102.0
+    },
+    {
+      "symbol": "DCMSHRIRAM",
+      "date": "2024-11-26 00:00:00",
+      "zscore": -2.63,
+      "net_return": -0.0592,
+      "pnl": -59200.0,
+      "reason": "time_stop",
+      "capital": 20591902.0
+    },
+    {
+      "symbol": "ZFCVINDIA",
+      "date": "2024-11-27 00:00:00",
+      "zscore": -2.96,
+      "net_return": -0.0614,
+      "pnl": -61400.0,
+      "reason": "time_stop",
+      "capital": 20530502.0
+    },
+    {
+      "symbol": "HDFCLIFE",
+      "date": "2024-12-03 00:00:00",
+      "zscore": -2.13,
+      "net_return": -0.0315,
+      "pnl": -31500.0,
+      "reason": "time_stop",
+      "capital": 20499002.0
+    },
+    {
+      "symbol": "GRANULES",
+      "date": "2024-12-03 00:00:00",
+      "zscore": -2.01,
+      "net_return": 0.1134,
+      "pnl": 113400.0,
+      "reason": "recovery",
+      "capital": 20612402.0
+    },
+    {
+      "symbol": "GODREJCP",
+      "date": "2024-12-09 00:00:00",
+      "zscore": -2.3,
+      "net_return": 0.018,
+      "pnl": 18000.0,
+      "reason": "recovery",
+      "capital": 20630402.0
+    },
+    {
+      "symbol": "HINDUNILVR",
+      "date": "2024-12-12 00:00:00",
+      "zscore": -2.07,
+      "net_return": 0.0364,
+      "pnl": 36400.0,
+      "reason": "recovery",
+      "capital": 20666802.0
+    },
+    {
+      "symbol": "NATIONALUM",
+      "date": "2024-12-16 00:00:00",
+      "zscore": -2.04,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20581802.0
+    },
+    {
+      "symbol": "FEDERALBNK",
+      "date": "2024-12-18 00:00:00",
+      "zscore": -2.1,
+      "net_return": -0.028,
+      "pnl": -28000.0,
+      "reason": "time_stop",
+      "capital": 20553802.0
+    },
+    {
+      "symbol": "NMDC",
+      "date": "2024-12-18 00:00:00",
+      "zscore": -2.16,
+      "net_return": -0.0827,
+      "pnl": -82700.0,
+      "reason": "time_stop",
+      "capital": 20471102.0
+    },
+    {
+      "symbol": "ERIS",
+      "date": "2024-12-18 00:00:00",
+      "zscore": -2.41,
+      "net_return": -0.0691,
+      "pnl": -69100.0,
+      "reason": "time_stop",
+      "capital": 20402002.0
+    },
+    {
+      "symbol": "SHRIRAMFIN",
+      "date": "2024-12-18 00:00:00",
+      "zscore": -2.39,
+      "net_return": -0.0723,
+      "pnl": -72300.0,
+      "reason": "time_stop",
+      "capital": 20329702.0
+    },
+    {
+      "symbol": "BAYERCROP",
+      "date": "2024-12-18 00:00:00",
+      "zscore": -2.07,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20244702.0
+    },
+    {
+      "symbol": "PIDILITIND",
+      "date": "2024-12-19 00:00:00",
+      "zscore": -2.44,
+      "net_return": -0.0638,
+      "pnl": -63800.0,
+      "reason": "time_stop",
+      "capital": 20180902.0
+    },
+    {
+      "symbol": "CHOLAFIN",
+      "date": "2024-12-19 00:00:00",
+      "zscore": -2.22,
+      "net_return": 0.031,
+      "pnl": 31000.0,
+      "reason": "recovery",
+      "capital": 20211902.0
+    },
+    {
+      "symbol": "JSWSTEEL",
+      "date": "2024-12-19 00:00:00",
+      "zscore": -2.63,
+      "net_return": -0.0237,
+      "pnl": -23700.0,
+      "reason": "time_stop",
+      "capital": 20188202.0
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "date": "2024-12-20 00:00:00",
+      "zscore": -2.26,
+      "net_return": 0.035,
+      "pnl": 35000.0,
+      "reason": "recovery",
+      "capital": 20223202.0
+    },
+    {
+      "symbol": "GRASIM",
+      "date": "2024-12-20 00:00:00",
+      "zscore": -2.49,
+      "net_return": -0.0398,
+      "pnl": -39800.0,
+      "reason": "time_stop",
+      "capital": 20183402.0
+    },
+    {
+      "symbol": "BALRAMCHIN",
+      "date": "2024-12-23 00:00:00",
+      "zscore": -2.4,
+      "net_return": -0.0369,
+      "pnl": -36900.0,
+      "reason": "time_stop",
+      "capital": 20146502.0
+    },
+    {
+      "symbol": "CANFINHOME",
+      "date": "2024-12-23 00:00:00",
+      "zscore": -2.34,
+      "net_return": -0.0528,
+      "pnl": -52800.0,
+      "reason": "time_stop",
+      "capital": 20093702.0
+    },
+    {
+      "symbol": "THERMAX",
+      "date": "2024-12-30 00:00:00",
+      "zscore": -2.98,
+      "net_return": -0.085,
+      "pnl": -85000.0,
+      "reason": "stop_loss",
+      "capital": 20008702.0
+    }
+  ],
+  "equity_curve": [
+    [
+      "2022-01-01 00:00:00",
+      10000000.0
+    ],
+    [
+      "2022-01-07 00:00:00",
+      9932000.0
+    ],
+    [
+      "2022-01-07 00:00:00",
+      9877016.448
+    ],
+    [
+      "2022-01-12 00:00:00",
+      9852126.366551042
+    ],
+    [
+      "2022-01-13 00:00:00",
+      9785131.907258494
+    ],
+    [
+      "2022-01-18 00:00:00",
+      9754210.890431557
+    ],
+    [
+      "2022-01-19 00:00:00",
+      9687882.256376622
+    ],
+    [
+      "2022-01-19 00:00:00",
+      9622004.65703326
+    ],
+    [
+      "2022-01-20 00:00:00",
+      9598142.08548382
+    ],
+    [
+      "2022-01-20 00:00:00",
+      9532874.71930253
+    ],
+    [
+      "2022-01-20 00:00:00",
+      9468051.171211272
+    ],
+    [
+      "2022-01-20 00:00:00",
+      9481230.698441599
+    ],
+    [
+      "2022-01-20 00:00:00",
+      9448084.315919846
+    ],
+    [
+      "2022-01-20 00:00:00",
+      9383837.342571592
+    ],
+    [
+      "2022-01-20 00:00:00",
+      9372952.091254208
+    ],
+    [
+      "2022-01-21 00:00:00",
+      9309216.01703368
+    ],
+    [
+      "2022-01-27 00:00:00",
+      9279277.578322899
+    ],
+    [
+      "2022-01-27 00:00:00",
+      9274303.885540918
+    ],
+    [
+      "2022-02-04 00:00:00",
+      9257906.91627128
+    ],
+    [
+      "2022-02-07 00:00:00",
+      9194953.149240635
+    ],
+    [
+      "2022-02-07 00:00:00",
+      9132427.467825798
+    ],
+    [
+      "2022-02-08 00:00:00",
+      9160993.700945158
+    ],
+    [
+      "2022-02-09 00:00:00",
+      9098698.94377873
+    ],
+    [
+      "2022-02-10 00:00:00",
+      9036827.790961036
+    ],
+    [
+      "2022-02-11 00:00:00",
+      8975377.361982502
+    ],
+    [
+      "2022-02-11 00:00:00",
+      9094642.176368525
+    ],
+    [
+      "2022-02-11 00:00:00",
+      9032798.60956922
+    ],
+    [
+      "2022-02-14 00:00:00",
+      9016684.096849749
+    ],
+    [
+      "2022-02-14 00:00:00",
+      8955370.64499117
+    ],
+    [
+      "2022-02-14 00:00:00",
+      8930582.179045836
+    ],
+    [
+      "2022-02-14 00:00:00",
+      8971948.635699175
+    ],
+    [
+      "2022-02-16 00:00:00",
+      8958454.824951084
+    ],
+    [
+      "2022-02-16 00:00:00",
+      9037647.565603651
+    ],
+    [
+      "2022-03-09 00:00:00",
+      9029766.736926444
+    ],
+    [
+      "2022-03-10 00:00:00",
+      9042552.886625933
+    ],
+    [
+      "2022-03-15 00:00:00",
+      9040527.35477933
+    ],
+    [
+      "2022-03-23 00:00:00",
+      8979051.76876683
+    ],
+    [
+      "2022-03-24 00:00:00",
+      9024809.016580466
+    ],
+    [
+      "2022-03-25 00:00:00",
+      9077802.695125828
+    ],
+    [
+      "2022-03-25 00:00:00",
+      9143090.252109172
+    ],
+    [
+      "2022-03-28 00:00:00",
+      9099788.576675182
+    ],
+    [
+      "2022-03-29 00:00:00",
+      9197119.9152913
+    ],
+    [
+      "2022-03-29 00:00:00",
+      9328675.518559627
+    ],
+    [
+      "2022-03-30 00:00:00",
+      9290614.522443904
+    ],
+    [
+      "2022-03-31 00:00:00",
+      9283776.630155385
+    ],
+    [
+      "2022-03-31 00:00:00",
+      9417165.932777457
+    ],
+    [
+      "2022-03-31 00:00:00",
+      9433966.156801531
+    ],
+    [
+      "2022-04-11 00:00:00",
+      9369815.186935281
+    ],
+    [
+      "2022-04-11 00:00:00",
+      9306100.443664122
+    ],
+    [
+      "2022-04-12 00:00:00",
+      9242818.960647207
+    ],
+    [
+      "2022-04-12 00:00:00",
+      9179967.791714806
+    ],
+    [
+      "2022-04-13 00:00:00",
+      9117544.010731146
+    ],
+    [
+      "2022-04-18 00:00:00",
+      9055544.711458175
+    ],
+    [
+      "2022-04-19 00:00:00",
+      8993967.007420259
+    ],
+    [
+      "2022-04-19 00:00:00",
+      9008932.968520606
+    ],
+    [
+      "2022-04-19 00:00:00",
+      9019743.688082831
+    ],
+    [
+      "2022-04-19 00:00:00",
+      9075016.677403403
+    ],
+    [
+      "2022-04-19 00:00:00",
+      9019767.975871371
+    ],
+    [
+      "2022-04-19 00:00:00",
+      8959804.558367778
+    ],
+    [
+      "2022-04-20 00:00:00",
+      8898877.887370877
+    ],
+    [
+      "2022-04-20 00:00:00",
+      8874032.220309338
+    ],
+    [
+      "2022-04-25 00:00:00",
+      8882480.298983073
+    ],
+    [
+      "2022-05-02 00:00:00",
+      8822079.432949988
+    ],
+    [
+      "2022-05-04 00:00:00",
+      8762089.292805929
+    ],
+    [
+      "2022-05-04 00:00:00",
+      8702507.085614849
+    ],
+    [
+      "2022-05-04 00:00:00",
+      8643330.037432669
+    ],
+    [
+      "2022-05-04 00:00:00",
+      8619197.859968157
+    ],
+    [
+      "2022-05-09 00:00:00",
+      8628506.593656924
+    ],
+    [
+      "2022-05-09 00:00:00",
+      8569832.748820057
+    ],
+    [
+      "2022-05-09 00:00:00",
+      8621046.069327006
+    ],
+    [
+      "2022-05-09 00:00:00",
+      8666358.287467388
+    ],
+    [
+      "2022-05-09 00:00:00",
+      8607427.05111261
+    ],
+    [
+      "2022-05-09 00:00:00",
+      8612729.226176096
+    ],
+    [
+      "2022-05-09 00:00:00",
+      8659237.963997448
+    ],
+    [
+      "2022-05-10 00:00:00",
+      8700040.293283803
+    ],
+    [
+      "2022-05-10 00:00:00",
+      8640880.019289473
+    ],
+    [
+      "2022-05-16 00:00:00",
+      8628229.770941233
+    ],
+    [
+      "2022-05-23 00:00:00",
+      8611732.595619194
+    ],
+    [
+      "2022-05-24 00:00:00",
+      8567847.206311919
+    ],
+    [
+      "2022-05-24 00:00:00",
+      8509585.845308999
+    ],
+    [
+      "2022-05-24 00:00:00",
+      8526673.09368638
+    ],
+    [
+      "2022-05-24 00:00:00",
+      8509415.107344758
+    ],
+    [
+      "2022-05-31 00:00:00",
+      8482321.129642973
+    ],
+    [
+      "2022-06-01 00:00:00",
+      8478453.191207856
+    ],
+    [
+      "2022-06-06 00:00:00",
+      8490594.336177666
+    ],
+    [
+      "2022-06-06 00:00:00",
+      8523130.293673899
+    ],
+    [
+      "2022-06-06 00:00:00",
+      8578701.103188653
+    ],
+    [
+      "2022-06-07 00:00:00",
+      8613564.944472011
+    ],
+    [
+      "2022-06-07 00:00:00",
+      8641335.077852989
+    ],
+    [
+      "2022-06-07 00:00:00",
+      8633661.572303856
+    ],
+    [
+      "2022-06-07 00:00:00",
+      8646163.114260552
+    ],
+    [
+      "2022-06-07 00:00:00",
+      8711458.938099448
+    ],
+    [
+      "2022-06-13 00:00:00",
+      8790558.98525739
+    ],
+    [
+      "2022-06-13 00:00:00",
+      8730783.18415764
+    ],
+    [
+      "2022-06-13 00:00:00",
+      8820605.481556254
+    ],
+    [
+      "2022-06-13 00:00:00",
+      8896392.123853784
+    ],
+    [
+      "2022-06-13 00:00:00",
+      8962510.110118266
+    ],
+    [
+      "2022-06-20 00:00:00",
+      9112793.479644729
+    ],
+    [
+      "2022-06-21 00:00:00",
+      9121614.663733024
+    ],
+    [
+      "2022-07-05 00:00:00",
+      9261941.583719892
+    ],
+    [
+      "2022-07-07 00:00:00",
+      9315290.367242118
+    ],
+    [
+      "2022-07-13 00:00:00",
+      9391973.837545255
+    ],
+    [
+      "2022-07-14 00:00:00",
+      9441563.459407493
+    ],
+    [
+      "2022-07-25 00:00:00",
+      9495871.332426006
+    ],
+    [
+      "2022-07-25 00:00:00",
+      9597743.040080272
+    ],
+    [
+      "2022-07-26 00:00:00",
+      9666002.188581323
+    ],
+    [
+      "2022-07-27 00:00:00",
+      9734746.796146514
+    ],
+    [
+      "2022-07-29 00:00:00",
+      9809665.407489657
+    ],
+    [
+      "2022-07-29 00:00:00",
+      9849453.410382435
+    ],
+    [
+      "2022-08-08 00:00:00",
+      9858514.907519987
+    ],
+    [
+      "2022-08-08 00:00:00",
+      9903627.471736798
+    ],
+    [
+      "2022-08-08 00:00:00",
+      9932229.147875173
+    ],
+    [
+      "2022-08-08 00:00:00",
+      9939380.352861643
+    ],
+    [
+      "2022-08-08 00:00:00",
+      9964109.531179562
+    ],
+    [
+      "2022-08-08 00:00:00",
+      9900179.804427514
+    ],
+    [
+      "2022-08-08 00:00:00",
+      9971936.307650004
+    ],
+    [
+      "2022-08-10 00:00:00",
+      9904127.140757984
+    ],
+    [
+      "2022-08-10 00:00:00",
+      10000157.557514774
+    ],
+    [
+      "2022-08-16 00:00:00",
+      10158720.055746729
+    ],
+    [
+      "2022-08-16 00:00:00",
+      10155794.344370674
+    ],
+    [
+      "2022-08-22 00:00:00",
+      10256133.592493057
+    ],
+    [
+      "2022-08-23 00:00:00",
+      10324398.417684691
+    ],
+    [
+      "2022-08-24 00:00:00",
+      10287560.964130392
+    ],
+    [
+      "2022-08-25 00:00:00",
+      10217605.549574306
+    ],
+    [
+      "2022-08-29 00:00:00",
+      10199949.527184641
+    ],
+    [
+      "2022-09-07 00:00:00",
+      10221410.220989838
+    ],
+    [
+      "2022-09-16 00:00:00",
+      10184286.059067203
+    ],
+    [
+      "2022-09-16 00:00:00",
+      10268286.050482389
+    ],
+    [
+      "2022-09-16 00:00:00",
+      10331538.69255336
+    ],
+    [
+      "2022-09-16 00:00:00",
+      10312859.270597223
+    ],
+    [
+      "2022-09-16 00:00:00",
+      10348253.003613913
+    ],
+    [
+      "2022-09-19 00:00:00",
+      10363899.562155377
+    ],
+    [
+      "2022-09-19 00:00:00",
+      10293425.04513272
+    ],
+    [
+      "2022-09-19 00:00:00",
+      10273579.321645705
+    ],
+    [
+      "2022-09-20 00:00:00",
+      10238649.15195211
+    ],
+    [
+      "2022-09-20 00:00:00",
+      10169026.337718835
+    ],
+    [
+      "2022-09-22 00:00:00",
+      10154626.996424625
+    ],
+    [
+      "2022-09-22 00:00:00",
+      10121807.24197218
+    ],
+    [
+      "2022-09-22 00:00:00",
+      10144884.962483877
+    ],
+    [
+      "2022-09-22 00:00:00",
+      10157302.301677957
+    ],
+    [
+      "2022-09-27 00:00:00",
+      10212801.801454326
+    ],
+    [
+      "2022-10-10 00:00:00",
+      10251201.936227795
+    ],
+    [
+      "2022-10-12 00:00:00",
+      10328865.042096656
+    ],
+    [
+      "2022-10-12 00:00:00",
+      10366792.634531235
+    ],
+    [
+      "2022-10-13 00:00:00",
+      10368534.255693836
+    ],
+    [
+      "2022-10-14 00:00:00",
+      10467242.701808041
+    ],
+    [
+      "2022-10-19 00:00:00",
+      10426546.062183412
+    ],
+    [
+      "2022-10-20 00:00:00",
+      10454489.205630064
+    ],
+    [
+      "2022-10-25 00:00:00",
+      10425132.999940654
+    ],
+    [
+      "2022-10-25 00:00:00",
+      10415458.476516709
+    ],
+    [
+      "2022-10-27 00:00:00",
+      10344633.358876396
+    ],
+    [
+      "2022-10-28 00:00:00",
+      10376825.85788922
+    ],
+    [
+      "2022-10-28 00:00:00",
+      10341876.708399849
+    ],
+    [
+      "2022-10-31 00:00:00",
+      10322516.715201724
+    ],
+    [
+      "2022-11-01 00:00:00",
+      10347290.755318208
+    ],
+    [
+      "2022-11-02 00:00:00",
+      10404904.470243819
+    ],
+    [
+      "2022-11-02 00:00:00",
+      10513365.19444164
+    ],
+    [
+      "2022-11-07 00:00:00",
+      10525224.27038097
+    ],
+    [
+      "2022-11-09 00:00:00",
+      10550232.203247394
+    ],
+    [
+      "2022-11-09 00:00:00",
+      10556140.333281213
+    ],
+    [
+      "2022-11-10 00:00:00",
+      10518391.5754494
+    ],
+    [
+      "2022-11-10 00:00:00",
+      10622818.167010462
+    ],
+    [
+      "2022-11-11 00:00:00",
+      10604886.849944549
+    ],
+    [
+      "2022-11-14 00:00:00",
+      10532773.619364927
+    ],
+    [
+      "2022-11-14 00:00:00",
+      10528644.772106135
+    ],
+    [
+      "2022-11-17 00:00:00",
+      10555345.415248197
+    ],
+    [
+      "2022-11-18 00:00:00",
+      10645699.172002722
+    ],
+    [
+      "2022-11-22 00:00:00",
+      11013614.535387136
+    ],
+    [
+      "2022-11-29 00:00:00",
+      10938721.956546504
+    ],
+    [
+      "2022-12-08 00:00:00",
+      10965937.496774392
+    ],
+    [
+      "2022-12-09 00:00:00",
+      10966112.95177434
+    ],
+    [
+      "2022-12-20 00:00:00",
+      11010328.319195895
+    ],
+    [
+      "2022-12-21 00:00:00",
+      10988571.910437163
+    ],
+    [
+      "2022-12-21 00:00:00",
+      11011955.591462573
+    ],
+    [
+      "2022-12-21 00:00:00",
+      11067808.230222471
+    ],
+    [
+      "2022-12-21 00:00:00",
+      10992547.134256959
+    ],
+    [
+      "2022-12-21 00:00:00",
+      10988677.757665701
+    ],
+    [
+      "2022-12-21 00:00:00",
+      10944810.9560571
+    ],
+    [
+      "2022-12-22 00:00:00",
+      10974580.841857575
+    ],
+    [
+      "2022-12-22 00:00:00",
+      10946573.711549154
+    ],
+    [
+      "2022-12-22 00:00:00",
+      10974596.940250719
+    ],
+    [
+      "2022-12-22 00:00:00",
+      10976791.85963877
+    ],
+    [
+      "2022-12-22 00:00:00",
+      11018152.411365887
+    ],
+    [
+      "2022-12-22 00:00:00",
+      10985714.970666826
+    ],
+    [
+      "2023-01-06 00:00:00",
+      10995646.05700031
+    ],
+    [
+      "2023-01-10 00:00:00",
+      11057925.396267159
+    ],
+    [
+      "2023-01-11 00:00:00",
+      11054740.713753033
+    ],
+    [
+      "2023-01-18 00:00:00",
+      11119211.961595641
+    ],
+    [
+      "2023-01-20 00:00:00",
+      11084075.251797
+    ],
+    [
+      "2023-01-24 00:00:00",
+      11080794.365522468
+    ],
+    [
+      "2023-01-25 00:00:00",
+      11005444.963836916
+    ],
+    [
+      "2023-01-25 00:00:00",
+      11143937.48326184
+    ],
+    [
+      "2023-01-27 00:00:00",
+      11284261.944051074
+    ],
+    [
+      "2023-01-27 00:00:00",
+      11248152.30583011
+    ],
+    [
+      "2023-01-27 00:00:00",
+      11378900.828233078
+    ],
+    [
+      "2023-01-27 00:00:00",
+      11455367.041798804
+    ],
+    [
+      "2023-01-27 00:00:00",
+      11407254.50022325
+    ],
+    [
+      "2023-01-27 00:00:00",
+      11418661.754723473
+    ],
+    [
+      "2023-01-27 00:00:00",
+      11398656.259329196
+    ],
+    [
+      "2023-01-27 00:00:00",
+      11335735.676777698
+    ],
+    [
+      "2023-01-30 00:00:00",
+      11420617.66552541
+    ],
+    [
+      "2023-01-31 00:00:00",
+      11342957.465399837
+    ],
+    [
+      "2023-02-07 00:00:00",
+      11312013.877434226
+    ],
+    [
+      "2023-02-13 00:00:00",
+      11270114.17803221
+    ],
+    [
+      "2023-02-13 00:00:00",
+      11256680.201931996
+    ],
+    [
+      "2023-02-14 00:00:00",
+      11203998.938586954
+    ],
+    [
+      "2023-02-15 00:00:00",
+      11127811.745804563
+    ],
+    [
+      "2023-02-17 00:00:00",
+      11169118.18300499
+    ],
+    [
+      "2023-02-20 00:00:00",
+      11093168.179360555
+    ],
+    [
+      "2023-02-23 00:00:00",
+      11190433.077957189
+    ],
+    [
+      "2023-02-23 00:00:00",
+      11114338.13302708
+    ],
+    [
+      "2023-02-24 00:00:00",
+      11196317.491096288
+    ],
+    [
+      "2023-02-27 00:00:00",
+      11262330.979023792
+    ],
+    [
+      "2023-02-27 00:00:00",
+      11295397.182778206
+    ],
+    [
+      "2023-02-27 00:00:00",
+      11294493.551003583
+    ],
+    [
+      "2023-02-27 00:00:00",
+      11221757.01253512
+    ],
+    [
+      "2023-02-28 00:00:00",
+      11145449.064849881
+    ],
+    [
+      "2023-02-28 00:00:00",
+      11185483.517890822
+    ],
+    [
+      "2023-03-09 00:00:00",
+      11175013.905318076
+    ],
+    [
+      "2023-03-10 00:00:00",
+      11218998.760049408
+    ],
+    [
+      "2023-03-14 00:00:00",
+      11217831.984178362
+    ],
+    [
+      "2023-03-14 00:00:00",
+      11253639.303871859
+    ],
+    [
+      "2023-03-14 00:00:00",
+      11232482.46198058
+    ],
+    [
+      "2023-03-14 00:00:00",
+      11258092.521993896
+    ],
+    [
+      "2023-03-15 00:00:00",
+      11295199.194946388
+    ],
+    [
+      "2023-03-15 00:00:00",
+      11388813.805874104
+    ],
+    [
+      "2023-03-16 00:00:00",
+      11448035.63766465
+    ],
+    [
+      "2023-03-21 00:00:00",
+      11538704.079914954
+    ],
+    [
+      "2023-03-22 00:00:00",
+      11565750.802278275
+    ],
+    [
+      "2023-03-24 00:00:00",
+      11578796.969183244
+    ],
+    [
+      "2023-03-24 00:00:00",
+      11725986.6362555
+    ],
+    [
+      "2023-03-27 00:00:00",
+      11799062.984972645
+    ],
+    [
+      "2023-03-27 00:00:00",
+      11961418.091645868
+    ],
+    [
+      "2023-03-31 00:00:00",
+      11959312.882061739
+    ],
+    [
+      "2023-04-05 00:00:00",
+      12090195.602243023
+    ],
+    [
+      "2023-04-11 00:00:00",
+      12112441.56215115
+    ],
+    [
+      "2023-04-17 00:00:00",
+      12112247.763086157
+    ],
+    [
+      "2023-04-19 00:00:00",
+      12153816.997409068
+    ],
+    [
+      "2023-04-21 00:00:00",
+      12071171.041826686
+    ],
+    [
+      "2023-04-25 00:00:00",
+      12128726.385354115
+    ],
+    [
+      "2023-04-25 00:00:00",
+      12050229.268188102
+    ],
+    [
+      "2023-04-28 00:00:00",
+      12193964.40289905
+    ],
+    [
+      "2023-05-02 00:00:00",
+      12201183.229825566
+    ],
+    [
+      "2023-05-03 00:00:00",
+      12256039.749626862
+    ],
+    [
+      "2023-05-03 00:00:00",
+      12225742.819365785
+    ],
+    [
+      "2023-05-05 00:00:00",
+      12229557.251125427
+    ],
+    [
+      "2023-05-09 00:00:00",
+      12172225.086732151
+    ],
+    [
+      "2023-05-10 00:00:00",
+      12187805.534843167
+    ],
+    [
+      "2023-05-11 00:00:00",
+      12169962.587540157
+    ],
+    [
+      "2023-05-11 00:00:00",
+      12183885.024740303
+    ],
+    [
+      "2023-05-11 00:00:00",
+      12283890.35302337
+    ],
+    [
+      "2023-05-11 00:00:00",
+      12304429.017693626
+    ],
+    [
+      "2023-05-12 00:00:00",
+      12362407.487224998
+    ],
+    [
+      "2023-05-16 00:00:00",
+      12350440.676777365
+    ],
+    [
+      "2023-05-17 00:00:00",
+      12447465.738734128
+    ],
+    [
+      "2023-05-18 00:00:00",
+      12604801.705671728
+    ],
+    [
+      "2023-05-18 00:00:00",
+      12703901.705671728
+    ],
+    [
+      "2023-05-22 00:00:00",
+      12818901.705671728
+    ],
+    [
+      "2023-05-23 00:00:00",
+      13036601.705671728
+    ],
+    [
+      "2023-05-24 00:00:00",
+      13053401.705671728
+    ],
+    [
+      "2023-05-25 00:00:00",
+      13168901.705671728
+    ],
+    [
+      "2023-05-29 00:00:00",
+      13136001.705671728
+    ],
+    [
+      "2023-06-05 00:00:00",
+      13140101.705671728
+    ],
+    [
+      "2023-06-05 00:00:00",
+      13146001.705671728
+    ],
+    [
+      "2023-06-08 00:00:00",
+      13061001.705671728
+    ],
+    [
+      "2023-06-12 00:00:00",
+      12986501.705671728
+    ],
+    [
+      "2023-06-22 00:00:00",
+      13067701.705671728
+    ],
+    [
+      "2023-06-23 00:00:00",
+      13042401.705671728
+    ],
+    [
+      "2023-06-26 00:00:00",
+      13036501.705671728
+    ],
+    [
+      "2023-06-27 00:00:00",
+      13136201.705671728
+    ],
+    [
+      "2023-06-28 00:00:00",
+      13199701.705671728
+    ],
+    [
+      "2023-07-03 00:00:00",
+      13347801.705671728
+    ],
+    [
+      "2023-07-04 00:00:00",
+      13407101.705671728
+    ],
+    [
+      "2023-07-04 00:00:00",
+      13498001.705671728
+    ],
+    [
+      "2023-07-06 00:00:00",
+      13541901.705671728
+    ],
+    [
+      "2023-07-11 00:00:00",
+      13569501.705671728
+    ],
+    [
+      "2023-07-12 00:00:00",
+      13567601.705671728
+    ],
+    [
+      "2023-07-13 00:00:00",
+      13576701.705671728
+    ],
+    [
+      "2023-07-17 00:00:00",
+      13491701.705671728
+    ],
+    [
+      "2023-07-18 00:00:00",
+      13707001.705671728
+    ],
+    [
+      "2023-07-20 00:00:00",
+      13938301.705671728
+    ],
+    [
+      "2023-07-20 00:00:00",
+      13914601.705671728
+    ],
+    [
+      "2023-07-24 00:00:00",
+      13894601.705671728
+    ],
+    [
+      "2023-07-24 00:00:00",
+      13916401.705671728
+    ],
+    [
+      "2023-07-25 00:00:00",
+      13966401.705671728
+    ],
+    [
+      "2023-07-25 00:00:00",
+      14076301.705671728
+    ],
+    [
+      "2023-07-25 00:00:00",
+      14130901.705671728
+    ],
+    [
+      "2023-07-26 00:00:00",
+      14201701.705671728
+    ],
+    [
+      "2023-07-26 00:00:00",
+      14142101.705671728
+    ],
+    [
+      "2023-07-26 00:00:00",
+      14057101.705671728
+    ],
+    [
+      "2023-07-31 00:00:00",
+      14130101.705671728
+    ],
+    [
+      "2023-08-02 00:00:00",
+      14087501.705671728
+    ],
+    [
+      "2023-08-02 00:00:00",
+      14002501.705671728
+    ],
+    [
+      "2023-08-07 00:00:00",
+      14224301.705671728
+    ],
+    [
+      "2023-08-07 00:00:00",
+      14226001.705671728
+    ],
+    [
+      "2023-08-09 00:00:00",
+      14476001.705671728
+    ],
+    [
+      "2023-08-10 00:00:00",
+      14471001.705671728
+    ],
+    [
+      "2023-08-14 00:00:00",
+      14408001.705671728
+    ],
+    [
+      "2023-08-14 00:00:00",
+      14394701.705671728
+    ],
+    [
+      "2023-08-14 00:00:00",
+      14444201.705671728
+    ],
+    [
+      "2023-08-14 00:00:00",
+      14515501.705671728
+    ],
+    [
+      "2023-08-16 00:00:00",
+      14642601.705671728
+    ],
+    [
+      "2023-08-17 00:00:00",
+      14768601.705671728
+    ],
+    [
+      "2023-08-17 00:00:00",
+      14851101.705671728
+    ],
+    [
+      "2023-08-17 00:00:00",
+      14873701.705671728
+    ],
+    [
+      "2023-08-21 00:00:00",
+      15019801.705671728
+    ],
+    [
+      "2023-08-29 00:00:00",
+      15017101.705671728
+    ],
+    [
+      "2023-08-30 00:00:00",
+      14973001.705671728
+    ],
+    [
+      "2023-09-01 00:00:00",
+      15017801.705671728
+    ],
+    [
+      "2023-09-08 00:00:00",
+      15060301.705671728
+    ],
+    [
+      "2023-09-08 00:00:00",
+      15014501.705671728
+    ],
+    [
+      "2023-09-11 00:00:00",
+      15055701.705671728
+    ],
+    [
+      "2023-09-11 00:00:00",
+      14970701.705671728
+    ],
+    [
+      "2023-09-12 00:00:00",
+      14975601.705671728
+    ],
+    [
+      "2023-09-12 00:00:00",
+      15002701.705671728
+    ],
+    [
+      "2023-09-12 00:00:00",
+      15051501.705671728
+    ],
+    [
+      "2023-09-12 00:00:00",
+      15245801.705671728
+    ],
+    [
+      "2023-09-12 00:00:00",
+      15340001.705671728
+    ],
+    [
+      "2023-09-12 00:00:00",
+      15483301.705671728
+    ],
+    [
+      "2023-09-12 00:00:00",
+      16118701.705671728
+    ],
+    [
+      "2023-09-12 00:00:00",
+      16075601.705671728
+    ],
+    [
+      "2023-09-18 00:00:00",
+      16245501.705671728
+    ],
+    [
+      "2023-09-20 00:00:00",
+      16287001.705671728
+    ],
+    [
+      "2023-09-21 00:00:00",
+      16262301.705671728
+    ],
+    [
+      "2023-09-28 00:00:00",
+      16212601.705671728
+    ],
+    [
+      "2023-09-28 00:00:00",
+      16274501.705671728
+    ],
+    [
+      "2023-10-05 00:00:00",
+      16307001.705671728
+    ],
+    [
+      "2023-10-05 00:00:00",
+      16275501.705671728
+    ],
+    [
+      "2023-10-06 00:00:00",
+      16190501.705671728
+    ],
+    [
+      "2023-10-09 00:00:00",
+      16173301.705671728
+    ],
+    [
+      "2023-10-09 00:00:00",
+      16088301.705671728
+    ],
+    [
+      "2023-10-09 00:00:00",
+      16026701.705671728
+    ],
+    [
+      "2023-10-09 00:00:00",
+      16085001.705671728
+    ],
+    [
+      "2023-10-10 00:00:00",
+      16087301.705671728
+    ],
+    [
+      "2023-10-10 00:00:00",
+      16002301.705671728
+    ],
+    [
+      "2023-10-10 00:00:00",
+      15917301.705671728
+    ],
+    [
+      "2023-10-10 00:00:00",
+      15982601.705671728
+    ],
+    [
+      "2023-10-10 00:00:00",
+      15984901.705671728
+    ],
+    [
+      "2023-10-18 00:00:00",
+      15955201.705671728
+    ],
+    [
+      "2023-10-18 00:00:00",
+      16041101.705671728
+    ],
+    [
+      "2023-10-18 00:00:00",
+      16041701.705671728
+    ],
+    [
+      "2023-10-25 00:00:00",
+      16008801.705671728
+    ],
+    [
+      "2023-10-25 00:00:00",
+      16085301.705671728
+    ],
+    [
+      "2023-10-26 00:00:00",
+      16103601.705671728
+    ],
+    [
+      "2023-10-30 00:00:00",
+      16217101.705671728
+    ],
+    [
+      "2023-10-31 00:00:00",
+      16341801.705671728
+    ],
+    [
+      "2023-10-31 00:00:00",
+      16359401.705671728
+    ],
+    [
+      "2023-11-01 00:00:00",
+      16473001.705671728
+    ],
+    [
+      "2023-11-01 00:00:00",
+      16528801.705671728
+    ],
+    [
+      "2023-11-02 00:00:00",
+      16633001.705671728
+    ],
+    [
+      "2023-11-06 00:00:00",
+      16695901.705671728
+    ],
+    [
+      "2023-11-13 00:00:00",
+      16747901.705671728
+    ],
+    [
+      "2023-11-22 00:00:00",
+      16888001.705671728
+    ],
+    [
+      "2023-11-23 00:00:00",
+      17016801.705671728
+    ],
+    [
+      "2023-11-23 00:00:00",
+      17139001.705671728
+    ],
+    [
+      "2023-11-24 00:00:00",
+      17054001.705671728
+    ],
+    [
+      "2023-11-28 00:00:00",
+      17215501.705671728
+    ],
+    [
+      "2023-12-06 00:00:00",
+      17130501.705671728
+    ],
+    [
+      "2023-12-07 00:00:00",
+      17045501.705671728
+    ],
+    [
+      "2023-12-08 00:00:00",
+      17172501.705671728
+    ],
+    [
+      "2023-12-08 00:00:00",
+      17212901.705671728
+    ],
+    [
+      "2023-12-11 00:00:00",
+      17258401.705671728
+    ],
+    [
+      "2023-12-11 00:00:00",
+      17281701.705671728
+    ],
+    [
+      "2023-12-12 00:00:00",
+      17335701.705671728
+    ],
+    [
+      "2023-12-13 00:00:00",
+      17427501.705671728
+    ],
+    [
+      "2023-12-19 00:00:00",
+      17386101.705671728
+    ],
+    [
+      "2023-12-20 00:00:00",
+      17379801.705671728
+    ],
+    [
+      "2023-12-20 00:00:00",
+      17599601.705671728
+    ],
+    [
+      "2023-12-20 00:00:00",
+      17538201.705671728
+    ],
+    [
+      "2023-12-20 00:00:00",
+      17695201.705671728
+    ],
+    [
+      "2023-12-20 00:00:00",
+      17845701.705671728
+    ],
+    [
+      "2023-12-20 00:00:00",
+      17869101.705671728
+    ],
+    [
+      "2023-12-26 00:00:00",
+      17892401.705671728
+    ],
+    [
+      "2024-01-01 00:00:00",
+      18110301.705671728
+    ],
+    [
+      "2024-01-01 00:00:00",
+      18087201.705671728
+    ],
+    [
+      "2024-01-01 00:00:00",
+      18501501.705671728
+    ],
+    [
+      "2024-01-04 00:00:00",
+      18519101.705671728
+    ],
+    [
+      "2024-01-05 00:00:00",
+      18501301.705671728
+    ],
+    [
+      "2024-01-05 00:00:00",
+      18754801.705671728
+    ],
+    [
+      "2024-01-05 00:00:00",
+      18753101.705671728
+    ],
+    [
+      "2024-01-08 00:00:00",
+      18850001.705671728
+    ],
+    [
+      "2024-01-09 00:00:00",
+      18839901.705671728
+    ],
+    [
+      "2024-01-09 00:00:00",
+      18858201.705671728
+    ],
+    [
+      "2024-01-09 00:00:00",
+      18773201.705671728
+    ],
+    [
+      "2024-01-09 00:00:00",
+      18747301.705671728
+    ],
+    [
+      "2024-01-09 00:00:00",
+      18750201.705671728
+    ],
+    [
+      "2024-01-09 00:00:00",
+      18789201.705671728
+    ],
+    [
+      "2024-01-16 00:00:00",
+      18706201.705671728
+    ],
+    [
+      "2024-01-23 00:00:00",
+      18714501.705671728
+    ],
+    [
+      "2024-01-23 00:00:00",
+      18750501.705671728
+    ],
+    [
+      "2024-01-23 00:00:00",
+      18767601.705671728
+    ],
+    [
+      "2024-01-24 00:00:00",
+      18706301.705671728
+    ],
+    [
+      "2024-01-25 00:00:00",
+      18753401.705671728
+    ],
+    [
+      "2024-01-29 00:00:00",
+      18743001.705671728
+    ],
+    [
+      "2024-01-29 00:00:00",
+      18673901.705671728
+    ],
+    [
+      "2024-01-30 00:00:00",
+      18712001.705671728
+    ],
+    [
+      "2024-01-30 00:00:00",
+      18644001.705671728
+    ],
+    [
+      "2024-01-30 00:00:00",
+      18574101.705671728
+    ],
+    [
+      "2024-01-30 00:00:00",
+      18530801.705671728
+    ],
+    [
+      "2024-02-01 00:00:00",
+      18549201.705671728
+    ],
+    [
+      "2024-02-01 00:00:00",
+      18496501.705671728
+    ],
+    [
+      "2024-02-01 00:00:00",
+      18528401.705671728
+    ],
+    [
+      "2024-02-05 00:00:00",
+      18523901.705671728
+    ],
+    [
+      "2024-02-12 00:00:00",
+      18438901.705671728
+    ],
+    [
+      "2024-02-12 00:00:00",
+      18474601.705671728
+    ],
+    [
+      "2024-02-12 00:00:00",
+      18438001.705671728
+    ],
+    [
+      "2024-02-13 00:00:00",
+      18404201.705671728
+    ],
+    [
+      "2024-02-14 00:00:00",
+      18319201.705671728
+    ],
+    [
+      "2024-02-21 00:00:00",
+      18312101.705671728
+    ],
+    [
+      "2024-02-23 00:00:00",
+      18289701.705671728
+    ],
+    [
+      "2024-02-26 00:00:00",
+      18273301.705671728
+    ],
+    [
+      "2024-02-26 00:00:00",
+      18188301.705671728
+    ],
+    [
+      "2024-02-27 00:00:00",
+      18103301.705671728
+    ],
+    [
+      "2024-02-27 00:00:00",
+      18066601.705671728
+    ],
+    [
+      "2024-02-28 00:00:00",
+      18076501.705671728
+    ],
+    [
+      "2024-02-29 00:00:00",
+      18160501.705671728
+    ],
+    [
+      "2024-02-29 00:00:00",
+      18326301.705671728
+    ],
+    [
+      "2024-02-29 00:00:00",
+      18494101.705671728
+    ],
+    [
+      "2024-03-04 00:00:00",
+      18409101.705671728
+    ],
+    [
+      "2024-03-05 00:00:00",
+      18436101.705671728
+    ],
+    [
+      "2024-03-05 00:00:00",
+      18597201.705671728
+    ],
+    [
+      "2024-03-05 00:00:00",
+      18552501.705671728
+    ],
+    [
+      "2024-03-05 00:00:00",
+      18467501.705671728
+    ],
+    [
+      "2024-03-12 00:00:00",
+      18382501.705671728
+    ],
+    [
+      "2024-03-14 00:00:00",
+      18409301.705671728
+    ],
+    [
+      "2024-03-18 00:00:00",
+      18392501.705671728
+    ],
+    [
+      "2024-03-18 00:00:00",
+      18511801.705671728
+    ],
+    [
+      "2024-03-18 00:00:00",
+      18624601.705671728
+    ],
+    [
+      "2024-03-18 00:00:00",
+      18539601.705671728
+    ],
+    [
+      "2024-03-19 00:00:00",
+      18556101.705671728
+    ],
+    [
+      "2024-03-22 00:00:00",
+      18504401.705671728
+    ],
+    [
+      "2024-03-22 00:00:00",
+      18464901.705671728
+    ],
+    [
+      "2024-03-26 00:00:00",
+      18429701.705671728
+    ],
+    [
+      "2024-04-08 00:00:00",
+      18523601.705671728
+    ],
+    [
+      "2024-04-09 00:00:00",
+      18530701.705671728
+    ],
+    [
+      "2024-04-12 00:00:00",
+      18445701.705671728
+    ],
+    [
+      "2024-04-12 00:00:00",
+      18444101.705671728
+    ],
+    [
+      "2024-04-15 00:00:00",
+      18408201.705671728
+    ],
+    [
+      "2024-04-15 00:00:00",
+      18359501.705671728
+    ],
+    [
+      "2024-04-15 00:00:00",
+      18440201.705671728
+    ],
+    [
+      "2024-04-15 00:00:00",
+      18514501.705671728
+    ],
+    [
+      "2024-04-15 00:00:00",
+      18559701.705671728
+    ],
+    [
+      "2024-04-15 00:00:00",
+      18620901.705671728
+    ],
+    [
+      "2024-04-16 00:00:00",
+      18592501.705671728
+    ],
+    [
+      "2024-04-16 00:00:00",
+      18635801.705671728
+    ],
+    [
+      "2024-04-16 00:00:00",
+      18651701.705671728
+    ],
+    [
+      "2024-04-16 00:00:00",
+      18625001.705671728
+    ],
+    [
+      "2024-04-16 00:00:00",
+      18697101.705671728
+    ],
+    [
+      "2024-04-29 00:00:00",
+      18687901.705671728
+    ],
+    [
+      "2024-04-29 00:00:00",
+      18664901.705671728
+    ],
+    [
+      "2024-05-02 00:00:00",
+      18651301.705671728
+    ],
+    [
+      "2024-05-03 00:00:00",
+      18605201.705671728
+    ],
+    [
+      "2024-05-06 00:00:00",
+      18587601.705671728
+    ],
+    [
+      "2024-05-06 00:00:00",
+      18502601.705671728
+    ],
+    [
+      "2024-05-06 00:00:00",
+      18490001.705671728
+    ],
+    [
+      "2024-05-07 00:00:00",
+      18475101.705671728
+    ],
+    [
+      "2024-05-07 00:00:00",
+      18645001.705671728
+    ],
+    [
+      "2024-05-07 00:00:00",
+      18688401.705671728
+    ],
+    [
+      "2024-05-07 00:00:00",
+      18660101.705671728
+    ],
+    [
+      "2024-05-07 00:00:00",
+      18668901.705671728
+    ],
+    [
+      "2024-05-07 00:00:00",
+      18598701.705671728
+    ],
+    [
+      "2024-05-07 00:00:00",
+      18597701.705671728
+    ],
+    [
+      "2024-05-07 00:00:00",
+      18591301.705671728
+    ],
+    [
+      "2024-05-21 00:00:00",
+      18613501.705671728
+    ],
+    [
+      "2024-05-24 00:00:00",
+      18660201.705671728
+    ],
+    [
+      "2024-05-27 00:00:00",
+      18681901.705671728
+    ],
+    [
+      "2024-05-27 00:00:00",
+      18644601.705671728
+    ],
+    [
+      "2024-05-28 00:00:00",
+      18559601.705671728
+    ],
+    [
+      "2024-05-28 00:00:00",
+      18542301.705671728
+    ],
+    [
+      "2024-05-28 00:00:00",
+      18789001.705671728
+    ],
+    [
+      "2024-05-28 00:00:00",
+      18927601.705671728
+    ],
+    [
+      "2024-05-29 00:00:00",
+      19095301.705671728
+    ],
+    [
+      "2024-05-29 00:00:00",
+      19136601.705671728
+    ],
+    [
+      "2024-05-29 00:00:00",
+      19223701.705671728
+    ],
+    [
+      "2024-05-29 00:00:00",
+      19355901.705671728
+    ],
+    [
+      "2024-05-29 00:00:00",
+      19399101.705671728
+    ],
+    [
+      "2024-05-29 00:00:00",
+      19589901.705671728
+    ],
+    [
+      "2024-05-29 00:00:00",
+      19679401.705671728
+    ],
+    [
+      "2024-06-10 00:00:00",
+      19616301.705671728
+    ],
+    [
+      "2024-06-21 00:00:00",
+      19697801.705671728
+    ],
+    [
+      "2024-06-26 00:00:00",
+      19772001.705671728
+    ],
+    [
+      "2024-06-27 00:00:00",
+      20098701.705671728
+    ],
+    [
+      "2024-06-27 00:00:00",
+      20087101.705671728
+    ],
+    [
+      "2024-06-27 00:00:00",
+      20099301.705671728
+    ],
+    [
+      "2024-06-27 00:00:00",
+      20088701.705671728
+    ],
+    [
+      "2024-06-27 00:00:00",
+      20055401.705671728
+    ],
+    [
+      "2024-07-02 00:00:00",
+      20113901.705671728
+    ],
+    [
+      "2024-07-04 00:00:00",
+      20210301.705671728
+    ],
+    [
+      "2024-07-08 00:00:00",
+      20202201.705671728
+    ],
+    [
+      "2024-07-08 00:00:00",
+      20253901.705671728
+    ],
+    [
+      "2024-07-10 00:00:00",
+      20259101.705671728
+    ],
+    [
+      "2024-07-10 00:00:00",
+      20183601.705671728
+    ],
+    [
+      "2024-07-10 00:00:00",
+      20115401.705671728
+    ],
+    [
+      "2024-07-10 00:00:00",
+      20145501.705671728
+    ],
+    [
+      "2024-07-12 00:00:00",
+      20117601.705671728
+    ],
+    [
+      "2024-07-18 00:00:00",
+      20122101.705671728
+    ],
+    [
+      "2024-07-18 00:00:00",
+      20130101.705671728
+    ],
+    [
+      "2024-07-19 00:00:00",
+      20180001.705671728
+    ],
+    [
+      "2024-07-19 00:00:00",
+      20254301.705671728
+    ],
+    [
+      "2024-07-19 00:00:00",
+      20275801.705671728
+    ],
+    [
+      "2024-07-19 00:00:00",
+      20270401.705671728
+    ],
+    [
+      "2024-07-22 00:00:00",
+      20509101.705671728
+    ],
+    [
+      "2024-07-24 00:00:00",
+      20535801.705671728
+    ],
+    [
+      "2024-08-01 00:00:00",
+      20799901.705671728
+    ],
+    [
+      "2024-08-02 00:00:00",
+      20845601.705671728
+    ],
+    [
+      "2024-08-02 00:00:00",
+      20958501.705671728
+    ],
+    [
+      "2024-08-02 00:00:00",
+      20951401.705671728
+    ],
+    [
+      "2024-08-05 00:00:00",
+      20971401.705671728
+    ],
+    [
+      "2024-08-05 00:00:00",
+      20947901.705671728
+    ],
+    [
+      "2024-08-05 00:00:00",
+      21054401.705671728
+    ],
+    [
+      "2024-08-07 00:00:00",
+      21059901.705671728
+    ],
+    [
+      "2024-08-07 00:00:00",
+      21077401.705671728
+    ],
+    [
+      "2024-08-08 00:00:00",
+      21070101.705671728
+    ],
+    [
+      "2024-08-08 00:00:00",
+      21080601.705671728
+    ],
+    [
+      "2024-08-08 00:00:00",
+      21281501.705671728
+    ],
+    [
+      "2024-08-08 00:00:00",
+      21305901.705671728
+    ],
+    [
+      "2024-08-12 00:00:00",
+      21384201.705671728
+    ],
+    [
+      "2024-08-13 00:00:00",
+      21361801.705671728
+    ],
+    [
+      "2024-08-30 00:00:00",
+      21419001.705671728
+    ],
+    [
+      "2024-09-03 00:00:00",
+      21536301.705671728
+    ],
+    [
+      "2024-09-06 00:00:00",
+      21451301.705671728
+    ],
+    [
+      "2024-09-06 00:00:00",
+      21437701.705671728
+    ],
+    [
+      "2024-09-09 00:00:00",
+      21414501.705671728
+    ],
+    [
+      "2024-09-10 00:00:00",
+      21430001.705671728
+    ],
+    [
+      "2024-09-10 00:00:00",
+      21402801.705671728
+    ],
+    [
+      "2024-09-11 00:00:00",
+      21317801.705671728
+    ],
+    [
+      "2024-09-11 00:00:00",
+      21361001.705671728
+    ],
+    [
+      "2024-09-11 00:00:00",
+      21332501.705671728
+    ],
+    [
+      "2024-09-12 00:00:00",
+      21396501.705671728
+    ],
+    [
+      "2024-09-17 00:00:00",
+      21451901.705671728
+    ],
+    [
+      "2024-09-19 00:00:00",
+      21447901.705671728
+    ],
+    [
+      "2024-09-19 00:00:00",
+      21390601.705671728
+    ],
+    [
+      "2024-09-19 00:00:00",
+      21305601.705671728
+    ],
+    [
+      "2024-09-19 00:00:00",
+      21287101.705671728
+    ],
+    [
+      "2024-09-24 00:00:00",
+      21261201.705671728
+    ],
+    [
+      "2024-09-26 00:00:00",
+      21228801.705671728
+    ],
+    [
+      "2024-09-26 00:00:00",
+      21143801.705671728
+    ],
+    [
+      "2024-09-30 00:00:00",
+      21058801.705671728
+    ],
+    [
+      "2024-09-30 00:00:00",
+      20973801.705671728
+    ],
+    [
+      "2024-09-30 00:00:00",
+      20891801.705671728
+    ],
+    [
+      "2024-10-01 00:00:00",
+      20908901.705671728
+    ],
+    [
+      "2024-10-01 00:00:00",
+      20823901.705671728
+    ],
+    [
+      "2024-10-01 00:00:00",
+      20738901.705671728
+    ],
+    [
+      "2024-10-03 00:00:00",
+      20697501.705671728
+    ],
+    [
+      "2024-10-07 00:00:00",
+      20634401.705671728
+    ],
+    [
+      "2024-10-09 00:00:00",
+      20563401.705671728
+    ],
+    [
+      "2024-10-09 00:00:00",
+      20478401.705671728
+    ],
+    [
+      "2024-10-10 00:00:00",
+      20430501.705671728
+    ],
+    [
+      "2024-10-10 00:00:00",
+      20442701.705671728
+    ],
+    [
+      "2024-10-15 00:00:00",
+      20357701.705671728
+    ],
+    [
+      "2024-10-16 00:00:00",
+      20272701.705671728
+    ],
+    [
+      "2024-10-16 00:00:00",
+      20187701.705671728
+    ],
+    [
+      "2024-10-21 00:00:00",
+      20102701.705671728
+    ],
+    [
+      "2024-10-21 00:00:00",
+      20017701.705671728
+    ],
+    [
+      "2024-10-21 00:00:00",
+      19977601.705671728
+    ],
+    [
+      "2024-10-21 00:00:00",
+      19938301.705671728
+    ],
+    [
+      "2024-10-22 00:00:00",
+      19853301.705671728
+    ],
+    [
+      "2024-10-22 00:00:00",
+      19901301.705671728
+    ],
+    [
+      "2024-10-23 00:00:00",
+      19975101.705671728
+    ],
+    [
+      "2024-10-28 00:00:00",
+      20023801.705671728
+    ],
+    [
+      "2024-10-29 00:00:00",
+      20018001.705671728
+    ],
+    [
+      "2024-10-30 00:00:00",
+      19975001.705671728
+    ],
+    [
+      "2024-10-31 00:00:00",
+      20055401.705671728
+    ],
+    [
+      "2024-10-31 00:00:00",
+      19978001.705671728
+    ],
+    [
+      "2024-11-04 00:00:00",
+      20049401.705671728
+    ],
+    [
+      "2024-11-07 00:00:00",
+      20112701.705671728
+    ],
+    [
+      "2024-11-08 00:00:00",
+      20151101.705671728
+    ],
+    [
+      "2024-11-11 00:00:00",
+      20097101.705671728
+    ],
+    [
+      "2024-11-11 00:00:00",
+      20108801.705671728
+    ],
+    [
+      "2024-11-12 00:00:00",
+      20193701.705671728
+    ],
+    [
+      "2024-11-12 00:00:00",
+      20181201.705671728
+    ],
+    [
+      "2024-11-12 00:00:00",
+      20149601.705671728
+    ],
+    [
+      "2024-11-13 00:00:00",
+      20203201.705671728
+    ],
+    [
+      "2024-11-13 00:00:00",
+      20271101.705671728
+    ],
+    [
+      "2024-11-18 00:00:00",
+      20282901.705671728
+    ],
+    [
+      "2024-11-18 00:00:00",
+      20334901.705671728
+    ],
+    [
+      "2024-11-19 00:00:00",
+      20354601.705671728
+    ],
+    [
+      "2024-11-21 00:00:00",
+      20588601.705671728
+    ],
+    [
+      "2024-11-21 00:00:00",
+      20651101.705671728
+    ],
+    [
+      "2024-11-26 00:00:00",
+      20591901.705671728
+    ],
+    [
+      "2024-11-27 00:00:00",
+      20530501.705671728
+    ],
+    [
+      "2024-12-03 00:00:00",
+      20499001.705671728
+    ],
+    [
+      "2024-12-03 00:00:00",
+      20612401.705671728
+    ],
+    [
+      "2024-12-09 00:00:00",
+      20630401.705671728
+    ],
+    [
+      "2024-12-12 00:00:00",
+      20666801.705671728
+    ],
+    [
+      "2024-12-16 00:00:00",
+      20581801.705671728
+    ],
+    [
+      "2024-12-18 00:00:00",
+      20553801.705671728
+    ],
+    [
+      "2024-12-18 00:00:00",
+      20471101.705671728
+    ],
+    [
+      "2024-12-18 00:00:00",
+      20402001.705671728
+    ],
+    [
+      "2024-12-18 00:00:00",
+      20329701.705671728
+    ],
+    [
+      "2024-12-18 00:00:00",
+      20244701.705671728
+    ],
+    [
+      "2024-12-19 00:00:00",
+      20180901.705671728
+    ],
+    [
+      "2024-12-19 00:00:00",
+      20211901.705671728
+    ],
+    [
+      "2024-12-19 00:00:00",
+      20188201.705671728
+    ],
+    [
+      "2024-12-20 00:00:00",
+      20223201.705671728
+    ],
+    [
+      "2024-12-20 00:00:00",
+      20183401.705671728
+    ],
+    [
+      "2024-12-23 00:00:00",
+      20146501.705671728
+    ],
+    [
+      "2024-12-23 00:00:00",
+      20093701.705671728
+    ],
+    [
+      "2024-12-30 00:00:00",
+      20008701.705671728
+    ]
+  ]
+}

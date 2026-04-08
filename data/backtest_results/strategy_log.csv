@@ -1,0 +1,2 @@
+strategy,created_at,test_n_trades,test_years,test_trades_per_year,test_win_rate,test_avg_win,test_avg_loss,test_profit_factor,test_sharpe,test_total_pnl,test_final_capital,test_total_return_pct,test_annual_return_pct,test_stop_loss_count,test_recovery_count,test_time_stop_count
+baseline_v1_price_shock_top100,2026-04-07T16:14:14.255730,473,2.17,218.4,0.6173,0.1008,-0.0501,3.25,6.26,20360200.0,30360200.0,203.6,67.0,51,265,157
