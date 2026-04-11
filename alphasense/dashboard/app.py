@@ -187,9 +187,9 @@ st.markdown("---")
 
 # ─── Tabs ────────────────────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
     "📈 Equity Curve", "🚨 Live Signals",
-    "🏛 Universe",     "🎙 Earnings Calls", "⚠ Risk Monitor",
+    "🏛 Universe",     "🎙 Earnings Calls", "⚠ Risk Monitor", "🖥 Pipeline Logs",
 ])
 
 # ── Tab 1: Equity Curve ───────────────────────────────────────────────────────
@@ -389,6 +389,147 @@ with tab5:
                         template="plotly_dark", height=320,
                         yaxis_title="% Portfolio")
     st.plotly_chart(fig_r, use_container_width=True)
+
+
+# ── Tab 6: Pipeline Logs ──────────────────────────────────────────────────────
+with tab6:
+    st.subheader("Pipeline Run Logs")
+
+    log_dir = cfg.base_dir / "logs"
+
+    # ── Run summary cards ─────────────────────────────────────────────────────
+    col_pre, col_post, col_bt = st.columns(3)
+
+    def _last_run_time(label: str) -> str:
+        """Find the most recent line containing label in any log file."""
+        try:
+            logs = sorted(log_dir.glob("*.log"), reverse=True)
+            for lf in logs[:5]:
+                for line in reversed(lf.read_text(errors="ignore").splitlines()):
+                    if label.lower() in line.lower():
+                        # extract timestamp if present
+                        parts = line.split("|")
+                        return parts[0].strip() if parts else line[:20]
+        except Exception:
+            pass
+        return "No data yet"
+
+    def _last_run_status(label: str) -> str:
+        try:
+            logs = sorted(log_dir.glob("*.log"), reverse=True)
+            errors = 0
+            for lf in logs[:3]:
+                for line in lf.read_text(errors="ignore").splitlines():
+                    if "error" in line.lower() or "exception" in line.lower():
+                        errors += 1
+            return "⚠ Errors found" if errors else "✅ Clean"
+        except Exception:
+            return "Unknown"
+
+    col_pre.metric("Pre-market (08:30 IST)", _last_run_time("pre-market"), "fetch data")
+    col_post.metric("Post-close (15:45 IST)", _last_run_time("post-close"), "signals + execute")
+    col_bt.metric("Nightly backtest (23:00 IST)", _last_run_time("walk-forward"), "test period")
+
+    st.markdown("---")
+
+    # ── Cron log viewer ───────────────────────────────────────────────────────
+    col_left, col_right = st.columns([1, 2])
+
+    with col_left:
+        st.markdown("**Log files**")
+        log_files = sorted(log_dir.glob("*.log"), reverse=True) if log_dir.exists() else []
+        cron_log  = log_dir / "cron.log"
+
+        if not log_files and not cron_log.exists():
+            st.info("No log files yet — cron jobs haven't run.\nFirst run at 08:30 IST on the next weekday.")
+            selected_log = None
+        else:
+            all_logs = []
+            if cron_log.exists():
+                all_logs.append(cron_log)
+            all_logs += [f for f in log_files if f != cron_log]
+
+            names = [f.name for f in all_logs]
+            choice = st.radio("Select log", names, index=0)
+            selected_log = log_dir / choice
+
+        st.markdown("---")
+        lines_to_show = st.slider("Lines to display", 20, 500, 100, 10)
+        auto_refresh  = st.checkbox("Auto-refresh every 30s", value=False)
+        if auto_refresh:
+            import time
+            st.rerun() if (int(time.time()) % 30 == 0) else None
+
+    with col_right:
+        if selected_log and selected_log.exists():
+            content = selected_log.read_text(errors="ignore")
+            lines   = content.splitlines()
+            tail    = "\n".join(lines[-lines_to_show:])
+
+            # Colour-code errors
+            highlighted = []
+            for line in lines[-lines_to_show:]:
+                if "error" in line.lower() or "exception" in line.lower():
+                    highlighted.append(f"🔴 {line}")
+                elif "warning" in line.lower():
+                    highlighted.append(f"🟡 {line}")
+                elif "✅" in line or "complete" in line.lower() or "ok" in line.lower():
+                    highlighted.append(f"🟢 {line}")
+                else:
+                    highlighted.append(line)
+
+            st.code("\n".join(highlighted), language="bash")
+            st.caption(f"{len(lines)} total lines · showing last {min(lines_to_show, len(lines))}")
+        else:
+            st.code("# Waiting for first cron run...\n# Pre-market:  08:30 IST (03:00 UTC)\n# Post-close:  15:45 IST (10:15 UTC)\n# Nightly:     23:00 IST (17:30 UTC)", language="bash")
+
+    st.markdown("---")
+
+    # ── Signal history from paper state ──────────────────────────────────────
+    st.subheader("Paper Trade History")
+    paper_path = cfg.data_dir / "paper_state.json"
+
+    if paper_path.exists():
+        try:
+            state  = json.loads(paper_path.read_text())
+            trades = state.get("trades", [])
+            orders = state.get("orders", [])
+
+            m1, m2, m3, m4 = st.columns(4)
+            m1.metric("Capital",        f"₹{state.get('capital', cfg.backtest.capital):,.0f}")
+            m2.metric("Total trades",   len(trades))
+            m3.metric("Open orders",    len(orders))
+            m4.metric("Mode",           state.get("mode", "paper").upper())
+
+            if trades:
+                tdf = pd.DataFrame(trades)
+                cols_show = [c for c in ["entry_date","symbol","direction","qty","entry_price","status"] if c in tdf.columns]
+                st.dataframe(
+                    tdf[cols_show].sort_values("entry_date", ascending=False).head(50),
+                    use_container_width=True,
+                    hide_index=True,
+                )
+            else:
+                st.info("No trades yet — signals will appear here after the first post-close cron run.")
+        except Exception as e:
+            st.warning(f"Could not read paper state: {e}")
+    else:
+        st.info("Paper trading state not initialised yet. Will appear after first execution run.")
+
+    # ── Daily signal log ─────────────────────────────────────────────────────
+    st.subheader("Today's Signals")
+    today_log = log_dir / f"daily_{datetime.now().strftime('%Y-%m-%d')}.log"
+    if today_log.exists():
+        content = today_log.read_text(errors="ignore")
+        # Extract signal lines only
+        signal_lines = [l for l in content.splitlines()
+                        if any(k in l for k in ["BUY", "SELL", "signal", "zscore", "sentiment", "position"])]
+        if signal_lines:
+            st.code("\n".join(signal_lines[-50:]), language="bash")
+        else:
+            st.info("Pipeline ran today but no signals triggered yet.")
+    else:
+        st.info(f"No log for today ({datetime.now().strftime('%Y-%m-%d')}) — pipeline hasn't run yet.")
 
 
 # ─── Footer ───────────────────────────────────────────────────────────────────
