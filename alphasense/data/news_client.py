@@ -190,12 +190,16 @@ def fetch_and_save() -> list[dict]:
     return articles
 
 
-def load_news(days: int = None) -> pd.DataFrame:
-    """Load saved news. days=7 → last 7 files, None → all."""
+def load_news(days=None) -> pd.DataFrame:
+    """Load saved news. days=7 → last 7 files, None → all, days='YYYYMMDD' → specific date."""
     records = []
-    files = sorted(cfg.news_dir.glob("news_*.json"), reverse=True)
-    if days:
-        files = files[:days]
+    if isinstance(days, str):
+        # Specific date string like "20260411"
+        files = [cfg.news_dir / f"news_{days}.json"]
+    else:
+        files = sorted(cfg.news_dir.glob("news_*.json"), reverse=True)
+        if days:
+            files = files[:days]
     for f in files:
         try:
             records.extend(json.load(open(f, encoding="utf-8")))
