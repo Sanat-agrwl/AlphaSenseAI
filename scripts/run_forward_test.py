@@ -18,8 +18,18 @@ tester.load()
 
 sentiment = None
 if args.with_sentiment:
+    # Try ensemble scores first (Claude + GPT-4o + FinBERT)
     from alphasense.sentiment.ensemble import aggregate_sentiment
     sentiment = aggregate_sentiment(days=30)
+
+    # Fall back to FinBERT scored_news.parquet if no ensemble scores
+    if not sentiment:
+        from alphasense.sentiment.text import load_scored_news, aggregate_sentiment_by_stock
+        scored = load_scored_news()
+        if not scored.empty:
+            sentiment = aggregate_sentiment_by_stock(scored, lookback_days=30)
+            print(f"Using FinBERT scores (no ensemble scores found)")
+
     print(f"Loaded sentiment for {len(sentiment)} stocks")
 
 result = tester.run(start=args.start, end=args.end,
