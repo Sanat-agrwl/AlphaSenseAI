@@ -395,7 +395,7 @@ with tab5:
 with tab6:
     st.subheader("Pipeline Run Logs")
 
-    log_dir = cfg.base_dir / "logs"
+    log_dir = cfg.logs_dir
 
     # ── Run summary cards ─────────────────────────────────────────────────────
     col_pre, col_post, col_bt = st.columns(3)
