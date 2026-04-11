@@ -280,11 +280,20 @@ with tab2:
 
         st.markdown("---")
 
+        # ── Data transparency banner ──────────────────────────────────────────
+        st.info(
+            "**Data note:** The events driving these trades are price-shock signals "
+            "(Z-score crossings on real NSE price data via yfinance), NOT real news events. "
+            "Sentiment column = 0.0 placeholder — add ANTHROPIC_API_KEY / OPENAI_API_KEY "
+            "to enable ensemble scoring. Results are a mean-reversion backtest on real prices."
+        )
+
         # Signal detail table with slider filtering
         sigs = fwd.get("signals", [])
         if sigs:
             sdf = pd.DataFrame(sigs)
             sdf["date"] = pd.to_datetime(sdf["date"])
+            sdf["win"]  = sdf["return_pct"] > 0
 
             # Apply slider filters
             sdf_filtered = sdf[
@@ -292,47 +301,74 @@ with tab2:
                 (sdf["sentiment"] <= sent_thr)
             ] if "sentiment" in sdf.columns else sdf[sdf["zscore"] <= z_thr]
 
-            col_l, col_r = st.columns([2,1])
-            with col_l:
-                st.markdown(f"**{len(sdf_filtered)} trades** matching current filters "
-                            f"(z ≤ {z_thr}, sent ≤ {sent_thr})")
+            wins   = (sdf_filtered["return_pct"] > 0).sum()
+            losses = (sdf_filtered["return_pct"] <= 0).sum()
 
-                show_cols = [c for c in ["date","symbol","zscore","sentiment",
-                                         "return_pct","exit_reason"] if c in sdf_filtered.columns]
+            # Charts row
+            col_r1, col_r2, col_r3 = st.columns(3)
+            with col_r1:
+                fig_ret = px.histogram(sdf_filtered, x="return_pct", nbins=30,
+                                       title=f"Return Distribution ({len(sdf_filtered)} trades)",
+                                       color_discrete_sequence=["#4dabf7"])
+                fig_ret.add_vline(x=0, line_color="white", line_dash="dash")
+                fig_ret.update_layout(template="plotly_dark", height=260, margin=dict(t=30))
+                st.plotly_chart(fig_ret, use_container_width=True)
+            with col_r2:
+                ec = sdf_filtered["exit_reason"].value_counts().reset_index()
+                ec.columns = ["reason","count"]
+                fig_ec = px.pie(ec, names="reason", values="count", title="Exit Reasons",
+                                color_discrete_sequence=["#00d97e","#e63757","#f6c343"])
+                fig_ec.update_layout(template="plotly_dark", height=260, margin=dict(t=30))
+                st.plotly_chart(fig_ec, use_container_width=True)
+            with col_r3:
+                # Monthly PnL bar
+                sdf_filtered["month"] = sdf_filtered["date"].dt.to_period("M").astype(str)
+                monthly = sdf_filtered.groupby("month")["return_pct"].sum().reset_index()
+                monthly.columns = ["month", "pnl"]
+                fig_m = px.bar(monthly, x="month", y="pnl", title="Monthly P&L (%)",
+                               color="pnl", color_continuous_scale=["#e63757","#f6c343","#00d97e"],
+                               color_continuous_midpoint=0)
+                fig_m.update_layout(template="plotly_dark", height=260, margin=dict(t=30),
+                                    showlegend=False)
+                st.plotly_chart(fig_m, use_container_width=True)
 
-                def _colour_ret(v):
-                    if pd.isna(v): return ""
-                    return "color:#00d97e" if v > 0 else "color:#e63757"
+            # Full trade table
+            st.markdown(
+                f"**All {len(sdf_filtered)} trades** — "
+                f"{wins} wins / {losses} losses "
+                f"(filter: z ≤ {z_thr})  "
+                f"| Sort any column | Search with Ctrl+F in browser"
+            )
 
-                styled = sdf_filtered[show_cols].sort_values("date", ascending=False).style \
-                    .format({"zscore": "{:.2f}", "sentiment": "{:.3f}",
-                             "return_pct": "{:+.1f}%"})
-                if "return_pct" in sdf_filtered.columns:
-                    styled = styled.applymap(_colour_ret, subset=["return_pct"])
-                st.dataframe(styled, use_container_width=True, height=400, hide_index=True)
+            show_cols = [c for c in ["date","symbol","zscore","entry_price",
+                                      "return_pct","pnl","exit_reason"] if c in sdf_filtered.columns]
 
-            with col_r:
-                # Return distribution
-                if "return_pct" in sdf_filtered.columns and len(sdf_filtered):
-                    fig_ret = px.histogram(sdf_filtered, x="return_pct", nbins=25,
-                                           title="Return Distribution",
-                                           color_discrete_sequence=["#4dabf7"])
-                    fig_ret.add_vline(x=0, line_color="white", line_dash="dash")
-                    fig_ret.update_layout(template="plotly_dark", height=280)
-                    st.plotly_chart(fig_ret, use_container_width=True)
+            def _colour_ret(v):
+                if pd.isna(v): return ""
+                return "color:#00d97e;font-weight:bold" if v > 0 else "color:#e63757;font-weight:bold"
 
-                    # Exit reason breakdown
-                    ec = sdf_filtered["exit_reason"].value_counts().reset_index()
-                    ec.columns = ["reason","count"]
-                    fig_ec = px.pie(ec, names="reason", values="count",
-                                    title="Exit Reasons",
-                                    color_discrete_sequence=["#00d97e","#e63757","#f6c343"])
-                    fig_ec.update_layout(template="plotly_dark", height=280)
-                    st.plotly_chart(fig_ec, use_container_width=True)
+            fmt = {"zscore": "{:.2f}", "return_pct": "{:+.2f}%",
+                   "pnl": "₹{:,.0f}", "entry_price": "₹{:,.1f}"}
+            fmt = {k: v for k, v in fmt.items() if k in show_cols}
+
+            styled = (sdf_filtered[show_cols]
+                      .sort_values("date", ascending=False)
+                      .style.format(fmt))
+            if "return_pct" in show_cols:
+                styled = styled.applymap(_colour_ret, subset=["return_pct"])
+
+            # Show full table — no row limit
+            st.dataframe(styled, use_container_width=True,
+                         height=min(600, 35 * len(sdf_filtered) + 38),
+                         hide_index=True)
+
+            # CSV download
+            csv = sdf_filtered[show_cols].sort_values("date", ascending=False).to_csv(index=False)
+            st.download_button("Download all trades (CSV)", csv,
+                               file_name="forward_test_trades.csv", mime="text/csv")
 
         st.markdown("---")
-        st.caption("💡 Tip: tighten the Z-score slider to see how stricter entry criteria "
-                   "affect win rate and trade count.")
+        st.caption("Tip: Z-score slider tightens entry criteria — fewer but higher-conviction trades.")
 
 
 # ── Tab 3: Live Signals ───────────────────────────────────────────────────────
