@@ -407,7 +407,7 @@ with tab3:
                 "zscore":    "{:.2f}",
                 "price":     "₹{:,.1f}",
                 "sentiment": lambda x: f"{x:+.3f}" if pd.notna(x) else "—",
-            }).background_gradient(subset=["zscore"], cmap="RdYlGn"),
+            }),
             use_container_width=True,
             hide_index=True,
         )
