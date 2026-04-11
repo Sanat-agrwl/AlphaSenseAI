@@ -2,69 +2,129 @@
 Financial News RSS Client
 ==========================
 Polls ET Markets, MoneyControl, LiveMint RSS feeds.
-Maps articles to NSE symbols. Saves daily JSON files.
-
-Run:
-    python scripts/fetch_news.py
+Maps articles to NSE symbols using symbol + company-name matching.
 """
-
 import sys, re, json, time
 from pathlib import Path
 from datetime import datetime
 
 import feedparser
 import pandas as pd
-from bs4 import BeautifulSoup
 from loguru import logger
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from config.settings import cfg
 
 RSS_FEEDS = {
-    "et_markets":   ("https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms", "ET"),
-    "et_companies": ("https://economictimes.indiatimes.com/news/company/rssfeeds/2143429.cms", "ET"),
-    "mc_latest":    ("https://www.moneycontrol.com/rss/latestnews.xml", "MC"),
-    "mc_markets":   ("https://www.moneycontrol.com/rss/marketreports.xml", "MC"),
-    "livemint":     ("https://www.livemint.com/rss/markets", "LM"),
+    "et_markets":    ("https://economictimes.indiatimes.com/markets/rssfeeds/1977021501.cms",  "ET"),
+    "et_companies":  ("https://economictimes.indiatimes.com/industry/rssfeeds/13352306.cms",   "ET"),
+    "mc_latest":     ("https://www.moneycontrol.com/rss/latestnews.xml",                       "MC"),
+    "mc_markets":    ("https://www.moneycontrol.com/rss/marketreports.xml",                    "MC"),
+    "livemint":      ("https://www.livemint.com/rss/markets",                                  "LM"),
+}
+
+# ── Well-known company name aliases (NSE symbol → search terms) ───────────────
+# Covers common short names used in headlines that differ from NSE symbol
+COMPANY_ALIASES: dict[str, list[str]] = {
+    "RELIANCE":     ["reliance industries", "reliance jio", "mukesh ambani"],
+    "TCS":          ["tata consultancy", "tcs"],
+    "HDFCBANK":     ["hdfc bank", "hdfcbank"],
+    "INFY":         ["infosys"],
+    "ICICIBANK":    ["icici bank"],
+    "WIPRO":        ["wipro"],
+    "HINDUNILVR":   ["hindustan unilever", "hul"],
+    "BAJFINANCE":   ["bajaj finance"],
+    "BAJAJFINSV":   ["bajaj finserv"],
+    "ADANIENT":     ["adani enterprises"],
+    "ADANIPORTS":   ["adani ports"],
+    "TATAMOTORS":   ["tata motors"],
+    "TATASTEEL":    ["tata steel"],
+    "AXISBANK":     ["axis bank"],
+    "KOTAKBANK":    ["kotak mahindra", "kotak bank"],
+    "SBILIFE":      ["sbi life"],
+    "HDFCLIFE":     ["hdfc life"],
+    "SUNPHARMA":    ["sun pharma", "sun pharmaceutical"],
+    "DRREDDY":      ["dr reddy", "dr. reddy"],
+    "CIPLA":        ["cipla"],
+    "ONGC":         ["ongc", "oil and natural gas"],
+    "NTPC":         ["ntpc"],
+    "POWERGRID":    ["power grid"],
+    "COALINDIA":    ["coal india"],
+    "MARUTI":       ["maruti suzuki", "maruti"],
+    "HEROMOTOCO":   ["hero motocorp", "hero moto"],
+    "M&M":          ["mahindra & mahindra", "m&m"],
+    "ULTRACEMCO":   ["ultratech cement"],
+    "GRASIM":       ["grasim"],
+    "ASIANPAINT":   ["asian paints"],
+    "NESTLEIND":    ["nestle india", "nestle"],
+    "TITAN":        ["titan company", "titan"],
+    "DIVISLAB":     ["divi's laboratories", "divis lab"],
+    "TECHM":        ["tech mahindra"],
+    "HCLTECH":      ["hcl technologies", "hcl tech"],
+    "LT":           ["larsen & toubro", "l&t"],
+    "INDUSINDBK":   ["indusind bank"],
+    "SBIN":         ["state bank of india", "sbi"],
+    "BPCL":         ["bharat petroleum", "bpcl"],
+    "IOC":          ["indian oil", "ioc"],
+    "BHARTIARTL":   ["bharti airtel", "airtel"],
+    "JSWSTEEL":     ["jsw steel"],
+    "HINDALCO":     ["hindalco"],
+    "VEDL":         ["vedanta"],
+    "TATACONSUM":   ["tata consumer"],
 }
 
 
 class StockMatcher:
-    """Maps free text → NSE symbols using NIFTY 500 constituent names."""
+    """Maps free text → NSE symbols."""
 
     def __init__(self):
-        self.lookup: dict[str, str] = {}
-        self.symbols: set[str]      = set()
-        path = cfg.nse_dir / "nifty500_constituents.parquet"
-        if path.exists():
-            df = pd.read_parquet(path)
-            for _, row in df.iterrows():
-                sym = row["symbol"]
+        self.symbols: set[str] = set()
+        # symbol → list of lowercase search terms
+        self.terms: dict[str, list[str]] = {}
+
+        # Load from constituents CSV (written by nse_client.fetch_constituents)
+        csv_path = cfg.data_dir / "nse" / "constituents.csv"
+        if csv_path.exists():
+            syms = pd.read_csv(csv_path)["symbol"].tolist()
+            for sym in syms:
                 self.symbols.add(sym)
-                self.lookup[sym.lower()] = sym
-                name = str(row.get("company_name", "")).lower().strip()
-                if name:
-                    self.lookup[name] = sym
-                    first = name.split()[0]
-                    if len(first) > 3:
-                        self.lookup.setdefault(first, sym)
-            logger.info(f"StockMatcher: {len(self.symbols)} symbols")
+                self.terms[sym] = [sym.lower()]
         else:
-            logger.warning("No constituents parquet. Run fetch_prices --constituents first.")
+            # Fall back to parquet-derived list
+            for f in (cfg.data_dir / "nse").glob("*.parquet"):
+                if f.stem != "INDIAVIX":
+                    self.symbols.add(f.stem)
+                    self.terms[f.stem] = [f.stem.lower()]
+
+        # Add well-known aliases
+        for sym, aliases in COMPANY_ALIASES.items():
+            if sym not in self.terms:
+                self.terms[sym] = [sym.lower()]
+                self.symbols.add(sym)
+            self.terms[sym].extend(aliases)
+
+        logger.info(f"StockMatcher: {len(self.symbols)} symbols loaded")
 
     def match(self, text: str) -> list[str]:
         if not self.symbols:
             return []
+        text_l = text.lower()
         matched: set[str] = set()
-        text_lower = text.lower()
-        for sym in self.symbols:
-            if re.search(rf"\b{re.escape(sym)}\b", text, re.IGNORECASE):
-                matched.add(sym)
-        for name, sym in self.lookup.items():
-            if len(name) > 4 and name in text_lower:
-                matched.add(sym)
-        return list(matched)
+        for sym, terms in self.terms.items():
+            for term in terms:
+                # Use word-boundary match for short terms, substring for long
+                if len(term) <= 6:
+                    if re.search(rf"\b{re.escape(term)}\b", text_l):
+                        matched.add(sym)
+                        break
+                else:
+                    if term in text_l:
+                        matched.add(sym)
+                        break
+        return sorted(matched)
 
+
+# ── Feed parser ───────────────────────────────────────────────────────────────
 
 def _parse_feed(name: str, url: str, source: str) -> list[dict]:
     try:
@@ -77,12 +137,14 @@ def _parse_feed(name: str, url: str, source: str) -> list[dict]:
                 pub = datetime(*e.updated_parsed[:6])
             else:
                 pub = datetime.now()
-            body = BeautifulSoup(
-                e.get("summary", e.get("description", "")), "html.parser"
-            ).get_text(strip=True)
+
+            # Strip HTML from summary without BeautifulSoup dependency
+            raw_body = e.get("summary", e.get("description", ""))
+            body = re.sub(r"<[^>]+>", " ", raw_body).strip()[:1000]
+
             items.append({
-                "headline":     e.get("title", ""),
-                "body":         body[:1000],
+                "headline":     e.get("title", "").strip(),
+                "body":         body,
                 "url":          e.get("link", ""),
                 "source":       source,
                 "published_at": pub.isoformat(),
@@ -98,43 +160,47 @@ def fetch_all_feeds() -> list[dict]:
     all_items = []
     for name, (url, source) in RSS_FEEDS.items():
         all_items.extend(_parse_feed(name, url, source))
-        time.sleep(0.5)
+        time.sleep(0.3)
+    # Deduplicate by URL
     seen, unique = set(), []
     for item in all_items:
         if item["url"] not in seen:
             seen.add(item["url"])
             unique.append(item)
-    logger.info(f"News: {len(unique)} unique articles")
+    logger.info(f"Fetched {len(unique)} unique articles from {len(RSS_FEEDS)} feeds")
     return unique
 
 
 def fetch_and_save() -> list[dict]:
-    """Fetch today's news, match stocks, persist to disk."""
+    """Fetch today's news, match to stocks, save to disk."""
     matcher  = StockMatcher()
     articles = fetch_all_feeds()
+
     for a in articles:
         a["matched_symbols"] = matcher.match(f"{a['headline']} {a['body']}")
+
     matched = sum(1 for a in articles if a["matched_symbols"])
-    logger.info(f"  {matched}/{len(articles)} matched to stocks")
+    logger.info(f"Matched {matched}/{len(articles)} articles to stocks")
 
     cfg.news_dir.mkdir(parents=True, exist_ok=True)
     out = cfg.news_dir / f"news_{datetime.now().strftime('%Y%m%d')}.json"
     with open(out, "w", encoding="utf-8") as f:
         json.dump(articles, f, indent=2, ensure_ascii=False, default=str)
-    logger.info(f"Saved: {out}")
+    logger.info(f"Saved → {out}")
     return articles
 
 
-def load_news(date_str: str = None) -> pd.DataFrame:
-    """Load news. date_str='20260407' for a single day, None for all."""
+def load_news(days: int = None) -> pd.DataFrame:
+    """Load saved news. days=7 → last 7 files, None → all."""
     records = []
-    if date_str:
-        f = cfg.news_dir / f"news_{date_str}.json"
-        if f.exists():
-            records = json.load(open(f))
-    else:
-        for f in sorted(cfg.news_dir.glob("news_*.json")):
-            records.extend(json.load(open(f)))
+    files = sorted(cfg.news_dir.glob("news_*.json"), reverse=True)
+    if days:
+        files = files[:days]
+    for f in files:
+        try:
+            records.extend(json.load(open(f, encoding="utf-8")))
+        except Exception:
+            pass
     df = pd.DataFrame(records)
     if not df.empty:
         df["published_at"] = pd.to_datetime(df["published_at"])

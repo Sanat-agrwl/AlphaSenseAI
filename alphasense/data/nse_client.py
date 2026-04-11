@@ -1,210 +1,234 @@
 """
-NSE Data Client
-===============
-Downloads NIFTY 500 constituent list, OHLCV price history, and India VIX.
-Saves one parquet per stock in data/nse/.
-
-Run:
-    python scripts/fetch_prices.py --backfill
-    python scripts/fetch_prices.py --symbol RELIANCE
-    python scripts/fetch_prices.py --vix
+NSE data client — uses yfinance for reliable OHLCV + VIX data.
+Replaces the old cookie-based NSE scraper which broke when NSE changed its API.
 """
-
-import sys, time
-from pathlib import Path
-from datetime import datetime, timedelta
-
-import requests
+import time
 import pandas as pd
+from pathlib import Path
 from loguru import logger
 
+import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from config.settings import cfg
 
-NSE_BASE = "https://www.nseindia.com"
-_HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-    "Accept": "text/html,application/xhtml+xml,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.5",
-    "Referer": NSE_BASE,
-}
+
+def _yf():
+    try:
+        import yfinance as yf
+        return yf
+    except ImportError:
+        raise ImportError("yfinance not installed — run: pip install yfinance")
 
 
-class NSEClient:
-    def __init__(self):
-        self.session = requests.Session()
-        self.session.headers.update(_HEADERS)
-        self._refresh_cookies()
+# ── Constituents ──────────────────────────────────────────────────────────────
 
-    def _refresh_cookies(self):
+def fetch_constituents() -> list[str]:
+    """Return NIFTY 500 symbols (no .NS suffix). Saves to constituents.csv."""
+    import requests
+    s = requests.Session()
+    s.headers.update({
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                      "AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json, */*",
+        "Referer": "https://www.nseindia.com/",
+    })
+    try:
+        s.get("https://www.nseindia.com", timeout=10)
+        time.sleep(0.5)
+        r = s.get(
+            "https://www.nseindia.com/api/equity-stockIndices?index=NIFTY%20500",
+            timeout=15,
+        )
+        if r.status_code == 200:
+            data    = r.json().get("data", [])
+            symbols = [d["symbol"] for d in data
+                       if d.get("symbol") and d["symbol"] != "NIFTY 500"]
+            logger.info(f"Fetched {len(symbols)} NIFTY 500 constituents")
+            out = cfg.data_dir / "nse" / "constituents.csv"
+            out.parent.mkdir(parents=True, exist_ok=True)
+            pd.DataFrame({"symbol": symbols}).to_csv(out, index=False)
+            return symbols
+    except Exception as e:
+        logger.warning(f"NSE constituents fetch failed: {e}")
+
+    return load_constituents()
+
+
+def load_constituents() -> list[str]:
+    cached = cfg.data_dir / "nse" / "constituents.csv"
+    if cached.exists():
+        return pd.read_csv(cached)["symbol"].tolist()
+    # fallback: derive from existing parquet files
+    return [f.stem for f in (cfg.data_dir / "nse").glob("*.parquet")
+            if f.stem != "INDIAVIX"]
+
+
+# ── Price history ─────────────────────────────────────────────────────────────
+
+def fetch_history(symbol: str, period: str = "2y") -> pd.DataFrame:
+    yf = _yf()
+    try:
+        df = yf.Ticker(f"{symbol}.NS").history(period=period, auto_adjust=True)
+        if df.empty:
+            return pd.DataFrame()
+        df = df.reset_index()
+        df.columns = [c.lower() for c in df.columns]
+        df["date"] = pd.to_datetime(df["date"]).dt.tz_localize(None).dt.normalize()
+        return df[["date","open","high","low","close","volume"]].sort_values("date")
+    except Exception as e:
+        logger.warning(f"{symbol}: {e}")
+        return pd.DataFrame()
+
+
+def fetch_vix(period: str = "2y") -> pd.DataFrame:
+    yf = _yf()
+    try:
+        df = yf.Ticker("^INDIAVIX").history(period=period, auto_adjust=True)
+        if df.empty:
+            return pd.DataFrame()
+        df = df.reset_index()
+        df.columns = [c.lower() for c in df.columns]
+        df["date"] = pd.to_datetime(df["date"]).dt.tz_localize(None).dt.normalize()
+        return df.rename(columns={"close": "vix_close"})[["date","vix_close"]].sort_values("date")
+    except Exception as e:
+        logger.warning(f"VIX: {e}")
+        return pd.DataFrame()
+
+
+# ── Backfill ──────────────────────────────────────────────────────────────────
+
+def backfill(symbols: list[str] = None, period: str = "max",
+             delay: float = 0.3) -> None:
+    """Download full history for all NIFTY 500 stocks."""
+    if symbols is None:
+        symbols = load_constituents()
+
+    out_dir = cfg.data_dir / "nse"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    yf = _yf()
+
+    total = len(symbols)
+    ok = fail = 0
+    batch_size = 50
+
+    for i in range(0, total, batch_size):
+        batch  = symbols[i:i + batch_size]
+        tickers = [f"{s}.NS" for s in batch]
+        logger.info(f"Batch {i//batch_size+1}/{-(-total//batch_size)}: {len(batch)} stocks")
+
         try:
-            self.session.get(NSE_BASE, timeout=10)
-            time.sleep(1)
+            data = yf.download(tickers, period=period, auto_adjust=True,
+                               progress=False, group_by="ticker", threads=True)
         except Exception as e:
-            logger.warning(f"NSE cookie init: {e}")
+            logger.error(f"Batch error: {e}")
+            fail += len(batch); continue
 
-    def get(self, url: str, params: dict = None, retries: int = 3) -> dict | None:
-        for attempt in range(retries):
+        for sym in batch:
             try:
-                r = self.session.get(url, params=params, timeout=20)
-                if r.status_code == 200:
-                    return r.json()
-                if r.status_code == 401:
-                    self._refresh_cookies()
-                else:
-                    logger.warning(f"HTTP {r.status_code}: {url}")
+                df = data[f"{sym}.NS"].copy() if len(batch) > 1 else data.copy()
+                df = df.reset_index()
+                df.columns = [c.lower() for c in df.columns]
+                df["date"] = pd.to_datetime(df["date"]).dt.tz_localize(None).dt.normalize()
+                df = df[["date","open","high","low","close","volume"]].dropna().sort_values("date")
+                if len(df) < 10:
+                    fail += 1; continue
+                df.to_parquet(out_dir / f"{sym}.parquet", index=False)
+                ok += 1
             except Exception as e:
-                logger.warning(f"Attempt {attempt+1}: {e}")
-            time.sleep(2 ** attempt)
-        return None
+                logger.warning(f"  {sym}: {e}"); fail += 1
 
-
-def fetch_constituents(client: NSEClient) -> pd.DataFrame:
-    url  = f"{NSE_BASE}/api/equity-stockIndices?index=NIFTY%20500"
-    data = client.get(url)
-    if not data or "data" not in data:
-        logger.error("Failed to fetch NIFTY 500 list")
-        return pd.DataFrame()
-
-    rows = [
-        {
-            "symbol":        d["symbol"],
-            "company_name":  d.get("meta", {}).get("companyName", d["symbol"]),
-            "isin":          d.get("meta", {}).get("isin", ""),
-            "industry":      d.get("meta", {}).get("industry", ""),
-            "last_price":    d.get("lastPrice", 0),
-            "market_cap_cr": d.get("ffmc", 0),
-        }
-        for d in data["data"] if d.get("symbol") != "NIFTY 500"
-    ]
-    df = pd.DataFrame(rows)
-    logger.info(f"Constituents: {len(df)} stocks")
-    return df
-
-
-def fetch_history(client: NSEClient, symbol: str,
-                  from_date: str, to_date: str) -> pd.DataFrame:
-    """from_date / to_date in DD-MM-YYYY format."""
-    url = f"{NSE_BASE}/api/historical/cm/equity"
-    data = client.get(url, params={
-        "symbol": symbol, "series": '["EQ"]',
-        "from": from_date, "to": to_date,
-    })
-    if not data or "data" not in data:
-        return pd.DataFrame()
-
-    rows = [{
-        "date":         r.get("CH_TIMESTAMP", ""),
-        "open":         float(r.get("CH_OPENING_PRICE", 0)),
-        "high":         float(r.get("CH_TRADE_HIGH_PRICE", 0)),
-        "low":          float(r.get("CH_TRADE_LOW_PRICE", 0)),
-        "close":        float(r.get("CH_CLOSING_PRICE", 0)),
-        "volume":       float(r.get("CH_TOT_TRADED_QTY", 0)),
-        "delivery_pct": float(r.get("COP_DELIV_PERC", 0)),
-    } for r in data["data"]]
-
-    df = pd.DataFrame(rows)
-    if not df.empty:
-        df["date"] = pd.to_datetime(df["date"])
-        df = df.sort_values("date").reset_index(drop=True)
-    return df
-
-
-def fetch_vix(client: NSEClient, days: int = 3650) -> pd.DataFrame:
-    url = f"{NSE_BASE}/api/historical/vixhistory"
-    data = client.get(url, params={
-        "from": (datetime.now() - timedelta(days=days)).strftime("%d-%m-%Y"),
-        "to":   datetime.now().strftime("%d-%m-%Y"),
-    })
-    if not data or "data" not in data:
-        return pd.DataFrame()
-
-    rows = [{
-        "date":      r.get("EOD_TIMESTAMP", ""),
-        "vix_open":  float(r.get("EOD_OPEN_INDEX_VAL", 0)),
-        "vix_high":  float(r.get("EOD_HIGH_INDEX_VAL", 0)),
-        "vix_low":   float(r.get("EOD_LOW_INDEX_VAL", 0)),
-        "vix_close": float(r.get("EOD_CLOSE_INDEX_VAL", 0)),
-    } for r in data["data"]]
-
-    df = pd.DataFrame(rows)
-    if not df.empty:
-        df["date"] = pd.to_datetime(df["date"])
-        df = df.sort_values("date").reset_index(drop=True)
-    return df
-
-
-def backfill(from_date: str = "01-01-2015", sleep: float = 2.0):
-    """Download all NIFTY 500 stocks from from_date to today."""
-    client   = NSEClient()
-    out_dir  = cfg.nse_dir
-    const_path = out_dir / "nifty500_constituents.parquet"
-
-    if const_path.exists():
-        constituents = pd.read_parquet(const_path)
-    else:
-        constituents = fetch_constituents(client)
-        if constituents.empty:
-            return
-        constituents.to_parquet(const_path, index=False)
-
-    start = datetime.strptime(from_date, "%d-%m-%Y")
-    end   = datetime.now()
-    n     = len(constituents)
-
-    for i, row in constituents.iterrows():
-        sym  = row["symbol"]
-        path = out_dir / f"{sym}.parquet"
-        if path.exists():
-            logger.debug(f"[{i+1}/{n}] Skip {sym}")
-            continue
-
-        logger.info(f"[{i+1}/{n}] {sym}")
-        chunks, cursor = [], start
-        while cursor < end:
-            chunk_end = min(cursor + timedelta(days=365), end)
-            df = fetch_history(client, sym,
-                               cursor.strftime("%d-%m-%Y"),
-                               chunk_end.strftime("%d-%m-%Y"))
-            if not df.empty:
-                chunks.append(df)
-            cursor = chunk_end + timedelta(days=1)
-            time.sleep(sleep)
-
-        if chunks:
-            out = pd.concat(chunks).drop_duplicates("date") \
-                    .sort_values("date").reset_index(drop=True)
-            out.to_parquet(path, index=False)
-            logger.info(f"  → {len(out)} rows")
+        time.sleep(delay)
 
     # VIX
-    vix = fetch_vix(client)
-    if not vix.empty:
-        vix.to_parquet(out_dir / "india_vix.parquet", index=False)
-        logger.info(f"VIX saved: {len(vix)} rows")
+    vdf = fetch_vix(period="10y")
+    if not vdf.empty:
+        vdf.to_parquet(out_dir / "INDIAVIX.parquet", index=False)
+        logger.info(f"VIX: {len(vdf)} rows saved")
 
-    logger.success("Backfill complete")
+    logger.info(f"Backfill done: {ok} OK / {fail} failed of {total}")
 
+
+def update_prices(symbols: list[str] = None, days: int = 7) -> int:
+    """Incremental daily update — append last N days to existing parquets."""
+    if symbols is None:
+        symbols = load_constituents()
+
+    out_dir = cfg.data_dir / "nse"
+    yf      = _yf()
+    period  = f"{max(days, 7)}d"
+    updated = 0
+    batch_size = 100
+
+    for i in range(0, len(symbols), batch_size):
+        batch   = symbols[i:i + batch_size]
+        tickers = [f"{s}.NS" for s in batch]
+        try:
+            data = yf.download(tickers, period=period, auto_adjust=True,
+                               progress=False, group_by="ticker", threads=True)
+        except Exception as e:
+            logger.warning(f"Update batch error: {e}"); continue
+
+        for sym in batch:
+            path = out_dir / f"{sym}.parquet"
+            try:
+                new = data[f"{sym}.NS"].copy() if len(batch) > 1 else data.copy()
+                new = new.reset_index()
+                new.columns = [c.lower() for c in new.columns]
+                new["date"] = pd.to_datetime(new["date"]).dt.tz_localize(None).dt.normalize()
+                new = new[["date","open","high","low","close","volume"]].dropna()
+                if path.exists():
+                    old = pd.read_parquet(path)
+                    new = pd.concat([old, new]).drop_duplicates("date").sort_values("date")
+                new.to_parquet(path, index=False)
+                updated += 1
+            except Exception:
+                pass
+        time.sleep(0.2)
+
+    # VIX update
+    vdf = fetch_vix(period=period)
+    if not vdf.empty:
+        vpath = out_dir / "INDIAVIX.parquet"
+        if vpath.exists():
+            vdf = pd.concat([pd.read_parquet(vpath), vdf]).drop_duplicates("date").sort_values("date")
+        vdf.to_parquet(vpath, index=False)
+
+    logger.info(f"Daily update: {updated} stocks refreshed")
+    return updated
+
+
+# ── Loaders ───────────────────────────────────────────────────────────────────
 
 def load_prices(symbols: list[str] = None) -> dict[str, pd.DataFrame]:
-    """Load price parquets → {symbol: DataFrame indexed by date}."""
-    prices = {}
-    for f in cfg.nse_dir.glob("*.parquet"):
-        if f.stem in ("nifty500_constituents", "india_vix"):
-            continue
-        if symbols and f.stem not in symbols:
-            continue
-        df = pd.read_parquet(f)
-        if "date" in df.columns:
+    nse_dir = cfg.data_dir / "nse"
+    if not nse_dir.exists():
+        return {}
+    files = [f for f in nse_dir.glob("*.parquet") if f.stem != "INDIAVIX"]
+    if symbols:
+        sym_set = set(symbols)
+        files = [f for f in files if f.stem in sym_set]
+    result = {}
+    for f in files:
+        try:
+            df = pd.read_parquet(f).sort_values("date")
             df["date"] = pd.to_datetime(df["date"])
-            prices[f.stem] = df.set_index("date").sort_index()
-    return prices
+            result[f.stem] = df.set_index("date")
+        except Exception:
+            pass
+    return result
 
 
 def load_vix() -> pd.DataFrame:
-    p = cfg.nse_dir / "india_vix.parquet"
+    p = cfg.data_dir / "nse" / "INDIAVIX.parquet"
     if not p.exists():
         return pd.DataFrame()
-    df = pd.read_parquet(p)
+    df = pd.read_parquet(p).sort_values("date")
     df["date"] = pd.to_datetime(df["date"])
-    return df.set_index("date").sort_index()
+    return df.set_index("date")
+
+
+def current_vix() -> float:
+    vdf = load_vix()
+    if vdf.empty:
+        return 18.0
+    return float(vdf["vix_close"].iloc[-1])

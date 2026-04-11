@@ -1,0 +1,4638 @@
+{
+  "start_date": "2025-01-01",
+  "end_date": "2026-04-11",
+  "n_signals": 1625,
+  "n_trades": 243,
+  "win_rate": 48.97,
+  "total_return": 23.73,
+  "sharpe": 2.27,
+  "max_dd": -7.78,
+  "avg_hold_days": 20.0,
+  "profit_factor": 1.44,
+  "passed": false,
+  "equity_curve": [
+    [
+      "2025-01-01",
+      10000000.0
+    ],
+    [
+      "2025-01-01",
+      9960880.0
+    ],
+    [
+      "2025-01-06",
+      9934902.0
+    ],
+    [
+      "2025-01-06",
+      9983384.0
+    ],
+    [
+      "2025-01-06",
+      9915497.0
+    ],
+    [
+      "2025-01-07",
+      9848072.0
+    ],
+    [
+      "2025-01-08",
+      9781105.0
+    ],
+    [
+      "2025-01-08",
+      9714594.0
+    ],
+    [
+      "2025-01-08",
+      9648534.0
+    ],
+    [
+      "2025-01-09",
+      9691528.0
+    ],
+    [
+      "2025-01-09",
+      9660360.0
+    ],
+    [
+      "2025-01-09",
+      9594670.0
+    ],
+    [
+      "2025-01-09",
+      9529426.0
+    ],
+    [
+      "2025-01-09",
+      9533009.0
+    ],
+    [
+      "2025-01-09",
+      9468185.0
+    ],
+    [
+      "2025-01-09",
+      9452430.0
+    ],
+    [
+      "2025-01-21",
+      9388153.0
+    ],
+    [
+      "2025-01-27",
+      9429461.0
+    ],
+    [
+      "2025-01-27",
+      9451941.0
+    ],
+    [
+      "2025-01-27",
+      9464190.0
+    ],
+    [
+      "2025-01-27",
+      9421488.0
+    ],
+    [
+      "2025-01-28",
+      9365637.0
+    ],
+    [
+      "2025-01-28",
+      9312665.0
+    ],
+    [
+      "2025-01-28",
+      9349097.0
+    ],
+    [
+      "2025-01-29",
+      9285523.0
+    ],
+    [
+      "2025-01-29",
+      9222381.0
+    ],
+    [
+      "2025-01-29",
+      9225996.0
+    ],
+    [
+      "2025-01-29",
+      9358186.0
+    ],
+    [
+      "2025-01-29",
+      9308850.0
+    ],
+    [
+      "2025-01-29",
+      9253146.0
+    ],
+    [
+      "2025-01-29",
+      9362777.0
+    ],
+    [
+      "2025-02-10",
+      9299110.0
+    ],
+    [
+      "2025-02-17",
+      9349623.0
+    ],
+    [
+      "2025-02-17",
+      9398914.0
+    ],
+    [
+      "2025-02-17",
+      9335002.0
+    ],
+    [
+      "2025-02-17",
+      9461435.0
+    ],
+    [
+      "2025-02-17",
+      9514419.0
+    ],
+    [
+      "2025-02-17",
+      9548595.0
+    ],
+    [
+      "2025-02-17",
+      9659817.0
+    ],
+    [
+      "2025-02-18",
+      9789490.0
+    ],
+    [
+      "2025-02-18",
+      9826455.0
+    ],
+    [
+      "2025-02-18",
+      9817022.0
+    ],
+    [
+      "2025-02-18",
+      9805163.0
+    ],
+    [
+      "2025-02-18",
+      9836932.0
+    ],
+    [
+      "2025-02-18",
+      9783497.0
+    ],
+    [
+      "2025-02-18",
+      9949191.0
+    ],
+    [
+      "2025-03-03",
+      10007135.0
+    ],
+    [
+      "2025-03-10",
+      9989682.0
+    ],
+    [
+      "2025-03-11",
+      9990322.0
+    ],
+    [
+      "2025-03-12",
+      10032601.0
+    ],
+    [
+      "2025-03-12",
+      9964379.0
+    ],
+    [
+      "2025-03-12",
+      9896621.0
+    ],
+    [
+      "2025-03-13",
+      10051325.0
+    ],
+    [
+      "2025-03-13",
+      9997531.0
+    ],
+    [
+      "2025-03-13",
+      9996331.0
+    ],
+    [
+      "2025-03-13",
+      10118766.0
+    ],
+    [
+      "2025-03-17",
+      10111885.0
+    ],
+    [
+      "2025-03-17",
+      10109297.0
+    ],
+    [
+      "2025-03-17",
+      10204162.0
+    ],
+    [
+      "2025-03-17",
+      10192733.0
+    ],
+    [
+      "2025-03-26",
+      10251688.0
+    ],
+    [
+      "2025-03-27",
+      10249228.0
+    ],
+    [
+      "2025-04-01",
+      10299572.0
+    ],
+    [
+      "2025-04-02",
+      10262658.0
+    ],
+    [
+      "2025-04-02",
+      10283020.0
+    ],
+    [
+      "2025-04-03",
+      10213095.0
+    ],
+    [
+      "2025-04-03",
+      10270860.0
+    ],
+    [
+      "2025-04-03",
+      10388605.0
+    ],
+    [
+      "2025-04-03",
+      10414286.0
+    ],
+    [
+      "2025-04-03",
+      10381544.0
+    ],
+    [
+      "2025-04-04",
+      10358538.0
+    ],
+    [
+      "2025-04-07",
+      10417789.0
+    ],
+    [
+      "2025-04-07",
+      10601059.0
+    ],
+    [
+      "2025-04-07",
+      10776273.0
+    ],
+    [
+      "2025-04-07",
+      10897657.0
+    ],
+    [
+      "2025-04-15",
+      11018490.0
+    ],
+    [
+      "2025-04-16",
+      11035238.0
+    ],
+    [
+      "2025-04-25",
+      10960199.0
+    ],
+    [
+      "2025-04-28",
+      10993956.0
+    ],
+    [
+      "2025-04-28",
+      10919197.0
+    ],
+    [
+      "2025-04-28",
+      10970823.0
+    ],
+    [
+      "2025-04-30",
+      10993116.0
+    ],
+    [
+      "2025-04-30",
+      11047993.0
+    ],
+    [
+      "2025-05-02",
+      11034824.0
+    ],
+    [
+      "2025-05-02",
+      11054157.0
+    ],
+    [
+      "2025-05-06",
+      11167263.0
+    ],
+    [
+      "2025-05-06",
+      11095167.0
+    ],
+    [
+      "2025-05-06",
+      11078125.0
+    ],
+    [
+      "2025-05-06",
+      11363498.0
+    ],
+    [
+      "2025-05-06",
+      11515405.0
+    ],
+    [
+      "2025-05-09",
+      11657735.0
+    ],
+    [
+      "2025-05-09",
+      11728428.0
+    ],
+    [
+      "2025-05-19",
+      11970409.0
+    ],
+    [
+      "2025-05-30",
+      12061097.0
+    ],
+    [
+      "2025-05-30",
+      12056272.0
+    ],
+    [
+      "2025-06-02",
+      12032256.0
+    ],
+    [
+      "2025-06-04",
+      12028695.0
+    ],
+    [
+      "2025-06-17",
+      12138396.0
+    ],
+    [
+      "2025-06-17",
+      12129657.0
+    ],
+    [
+      "2025-06-18",
+      12087057.0
+    ],
+    [
+      "2025-06-23",
+      12168766.0
+    ],
+    [
+      "2025-07-01",
+      12256770.0
+    ],
+    [
+      "2025-07-04",
+      12412774.0
+    ],
+    [
+      "2025-07-04",
+      12328368.0
+    ],
+    [
+      "2025-07-04",
+      12293355.0
+    ],
+    [
+      "2025-07-07",
+      12209760.0
+    ],
+    [
+      "2025-07-08",
+      12196867.0
+    ],
+    [
+      "2025-07-09",
+      12182718.0
+    ],
+    [
+      "2025-07-09",
+      12173752.0
+    ],
+    [
+      "2025-07-10",
+      12160312.0
+    ],
+    [
+      "2025-07-14",
+      12131127.0
+    ],
+    [
+      "2025-07-15",
+      12091822.0
+    ],
+    [
+      "2025-07-21",
+      12028558.0
+    ],
+    [
+      "2025-07-22",
+      11946764.0
+    ],
+    [
+      "2025-07-22",
+      11985854.0
+    ],
+    [
+      "2025-07-23",
+      11904350.0
+    ],
+    [
+      "2025-07-24",
+      11942634.0
+    ],
+    [
+      "2025-07-25",
+      11951042.0
+    ],
+    [
+      "2025-07-28",
+      11945783.0
+    ],
+    [
+      "2025-07-28",
+      11936418.0
+    ],
+    [
+      "2025-07-28",
+      11973755.0
+    ],
+    [
+      "2025-07-28",
+      11910629.0
+    ],
+    [
+      "2025-07-29",
+      11963131.0
+    ],
+    [
+      "2025-07-29",
+      11937578.0
+    ],
+    [
+      "2025-07-30",
+      11892597.0
+    ],
+    [
+      "2025-08-04",
+      11828282.0
+    ],
+    [
+      "2025-08-04",
+      11775575.0
+    ],
+    [
+      "2025-08-11",
+      11831721.0
+    ],
+    [
+      "2025-08-11",
+      11950985.0
+    ],
+    [
+      "2025-08-11",
+      11939130.0
+    ],
+    [
+      "2025-08-12",
+      11869023.0
+    ],
+    [
+      "2025-08-13",
+      11833131.0
+    ],
+    [
+      "2025-08-14",
+      11752666.0
+    ],
+    [
+      "2025-08-25",
+      11752572.0
+    ],
+    [
+      "2025-08-28",
+      11693339.0
+    ],
+    [
+      "2025-08-28",
+      11692871.0
+    ],
+    [
+      "2025-08-28",
+      11661534.0
+    ],
+    [
+      "2025-08-28",
+      11709207.0
+    ],
+    [
+      "2025-08-29",
+      11759978.0
+    ],
+    [
+      "2025-08-29",
+      11798080.0
+    ],
+    [
+      "2025-08-29",
+      11791662.0
+    ],
+    [
+      "2025-09-08",
+      11711479.0
+    ],
+    [
+      "2025-09-11",
+      11716632.0
+    ],
+    [
+      "2025-09-15",
+      11772590.0
+    ],
+    [
+      "2025-09-23",
+      11802069.0
+    ],
+    [
+      "2025-09-24",
+      11824068.0
+    ],
+    [
+      "2025-09-24",
+      11743664.0
+    ],
+    [
+      "2025-09-25",
+      11880267.0
+    ],
+    [
+      "2025-09-26",
+      11901081.0
+    ],
+    [
+      "2025-09-26",
+      12064744.0
+    ],
+    [
+      "2025-09-26",
+      12128736.0
+    ],
+    [
+      "2025-09-26",
+      12092641.0
+    ],
+    [
+      "2025-09-26",
+      12124952.0
+    ],
+    [
+      "2025-09-26",
+      12268512.0
+    ],
+    [
+      "2025-09-26",
+      12251630.0
+    ],
+    [
+      "2025-09-26",
+      12284955.0
+    ],
+    [
+      "2025-09-29",
+      12282891.0
+    ],
+    [
+      "2025-10-01",
+      12303133.0
+    ],
+    [
+      "2025-10-08",
+      12219472.0
+    ],
+    [
+      "2025-10-14",
+      12231984.0
+    ],
+    [
+      "2025-10-14",
+      12327296.0
+    ],
+    [
+      "2025-10-14",
+      12420392.0
+    ],
+    [
+      "2025-10-23",
+      12519457.0
+    ],
+    [
+      "2025-10-29",
+      12545457.0
+    ],
+    [
+      "2025-10-29",
+      12474657.0
+    ],
+    [
+      "2025-10-30",
+      12463979.0
+    ],
+    [
+      "2025-11-03",
+      12441643.0
+    ],
+    [
+      "2025-11-04",
+      12482551.0
+    ],
+    [
+      "2025-11-04",
+      12397670.0
+    ],
+    [
+      "2025-11-04",
+      12333103.0
+    ],
+    [
+      "2025-11-06",
+      12327183.0
+    ],
+    [
+      "2025-11-06",
+      12388622.0
+    ],
+    [
+      "2025-11-06",
+      12394766.0
+    ],
+    [
+      "2025-11-06",
+      12417969.0
+    ],
+    [
+      "2025-11-06",
+      12425619.0
+    ],
+    [
+      "2025-11-06",
+      12344703.0
+    ],
+    [
+      "2025-11-06",
+      12278141.0
+    ],
+    [
+      "2025-11-12",
+      12212330.0
+    ],
+    [
+      "2025-11-18",
+      12202071.0
+    ],
+    [
+      "2025-11-21",
+      12172396.0
+    ],
+    [
+      "2025-11-24",
+      12265296.0
+    ],
+    [
+      "2025-11-24",
+      12193078.0
+    ],
+    [
+      "2025-11-26",
+      12135624.0
+    ],
+    [
+      "2025-12-01",
+      12098537.0
+    ],
+    [
+      "2025-12-03",
+      12117314.0
+    ],
+    [
+      "2025-12-04",
+      12164233.0
+    ],
+    [
+      "2025-12-04",
+      12081516.0
+    ],
+    [
+      "2025-12-05",
+      12095530.0
+    ],
+    [
+      "2025-12-08",
+      12147686.0
+    ],
+    [
+      "2025-12-08",
+      12230388.0
+    ],
+    [
+      "2025-12-08",
+      12215613.0
+    ],
+    [
+      "2025-12-08",
+      12226852.0
+    ],
+    [
+      "2025-12-08",
+      12233014.0
+    ],
+    [
+      "2025-12-08",
+      12307978.0
+    ],
+    [
+      "2025-12-11",
+      12464043.0
+    ],
+    [
+      "2025-12-17",
+      12452177.0
+    ],
+    [
+      "2025-12-22",
+      12488040.0
+    ],
+    [
+      "2025-12-24",
+      12502726.0
+    ],
+    [
+      "2025-12-30",
+      12521426.0
+    ],
+    [
+      "2026-01-07",
+      12517126.0
+    ],
+    [
+      "2026-01-07",
+      12554626.0
+    ],
+    [
+      "2026-01-08",
+      12610426.0
+    ],
+    [
+      "2026-01-08",
+      12629626.0
+    ],
+    [
+      "2026-01-08",
+      12611126.0
+    ],
+    [
+      "2026-01-08",
+      12726526.0
+    ],
+    [
+      "2026-01-09",
+      12641526.0
+    ],
+    [
+      "2026-01-09",
+      12711326.0
+    ],
+    [
+      "2026-01-09",
+      12731026.0
+    ],
+    [
+      "2026-01-09",
+      12736726.0
+    ],
+    [
+      "2026-01-09",
+      12926826.0
+    ],
+    [
+      "2026-01-09",
+      12841826.0
+    ],
+    [
+      "2026-01-12",
+      12876226.0
+    ],
+    [
+      "2026-01-13",
+      12870026.0
+    ],
+    [
+      "2026-01-19",
+      12788026.0
+    ],
+    [
+      "2026-01-27",
+      12813226.0
+    ],
+    [
+      "2026-01-27",
+      12778126.0
+    ],
+    [
+      "2026-01-28",
+      12786126.0
+    ],
+    [
+      "2026-01-28",
+      12864426.0
+    ],
+    [
+      "2026-01-28",
+      12962026.0
+    ],
+    [
+      "2026-01-28",
+      13035026.0
+    ],
+    [
+      "2026-01-29",
+      13126326.0
+    ],
+    [
+      "2026-01-29",
+      13120226.0
+    ],
+    [
+      "2026-01-30",
+      13080726.0
+    ],
+    [
+      "2026-01-30",
+      13130626.0
+    ],
+    [
+      "2026-01-30",
+      13265426.0
+    ],
+    [
+      "2026-02-02",
+      13272826.0
+    ],
+    [
+      "2026-02-02",
+      13277926.0
+    ],
+    [
+      "2026-02-02",
+      13245526.0
+    ],
+    [
+      "2026-02-09",
+      13160526.0
+    ],
+    [
+      "2026-02-16",
+      13075526.0
+    ],
+    [
+      "2026-02-16",
+      12990526.0
+    ],
+    [
+      "2026-02-17",
+      13033826.0
+    ],
+    [
+      "2026-02-17",
+      13017526.0
+    ],
+    [
+      "2026-02-17",
+      12949226.0
+    ],
+    [
+      "2026-02-17",
+      12867726.0
+    ],
+    [
+      "2026-02-18",
+      12819226.0
+    ],
+    [
+      "2026-02-18",
+      12734226.0
+    ],
+    [
+      "2026-02-19",
+      12649226.0
+    ],
+    [
+      "2026-02-19",
+      12611526.0
+    ],
+    [
+      "2026-02-20",
+      12526526.0
+    ],
+    [
+      "2026-02-23",
+      12508726.0
+    ],
+    [
+      "2026-02-23",
+      12465926.0
+    ],
+    [
+      "2026-02-24",
+      12457548.0
+    ],
+    [
+      "2026-03-02",
+      12372837.0
+    ]
+  ],
+  "signals": [
+    {
+      "date": "2025-01-01",
+      "symbol": "THERMAX",
+      "direction": "BUY",
+      "entry_price": 3917.6435546875,
+      "zscore": -2.15,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -4.89,
+      "pnl": -39120.0
+    },
+    {
+      "date": "2025-01-06",
+      "symbol": "ERIS",
+      "direction": "BUY",
+      "entry_price": 1267.4541015625,
+      "zscore": -2.11,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.26,
+      "pnl": -25978.0
+    },
+    {
+      "date": "2025-01-06",
+      "symbol": "BAJAJHLDNG",
+      "direction": "BUY",
+      "entry_price": 10949.53125,
+      "zscore": -3.53,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 6.1,
+      "pnl": 48482.0
+    },
+    {
+      "date": "2025-01-06",
+      "symbol": "MRF",
+      "direction": "BUY",
+      "entry_price": 122674.8203125,
+      "zscore": -2.16,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -67887.0
+    },
+    {
+      "date": "2025-01-07",
+      "symbol": "ETERNAL",
+      "direction": "BUY",
+      "entry_price": 252.4499969482422,
+      "zscore": -2.19,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -67425.0
+    },
+    {
+      "date": "2025-01-08",
+      "symbol": "APOLLOTYRE",
+      "direction": "BUY",
+      "entry_price": 474.4820556640625,
+      "zscore": -2.07,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -66967.0
+    },
+    {
+      "date": "2025-01-08",
+      "symbol": "GODREJIND",
+      "direction": "BUY",
+      "entry_price": 1042.5999755859375,
+      "zscore": -2.14,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -66512.0
+    },
+    {
+      "date": "2025-01-08",
+      "symbol": "KAJARIACER",
+      "direction": "BUY",
+      "entry_price": 1050.369873046875,
+      "zscore": -2.04,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -66059.0
+    },
+    {
+      "date": "2025-01-09",
+      "symbol": "PCBL",
+      "direction": "BUY",
+      "entry_price": 385.05731201171875,
+      "zscore": -2.17,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.57,
+      "pnl": 42994.0
+    },
+    {
+      "date": "2025-01-09",
+      "symbol": "RADICO",
+      "direction": "BUY",
+      "entry_price": 2384.84130859375,
+      "zscore": -2.07,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -4.02,
+      "pnl": -31168.0
+    },
+    {
+      "date": "2025-01-09",
+      "symbol": "360ONE",
+      "direction": "BUY",
+      "entry_price": 1153.5692138671875,
+      "zscore": -2.18,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -65690.0
+    },
+    {
+      "date": "2025-01-09",
+      "symbol": "KALYANKJIL",
+      "direction": "BUY",
+      "entry_price": 660.6168823242188,
+      "zscore": -3.22,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -65244.0
+    },
+    {
+      "date": "2025-01-09",
+      "symbol": "CCL",
+      "direction": "BUY",
+      "entry_price": 668.3372802734375,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.47,
+      "pnl": 3583.0
+    },
+    {
+      "date": "2025-01-09",
+      "symbol": "UTIAMC",
+      "direction": "BUY",
+      "entry_price": 1170.5811767578125,
+      "zscore": -2.88,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -64824.0
+    },
+    {
+      "date": "2025-01-09",
+      "symbol": "ASHOKLEY",
+      "direction": "BUY",
+      "entry_price": 104.62786102294922,
+      "zscore": -2.39,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -2.08,
+      "pnl": -15755.0
+    },
+    {
+      "date": "2025-01-21",
+      "symbol": "MOTILALOFS",
+      "direction": "BUY",
+      "entry_price": 733.31298828125,
+      "zscore": -2.26,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -64277.0
+    },
+    {
+      "date": "2025-01-27",
+      "symbol": "GLAND",
+      "direction": "BUY",
+      "entry_price": 1426.9071044921875,
+      "zscore": -3.29,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.5,
+      "pnl": 41308.0
+    },
+    {
+      "date": "2025-01-27",
+      "symbol": "POLYCAB",
+      "direction": "BUY",
+      "entry_price": 5612.09521484375,
+      "zscore": -3.79,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.98,
+      "pnl": 22480.0
+    },
+    {
+      "date": "2025-01-27",
+      "symbol": "HDFCAMC",
+      "direction": "BUY",
+      "entry_price": 1822.8907470703125,
+      "zscore": -2.22,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 1.62,
+      "pnl": 12250.0
+    },
+    {
+      "date": "2025-01-27",
+      "symbol": "MANKIND",
+      "direction": "BUY",
+      "entry_price": 2452.98291015625,
+      "zscore": -2.11,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -5.64,
+      "pnl": -42702.0
+    },
+    {
+      "date": "2025-01-28",
+      "symbol": "LLOYDSME",
+      "direction": "BUY",
+      "entry_price": 1230.7801513671875,
+      "zscore": -2.78,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -7.41,
+      "pnl": -55851.0
+    },
+    {
+      "date": "2025-01-28",
+      "symbol": "JKTYRE",
+      "direction": "BUY",
+      "entry_price": 304.8990173339844,
+      "zscore": -2.39,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -7.07,
+      "pnl": -52972.0
+    },
+    {
+      "date": "2025-01-28",
+      "symbol": "NETWEB",
+      "direction": "BUY",
+      "entry_price": 1459.7313232421875,
+      "zscore": -4.62,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.89,
+      "pnl": 36431.0
+    },
+    {
+      "date": "2025-01-29",
+      "symbol": "ANANTRAJ",
+      "direction": "BUY",
+      "entry_price": 587.2431640625,
+      "zscore": -4.15,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -63574.0
+    },
+    {
+      "date": "2025-01-29",
+      "symbol": "UTIAMC",
+      "direction": "BUY",
+      "entry_price": 1030.4132080078125,
+      "zscore": -2.7,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -63142.0
+    },
+    {
+      "date": "2025-01-29",
+      "symbol": "360ONE",
+      "direction": "BUY",
+      "entry_price": 1016.9068603515625,
+      "zscore": -2.16,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.49,
+      "pnl": 3615.0
+    },
+    {
+      "date": "2025-01-29",
+      "symbol": "ABBOTINDIA",
+      "direction": "BUY",
+      "entry_price": 25151.55078125,
+      "zscore": -2.49,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 17.91,
+      "pnl": 132190.0
+    },
+    {
+      "date": "2025-01-29",
+      "symbol": "NAM-INDIA",
+      "direction": "BUY",
+      "entry_price": 559.7490844726562,
+      "zscore": -2.03,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.59,
+      "pnl": -49336.0
+    },
+    {
+      "date": "2025-01-29",
+      "symbol": "CDSL",
+      "direction": "BUY",
+      "entry_price": 1281.00537109375,
+      "zscore": -2.3,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -7.48,
+      "pnl": -55704.0
+    },
+    {
+      "date": "2025-01-29",
+      "symbol": "POWERINDIA",
+      "direction": "BUY",
+      "entry_price": 10228.2841796875,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 14.81,
+      "pnl": 109631.0
+    },
+    {
+      "date": "2025-02-10",
+      "symbol": "BIKAJI",
+      "direction": "BUY",
+      "entry_price": 637.8465576171875,
+      "zscore": -2.31,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -63667.0
+    },
+    {
+      "date": "2025-02-17",
+      "symbol": "ESCORTS",
+      "direction": "BUY",
+      "entry_price": 2941.420166015625,
+      "zscore": -2.09,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 6.79,
+      "pnl": 50513.0
+    },
+    {
+      "date": "2025-02-17",
+      "symbol": "ERIS",
+      "direction": "BUY",
+      "entry_price": 1251.949951171875,
+      "zscore": -2.22,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 6.59,
+      "pnl": 49291.0
+    },
+    {
+      "date": "2025-02-17",
+      "symbol": "EIDPARRY",
+      "direction": "BUY",
+      "entry_price": 719.2000122070312,
+      "zscore": -2.69,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -63913.0
+    },
+    {
+      "date": "2025-02-17",
+      "symbol": "ZENTEC",
+      "direction": "BUY",
+      "entry_price": 1078.48046875,
+      "zscore": -4.02,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 16.93,
+      "pnl": 126433.0
+    },
+    {
+      "date": "2025-02-17",
+      "symbol": "EICHERMOT",
+      "direction": "BUY",
+      "entry_price": 4684.458984375,
+      "zscore": -3.21,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 7.0,
+      "pnl": 52984.0
+    },
+    {
+      "date": "2025-02-17",
+      "symbol": "SPLPETRO",
+      "direction": "BUY",
+      "entry_price": 574.5762329101562,
+      "zscore": -2.08,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.49,
+      "pnl": 34176.0
+    },
+    {
+      "date": "2025-02-17",
+      "symbol": "GRAPHITE",
+      "direction": "BUY",
+      "entry_price": 393.19305419921875,
+      "zscore": -2.84,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 14.56,
+      "pnl": 111222.0
+    },
+    {
+      "date": "2025-02-18",
+      "symbol": "KIRLOSENG",
+      "direction": "BUY",
+      "entry_price": 614.512451171875,
+      "zscore": -3.09,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 16.78,
+      "pnl": 129673.0
+    },
+    {
+      "date": "2025-02-18",
+      "symbol": "ATUL",
+      "direction": "BUY",
+      "entry_price": 5376.9287109375,
+      "zscore": -2.03,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.72,
+      "pnl": 36965.0
+    },
+    {
+      "date": "2025-02-18",
+      "symbol": "MMTC",
+      "direction": "BUY",
+      "entry_price": 54.25,
+      "zscore": -2.01,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.2,
+      "pnl": -9433.0
+    },
+    {
+      "date": "2025-02-18",
+      "symbol": "NATCOPHARM",
+      "direction": "BUY",
+      "entry_price": 829.7275390625,
+      "zscore": -4.82,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.51,
+      "pnl": -11859.0
+    },
+    {
+      "date": "2025-02-18",
+      "symbol": "AUBANK",
+      "direction": "BUY",
+      "entry_price": 501.7811584472656,
+      "zscore": -2.98,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.05,
+      "pnl": 31769.0
+    },
+    {
+      "date": "2025-02-18",
+      "symbol": "SAMMAANCAP",
+      "direction": "BUY",
+      "entry_price": 117.93000030517578,
+      "zscore": -2.06,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.79,
+      "pnl": -53434.0
+    },
+    {
+      "date": "2025-02-18",
+      "symbol": "ANURAS",
+      "direction": "BUY",
+      "entry_price": 636.3846435546875,
+      "zscore": -3.4,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 21.17,
+      "pnl": 165693.0
+    },
+    {
+      "date": "2025-03-03",
+      "symbol": "JUBLFOOD",
+      "direction": "BUY",
+      "entry_price": 632.2476806640625,
+      "zscore": -2.09,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 7.28,
+      "pnl": 57944.0
+    },
+    {
+      "date": "2025-03-10",
+      "symbol": "ANANDRATHI",
+      "direction": "BUY",
+      "entry_price": 1788.10107421875,
+      "zscore": -2.98,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -2.18,
+      "pnl": -17452.0
+    },
+    {
+      "date": "2025-03-11",
+      "symbol": "360ONE",
+      "direction": "BUY",
+      "entry_price": 855.52294921875,
+      "zscore": -2.2,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.08,
+      "pnl": 639.0
+    },
+    {
+      "date": "2025-03-12",
+      "symbol": "JBCHEPHARM",
+      "direction": "BUY",
+      "entry_price": 1488.66162109375,
+      "zscore": -2.28,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.29,
+      "pnl": 42279.0
+    },
+    {
+      "date": "2025-03-12",
+      "symbol": "TECHM",
+      "direction": "BUY",
+      "entry_price": 1397.85546875,
+      "zscore": -2.07,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -68222.0
+    },
+    {
+      "date": "2025-03-12",
+      "symbol": "INFY",
+      "direction": "BUY",
+      "entry_price": 1545.123046875,
+      "zscore": -2.16,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -67758.0
+    },
+    {
+      "date": "2025-03-13",
+      "symbol": "RAMCOCEM",
+      "direction": "BUY",
+      "entry_price": 800.1693115234375,
+      "zscore": -2.29,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 19.54,
+      "pnl": 154704.0
+    },
+    {
+      "date": "2025-03-13",
+      "symbol": "WIPRO",
+      "direction": "BUY",
+      "entry_price": 252.39129638671875,
+      "zscore": -2.02,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.69,
+      "pnl": -53795.0
+    },
+    {
+      "date": "2025-03-13",
+      "symbol": "ZENSARTECH",
+      "direction": "BUY",
+      "entry_price": 643.39794921875,
+      "zscore": -2.48,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.15,
+      "pnl": -1200.0
+    },
+    {
+      "date": "2025-03-13",
+      "symbol": "AUBANK",
+      "direction": "BUY",
+      "entry_price": 502.2306213378906,
+      "zscore": -2.21,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 15.31,
+      "pnl": 122435.0
+    },
+    {
+      "date": "2025-03-17",
+      "symbol": "ECLERX",
+      "direction": "BUY",
+      "entry_price": 1255.660888671875,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.85,
+      "pnl": -6881.0
+    },
+    {
+      "date": "2025-03-17",
+      "symbol": "TRITURBINE",
+      "direction": "BUY",
+      "entry_price": 504.76971435546875,
+      "zscore": -2.26,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.32,
+      "pnl": -2589.0
+    },
+    {
+      "date": "2025-03-17",
+      "symbol": "NUVOCO",
+      "direction": "BUY",
+      "entry_price": 288.75,
+      "zscore": -2.28,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 11.73,
+      "pnl": 94866.0
+    },
+    {
+      "date": "2025-03-17",
+      "symbol": "REDINGTON",
+      "direction": "BUY",
+      "entry_price": 220.6787872314453,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.4,
+      "pnl": -11429.0
+    },
+    {
+      "date": "2025-03-26",
+      "symbol": "KEI",
+      "direction": "BUY",
+      "entry_price": 2816.614990234375,
+      "zscore": -2.24,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 7.23,
+      "pnl": 58955.0
+    },
+    {
+      "date": "2025-03-27",
+      "symbol": "JSL",
+      "direction": "BUY",
+      "entry_price": 579.7293701171875,
+      "zscore": -2.26,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.3,
+      "pnl": -2460.0
+    },
+    {
+      "date": "2025-04-01",
+      "symbol": "LUPIN",
+      "direction": "BUY",
+      "entry_price": 1943.3134765625,
+      "zscore": -2.06,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 6.14,
+      "pnl": 50344.0
+    },
+    {
+      "date": "2025-04-02",
+      "symbol": "JBCHEPHARM",
+      "direction": "BUY",
+      "entry_price": 1550.309814453125,
+      "zscore": -2.35,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -4.48,
+      "pnl": -36914.0
+    },
+    {
+      "date": "2025-04-02",
+      "symbol": "BAJAJHLDNG",
+      "direction": "BUY",
+      "entry_price": 11435.2900390625,
+      "zscore": -2.11,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.48,
+      "pnl": 20361.0
+    },
+    {
+      "date": "2025-04-03",
+      "symbol": "COFORGE",
+      "direction": "BUY",
+      "entry_price": 1418.166748046875,
+      "zscore": -2.26,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -69925.0
+    },
+    {
+      "date": "2025-04-03",
+      "symbol": "HCLTECH",
+      "direction": "BUY",
+      "entry_price": 1420.32568359375,
+      "zscore": -2.92,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 7.07,
+      "pnl": 57765.0
+    },
+    {
+      "date": "2025-04-03",
+      "symbol": "PERSISTENT",
+      "direction": "BUY",
+      "entry_price": 4763.37451171875,
+      "zscore": -2.8,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 14.33,
+      "pnl": 117745.0
+    },
+    {
+      "date": "2025-04-03",
+      "symbol": "DABUR",
+      "direction": "BUY",
+      "entry_price": 458.3589782714844,
+      "zscore": -2.6,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 3.09,
+      "pnl": 25681.0
+    },
+    {
+      "date": "2025-04-03",
+      "symbol": "CGCL",
+      "direction": "BUY",
+      "entry_price": 168.28079223632812,
+      "zscore": -2.63,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.93,
+      "pnl": -32743.0
+    },
+    {
+      "date": "2025-04-04",
+      "symbol": "NATIONALUM",
+      "direction": "BUY",
+      "entry_price": 151.63668823242188,
+      "zscore": -2.07,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -2.77,
+      "pnl": -23006.0
+    },
+    {
+      "date": "2025-04-07",
+      "symbol": "SBICARD",
+      "direction": "BUY",
+      "entry_price": 809.2150268554688,
+      "zscore": -2.48,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 7.15,
+      "pnl": 59251.0
+    },
+    {
+      "date": "2025-04-07",
+      "symbol": "BHARATFORG",
+      "direction": "BUY",
+      "entry_price": 946.121826171875,
+      "zscore": -3.83,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 21.99,
+      "pnl": 183270.0
+    },
+    {
+      "date": "2025-04-07",
+      "symbol": "TIMKEN",
+      "direction": "BUY",
+      "entry_price": 2280.29833984375,
+      "zscore": -3.04,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 20.66,
+      "pnl": 175214.0
+    },
+    {
+      "date": "2025-04-07",
+      "symbol": "DIVISLAB",
+      "direction": "BUY",
+      "entry_price": 5235.11279296875,
+      "zscore": -2.47,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 14.08,
+      "pnl": 121384.0
+    },
+    {
+      "date": "2025-04-15",
+      "symbol": "TRENT",
+      "direction": "BUY",
+      "entry_price": 4872.77880859375,
+      "zscore": -2.16,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 13.86,
+      "pnl": 120833.0
+    },
+    {
+      "date": "2025-04-16",
+      "symbol": "MUTHOOTFIN",
+      "direction": "BUY",
+      "entry_price": 2055.5439453125,
+      "zscore": -2.25,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 1.9,
+      "pnl": 16748.0
+    },
+    {
+      "date": "2025-04-25",
+      "symbol": "BLUESTARCO",
+      "direction": "BUY",
+      "entry_price": 1730.885498046875,
+      "zscore": -2.39,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -75040.0
+    },
+    {
+      "date": "2025-04-28",
+      "symbol": "J&KBANK",
+      "direction": "BUY",
+      "entry_price": 94.18907165527344,
+      "zscore": -2.15,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 3.85,
+      "pnl": 33757.0
+    },
+    {
+      "date": "2025-04-28",
+      "symbol": "AAVAS",
+      "direction": "BUY",
+      "entry_price": 1991.5,
+      "zscore": -2.22,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -74759.0
+    },
+    {
+      "date": "2025-04-28",
+      "symbol": "SHRIRAMFIN",
+      "direction": "BUY",
+      "entry_price": 615.4716796875,
+      "zscore": -2.44,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.91,
+      "pnl": 51626.0
+    },
+    {
+      "date": "2025-04-30",
+      "symbol": "BAJAJFINSV",
+      "direction": "BUY",
+      "entry_price": 1950.649658203125,
+      "zscore": -2.04,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.54,
+      "pnl": 22293.0
+    },
+    {
+      "date": "2025-04-30",
+      "symbol": "BAJFINANCE",
+      "direction": "BUY",
+      "entry_price": 858.15478515625,
+      "zscore": -2.16,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 6.24,
+      "pnl": 54878.0
+    },
+    {
+      "date": "2025-05-02",
+      "symbol": "DMART",
+      "direction": "BUY",
+      "entry_price": 4042.199951171875,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.49,
+      "pnl": -13169.0
+    },
+    {
+      "date": "2025-05-02",
+      "symbol": "JSWSTEEL",
+      "direction": "BUY",
+      "entry_price": 964.9016723632812,
+      "zscore": -2.27,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.19,
+      "pnl": 19333.0
+    },
+    {
+      "date": "2025-05-06",
+      "symbol": "BANKBARODA",
+      "direction": "BUY",
+      "entry_price": 216.45050048828125,
+      "zscore": -2.79,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 12.79,
+      "pnl": 113106.0
+    },
+    {
+      "date": "2025-05-06",
+      "symbol": "JINDALSAW",
+      "direction": "BUY",
+      "entry_price": 225.52413940429688,
+      "zscore": -2.24,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -8.07,
+      "pnl": -72096.0
+    },
+    {
+      "date": "2025-05-06",
+      "symbol": "KOTAKBANK",
+      "direction": "BUY",
+      "entry_price": 414.3222961425781,
+      "zscore": -2.19,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.92,
+      "pnl": -17042.0
+    },
+    {
+      "date": "2025-05-06",
+      "symbol": "STARHEALTH",
+      "direction": "BUY",
+      "entry_price": 356.1000061035156,
+      "zscore": -2.39,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 32.2,
+      "pnl": 285373.0
+    },
+    {
+      "date": "2025-05-06",
+      "symbol": "SBFC",
+      "direction": "BUY",
+      "entry_price": 96.04000091552734,
+      "zscore": -2.03,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 16.71,
+      "pnl": 151907.0
+    },
+    {
+      "date": "2025-05-09",
+      "symbol": "M&MFIN",
+      "direction": "BUY",
+      "entry_price": 231.89248657226562,
+      "zscore": -2.1,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 15.45,
+      "pnl": 142330.0
+    },
+    {
+      "date": "2025-05-09",
+      "symbol": "INDHOTEL",
+      "direction": "BUY",
+      "entry_price": 716.6426391601562,
+      "zscore": -2.3,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 7.58,
+      "pnl": 70693.0
+    },
+    {
+      "date": "2025-05-19",
+      "symbol": "MUTHOOTFIN",
+      "direction": "BUY",
+      "entry_price": 2085.10009765625,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 25.79,
+      "pnl": 241981.0
+    },
+    {
+      "date": "2025-05-30",
+      "symbol": "WELSPUNLIV",
+      "direction": "BUY",
+      "entry_price": 131.0880889892578,
+      "zscore": -2.02,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 9.47,
+      "pnl": 90688.0
+    },
+    {
+      "date": "2025-05-30",
+      "symbol": "FLUOROCHEM",
+      "direction": "BUY",
+      "entry_price": 3550.49560546875,
+      "zscore": -2.02,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.5,
+      "pnl": -4824.0
+    },
+    {
+      "date": "2025-06-02",
+      "symbol": "BLUEDART",
+      "direction": "BUY",
+      "entry_price": 6491.36962890625,
+      "zscore": -2.04,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -2.49,
+      "pnl": -24016.0
+    },
+    {
+      "date": "2025-06-04",
+      "symbol": "ALKEM",
+      "direction": "BUY",
+      "entry_price": 4821.63623046875,
+      "zscore": -2.1,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.37,
+      "pnl": -3562.0
+    },
+    {
+      "date": "2025-06-17",
+      "symbol": "IEX",
+      "direction": "BUY",
+      "entry_price": 184.54124450683594,
+      "zscore": -2.38,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 11.4,
+      "pnl": 109702.0
+    },
+    {
+      "date": "2025-06-17",
+      "symbol": "TATAINVEST",
+      "direction": "BUY",
+      "entry_price": 660.7000122070312,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.9,
+      "pnl": -8740.0
+    },
+    {
+      "date": "2025-06-18",
+      "symbol": "HINDZINC",
+      "direction": "BUY",
+      "entry_price": 452.79998779296875,
+      "zscore": -2.06,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -4.39,
+      "pnl": -42599.0
+    },
+    {
+      "date": "2025-06-23",
+      "symbol": "ERIS",
+      "direction": "BUY",
+      "entry_price": 1623.300048828125,
+      "zscore": -2.45,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 8.45,
+      "pnl": 81709.0
+    },
+    {
+      "date": "2025-07-01",
+      "symbol": "JBCHEPHARM",
+      "direction": "BUY",
+      "entry_price": 1628.3843994140625,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 9.04,
+      "pnl": 88005.0
+    },
+    {
+      "date": "2025-07-04",
+      "symbol": "COROMANDEL",
+      "direction": "BUY",
+      "entry_price": 2216.5107421875,
+      "zscore": -2.42,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 15.91,
+      "pnl": 156004.0
+    },
+    {
+      "date": "2025-07-04",
+      "symbol": "SBICARD",
+      "direction": "BUY",
+      "entry_price": 906.4244384765625,
+      "zscore": -2.36,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -84407.0
+    },
+    {
+      "date": "2025-07-04",
+      "symbol": "NH",
+      "direction": "BUY",
+      "entry_price": 2006.6739501953125,
+      "zscore": -3.08,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.55,
+      "pnl": -35013.0
+    },
+    {
+      "date": "2025-07-07",
+      "symbol": "AAVAS",
+      "direction": "BUY",
+      "entry_price": 1882.9000244140625,
+      "zscore": -2.59,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -83595.0
+    },
+    {
+      "date": "2025-07-08",
+      "symbol": "ENDURANCE",
+      "direction": "BUY",
+      "entry_price": 2612.122802734375,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.32,
+      "pnl": -12894.0
+    },
+    {
+      "date": "2025-07-09",
+      "symbol": "TRENT",
+      "direction": "BUY",
+      "entry_price": 5408.0,
+      "zscore": -2.14,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.45,
+      "pnl": -14148.0
+    },
+    {
+      "date": "2025-07-09",
+      "symbol": "TITAN",
+      "direction": "BUY",
+      "entry_price": 3432.10009765625,
+      "zscore": -2.06,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.92,
+      "pnl": -8966.0
+    },
+    {
+      "date": "2025-07-10",
+      "symbol": "ASTERDM",
+      "direction": "BUY",
+      "entry_price": 596.2899780273438,
+      "zscore": -2.03,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.38,
+      "pnl": -13440.0
+    },
+    {
+      "date": "2025-07-14",
+      "symbol": "BHARTIARTL",
+      "direction": "BUY",
+      "entry_price": 1904.974609375,
+      "zscore": -2.1,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.0,
+      "pnl": -29185.0
+    },
+    {
+      "date": "2025-07-15",
+      "symbol": "HCLTECH",
+      "direction": "BUY",
+      "entry_price": 1530.824951171875,
+      "zscore": -2.26,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -4.05,
+      "pnl": -39305.0
+    },
+    {
+      "date": "2025-07-21",
+      "symbol": "ATUL",
+      "direction": "BUY",
+      "entry_price": 6832.5,
+      "zscore": -2.19,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.54,
+      "pnl": -63264.0
+    },
+    {
+      "date": "2025-07-22",
+      "symbol": "CEATLTD",
+      "direction": "BUY",
+      "entry_price": 3460.750244140625,
+      "zscore": -2.12,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -81794.0
+    },
+    {
+      "date": "2025-07-22",
+      "symbol": "AUBANK",
+      "direction": "BUY",
+      "entry_price": 725.7999877929688,
+      "zscore": -2.27,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.09,
+      "pnl": 39090.0
+    },
+    {
+      "date": "2025-07-23",
+      "symbol": "IEX",
+      "direction": "BUY",
+      "entry_price": 185.65782165527344,
+      "zscore": -2.12,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -81504.0
+    },
+    {
+      "date": "2025-07-24",
+      "symbol": "COFORGE",
+      "direction": "BUY",
+      "entry_price": 1664.490966796875,
+      "zscore": -2.08,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.02,
+      "pnl": 38284.0
+    },
+    {
+      "date": "2025-07-25",
+      "symbol": "NESTLEIND",
+      "direction": "BUY",
+      "entry_price": 1131.192626953125,
+      "zscore": -2.82,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.88,
+      "pnl": 8408.0
+    },
+    {
+      "date": "2025-07-28",
+      "symbol": "KOTAKBANK",
+      "direction": "BUY",
+      "entry_price": 393.32000732421875,
+      "zscore": -3.07,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.55,
+      "pnl": -5258.0
+    },
+    {
+      "date": "2025-07-28",
+      "symbol": "BAJFINANCE",
+      "direction": "BUY",
+      "entry_price": 880.5,
+      "zscore": -2.2,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.98,
+      "pnl": -9365.0
+    },
+    {
+      "date": "2025-07-28",
+      "symbol": "PERSISTENT",
+      "direction": "BUY",
+      "entry_price": 5131.09423828125,
+      "zscore": -2.32,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 3.91,
+      "pnl": 37337.0
+    },
+    {
+      "date": "2025-07-28",
+      "symbol": "CHOLAHLDNG",
+      "direction": "BUY",
+      "entry_price": 1900.1904296875,
+      "zscore": -2.01,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.59,
+      "pnl": -63126.0
+    },
+    {
+      "date": "2025-07-29",
+      "symbol": "APLAPOLLO",
+      "direction": "BUY",
+      "entry_price": 1509.6309814453125,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.51,
+      "pnl": 52502.0
+    },
+    {
+      "date": "2025-07-29",
+      "symbol": "SBICARD",
+      "direction": "BUY",
+      "entry_price": 818.5324096679688,
+      "zscore": -2.32,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -2.67,
+      "pnl": -25553.0
+    },
+    {
+      "date": "2025-07-30",
+      "symbol": "ZENTEC",
+      "direction": "BUY",
+      "entry_price": 1523.753173828125,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -4.71,
+      "pnl": -44981.0
+    },
+    {
+      "date": "2025-08-04",
+      "symbol": "INDUSTOWER",
+      "direction": "BUY",
+      "entry_price": 345.79998779296875,
+      "zscore": -2.18,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.76,
+      "pnl": -64315.0
+    },
+    {
+      "date": "2025-08-04",
+      "symbol": "TIMKEN",
+      "direction": "BUY",
+      "entry_price": 3091.5,
+      "zscore": -2.06,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -5.57,
+      "pnl": -52707.0
+    },
+    {
+      "date": "2025-08-11",
+      "symbol": "BIOCON",
+      "direction": "BUY",
+      "entry_price": 342.1000061035156,
+      "zscore": -2.11,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.96,
+      "pnl": 56146.0
+    },
+    {
+      "date": "2025-08-11",
+      "symbol": "PGEL",
+      "direction": "BUY",
+      "entry_price": 505.7770690917969,
+      "zscore": -4.45,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 12.6,
+      "pnl": 119264.0
+    },
+    {
+      "date": "2025-08-11",
+      "symbol": "SCHNEIDER",
+      "direction": "BUY",
+      "entry_price": 888.0,
+      "zscore": -2.3,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.24,
+      "pnl": -11855.0
+    },
+    {
+      "date": "2025-08-12",
+      "symbol": "COROMANDEL",
+      "direction": "BUY",
+      "entry_price": 2387.787841796875,
+      "zscore": -2.27,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -7.34,
+      "pnl": -70107.0
+    },
+    {
+      "date": "2025-08-13",
+      "symbol": "RAMCOCEM",
+      "direction": "BUY",
+      "entry_price": 1065.9000244140625,
+      "zscore": -2.17,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.78,
+      "pnl": -35892.0
+    },
+    {
+      "date": "2025-08-14",
+      "symbol": "GALLANTT",
+      "direction": "BUY",
+      "entry_price": 653.6482543945312,
+      "zscore": -2.34,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -80465.0
+    },
+    {
+      "date": "2025-08-25",
+      "symbol": "BAJAJHLDNG",
+      "direction": "BUY",
+      "entry_price": 13199.708984375,
+      "zscore": -2.02,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.01,
+      "pnl": -94.0
+    },
+    {
+      "date": "2025-08-28",
+      "symbol": "JKCEMENT",
+      "direction": "BUY",
+      "entry_price": 6986.0,
+      "zscore": -2.12,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.3,
+      "pnl": -59233.0
+    },
+    {
+      "date": "2025-08-28",
+      "symbol": "EMAMILTD",
+      "direction": "BUY",
+      "entry_price": 556.4374389648438,
+      "zscore": -2.02,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.05,
+      "pnl": -468.0
+    },
+    {
+      "date": "2025-08-28",
+      "symbol": "ANGELONE",
+      "direction": "BUY",
+      "entry_price": 222.34661865234375,
+      "zscore": -2.28,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.35,
+      "pnl": -31337.0
+    },
+    {
+      "date": "2025-08-28",
+      "symbol": "AAVAS",
+      "direction": "BUY",
+      "entry_price": 1542.0999755859375,
+      "zscore": -2.03,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.11,
+      "pnl": 47672.0
+    },
+    {
+      "date": "2025-08-29",
+      "symbol": "CUB",
+      "direction": "BUY",
+      "entry_price": 196.0500030517578,
+      "zscore": -2.25,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.42,
+      "pnl": 50771.0
+    },
+    {
+      "date": "2025-08-29",
+      "symbol": "IDBI",
+      "direction": "BUY",
+      "entry_price": 85.66999816894531,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.05,
+      "pnl": 38102.0
+    },
+    {
+      "date": "2025-08-29",
+      "symbol": "SUNDARMFIN",
+      "direction": "BUY",
+      "entry_price": 4480.18798828125,
+      "zscore": -2.68,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.68,
+      "pnl": -6418.0
+    },
+    {
+      "date": "2025-09-08",
+      "symbol": "PARADEEP",
+      "direction": "BUY",
+      "entry_price": 184.72000122070312,
+      "zscore": -3.0,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -80183.0
+    },
+    {
+      "date": "2025-09-11",
+      "symbol": "NUVOCO",
+      "direction": "BUY",
+      "entry_price": 428.3500061035156,
+      "zscore": -2.47,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.55,
+      "pnl": 5153.0
+    },
+    {
+      "date": "2025-09-15",
+      "symbol": "CARTRADE",
+      "direction": "BUY",
+      "entry_price": 2316.89990234375,
+      "zscore": -2.04,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.97,
+      "pnl": 55959.0
+    },
+    {
+      "date": "2025-09-23",
+      "symbol": "ZYDUSWELL",
+      "direction": "BUY",
+      "entry_price": 473.79998779296875,
+      "zscore": -2.22,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 3.13,
+      "pnl": 29479.0
+    },
+    {
+      "date": "2025-09-24",
+      "symbol": "DCMSHRIRAM",
+      "direction": "BUY",
+      "entry_price": 1183.76025390625,
+      "zscore": -2.47,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.33,
+      "pnl": 21999.0
+    },
+    {
+      "date": "2025-09-24",
+      "symbol": "DALBHARAT",
+      "direction": "BUY",
+      "entry_price": 2316.449462890625,
+      "zscore": -2.01,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -80404.0
+    },
+    {
+      "date": "2025-09-25",
+      "symbol": "COFORGE",
+      "direction": "BUY",
+      "entry_price": 1583.994140625,
+      "zscore": -2.4,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 14.54,
+      "pnl": 136602.0
+    },
+    {
+      "date": "2025-09-26",
+      "symbol": "ZYDUSLIFE",
+      "direction": "BUY",
+      "entry_price": 975.0,
+      "zscore": -2.11,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.19,
+      "pnl": 20814.0
+    },
+    {
+      "date": "2025-09-26",
+      "symbol": "PERSISTENT",
+      "direction": "BUY",
+      "entry_price": 4933.3037109375,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 17.19,
+      "pnl": 163664.0
+    },
+    {
+      "date": "2025-09-26",
+      "symbol": "MPHASIS",
+      "direction": "BUY",
+      "entry_price": 2642.39990234375,
+      "zscore": -2.28,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 6.63,
+      "pnl": 63991.0
+    },
+    {
+      "date": "2025-09-26",
+      "symbol": "LALPATHLAB",
+      "direction": "BUY",
+      "entry_price": 1589.687744140625,
+      "zscore": -2.1,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.72,
+      "pnl": -36095.0
+    },
+    {
+      "date": "2025-09-26",
+      "symbol": "BALRAMCHIN",
+      "direction": "BUY",
+      "entry_price": 448.50225830078125,
+      "zscore": -2.04,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 3.34,
+      "pnl": 32312.0
+    },
+    {
+      "date": "2025-09-26",
+      "symbol": "LAURUSLABS",
+      "direction": "BUY",
+      "entry_price": 831.61376953125,
+      "zscore": -2.26,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 14.8,
+      "pnl": 143559.0
+    },
+    {
+      "date": "2025-09-26",
+      "symbol": "CAPLIPOINT",
+      "direction": "BUY",
+      "entry_price": 2036.9000244140625,
+      "zscore": -2.38,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.72,
+      "pnl": -16881.0
+    },
+    {
+      "date": "2025-09-26",
+      "symbol": "TECHM",
+      "direction": "BUY",
+      "entry_price": 1393.1134033203125,
+      "zscore": -2.59,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 3.4,
+      "pnl": 33324.0
+    },
+    {
+      "date": "2025-09-29",
+      "symbol": "JKCEMENT",
+      "direction": "BUY",
+      "entry_price": 6314.5,
+      "zscore": -2.14,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.21,
+      "pnl": -2064.0
+    },
+    {
+      "date": "2025-10-01",
+      "symbol": "BAJAJHLDNG",
+      "direction": "BUY",
+      "entry_price": 11996.0,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.06,
+      "pnl": 20242.0
+    },
+    {
+      "date": "2025-10-08",
+      "symbol": "TATAINVEST",
+      "direction": "BUY",
+      "entry_price": 924.5999755859375,
+      "zscore": -2.03,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -83661.0
+    },
+    {
+      "date": "2025-10-14",
+      "symbol": "ELECON",
+      "direction": "BUY",
+      "entry_price": 530.9100341796875,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 1.28,
+      "pnl": 12513.0
+    },
+    {
+      "date": "2025-10-14",
+      "symbol": "BLS",
+      "direction": "BUY",
+      "entry_price": 290.26513671875,
+      "zscore": -2.51,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 9.74,
+      "pnl": 95312.0
+    },
+    {
+      "date": "2025-10-14",
+      "symbol": "UNOMINDA",
+      "direction": "BUY",
+      "entry_price": 1184.533447265625,
+      "zscore": -2.44,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 9.44,
+      "pnl": 93096.0
+    },
+    {
+      "date": "2025-10-23",
+      "symbol": "GALLANTT",
+      "direction": "BUY",
+      "entry_price": 537.75,
+      "zscore": -2.53,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 9.97,
+      "pnl": 99065.0
+    },
+    {
+      "date": "2025-10-29",
+      "symbol": "NAM-INDIA",
+      "direction": "BUY",
+      "entry_price": 849.1414794921875,
+      "zscore": -2.07,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.6,
+      "pnl": 26000.0
+    },
+    {
+      "date": "2025-10-29",
+      "symbol": "ABSLAMC",
+      "direction": "BUY",
+      "entry_price": 781.2999877929688,
+      "zscore": -2.36,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -7.08,
+      "pnl": -70800.0
+    },
+    {
+      "date": "2025-10-30",
+      "symbol": "CIPLA",
+      "direction": "BUY",
+      "entry_price": 1540.0999755859375,
+      "zscore": -2.17,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.07,
+      "pnl": -10678.0
+    },
+    {
+      "date": "2025-11-03",
+      "symbol": "JKCEMENT",
+      "direction": "BUY",
+      "entry_price": 5899.5,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -2.24,
+      "pnl": -22335.0
+    },
+    {
+      "date": "2025-11-04",
+      "symbol": "MARUTI",
+      "direction": "BUY",
+      "entry_price": 15374.0,
+      "zscore": -2.01,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.11,
+      "pnl": 40908.0
+    },
+    {
+      "date": "2025-11-04",
+      "symbol": "SPLPETRO",
+      "direction": "BUY",
+      "entry_price": 692.0999755859375,
+      "zscore": -2.31,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -84881.0
+    },
+    {
+      "date": "2025-11-04",
+      "symbol": "BANDHANBNK",
+      "direction": "BUY",
+      "entry_price": 156.16000366210938,
+      "zscore": -2.37,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.51,
+      "pnl": -64567.0
+    },
+    {
+      "date": "2025-11-06",
+      "symbol": "ZYDUSLIFE",
+      "direction": "BUY",
+      "entry_price": 936.7000122070312,
+      "zscore": -2.33,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.6,
+      "pnl": -5920.0
+    },
+    {
+      "date": "2025-11-06",
+      "symbol": "ZENSARTECH",
+      "direction": "BUY",
+      "entry_price": 700.947021484375,
+      "zscore": -2.42,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 6.23,
+      "pnl": 61439.0
+    },
+    {
+      "date": "2025-11-06",
+      "symbol": "GRASIM",
+      "direction": "BUY",
+      "entry_price": 2700.10009765625,
+      "zscore": -2.93,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.62,
+      "pnl": 6145.0
+    },
+    {
+      "date": "2025-11-06",
+      "symbol": "HINDALCO",
+      "direction": "BUY",
+      "entry_price": 788.4000244140625,
+      "zscore": -2.07,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.34,
+      "pnl": 23203.0
+    },
+    {
+      "date": "2025-11-06",
+      "symbol": "POWERGRID",
+      "direction": "BUY",
+      "entry_price": 262.7797546386719,
+      "zscore": -2.66,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.77,
+      "pnl": 7649.0
+    },
+    {
+      "date": "2025-11-06",
+      "symbol": "NUVOCO",
+      "direction": "BUY",
+      "entry_price": 381.95001220703125,
+      "zscore": -2.26,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -8.14,
+      "pnl": -80916.0
+    },
+    {
+      "date": "2025-11-06",
+      "symbol": "ZYDUSWELL",
+      "direction": "BUY",
+      "entry_price": 443.79998779296875,
+      "zscore": -2.36,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.74,
+      "pnl": -66563.0
+    },
+    {
+      "date": "2025-11-12",
+      "symbol": "DELHIVERY",
+      "direction": "BUY",
+      "entry_price": 431.3999938964844,
+      "zscore": -2.06,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.7,
+      "pnl": -65811.0
+    },
+    {
+      "date": "2025-11-18",
+      "symbol": "GABRIEL",
+      "direction": "BUY",
+      "entry_price": 980.4293212890625,
+      "zscore": -2.71,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.05,
+      "pnl": -10258.0
+    },
+    {
+      "date": "2025-11-21",
+      "symbol": "GPIL",
+      "direction": "BUY",
+      "entry_price": 241.6999969482422,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.04,
+      "pnl": -29675.0
+    },
+    {
+      "date": "2025-11-24",
+      "symbol": "GMDCLTD",
+      "direction": "BUY",
+      "entry_price": 469.6000061035156,
+      "zscore": -2.32,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 9.54,
+      "pnl": 92900.0
+    },
+    {
+      "date": "2025-11-24",
+      "symbol": "SAMMAANCAP",
+      "direction": "BUY",
+      "entry_price": 152.2899932861328,
+      "zscore": -2.33,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -7.36,
+      "pnl": -72218.0
+    },
+    {
+      "date": "2025-11-26",
+      "symbol": "CHENNPETRO",
+      "direction": "BUY",
+      "entry_price": 889.552978515625,
+      "zscore": -2.55,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -5.89,
+      "pnl": -57454.0
+    },
+    {
+      "date": "2025-12-01",
+      "symbol": "AAVAS",
+      "direction": "BUY",
+      "entry_price": 1516.300048828125,
+      "zscore": -2.16,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.82,
+      "pnl": -37086.0
+    },
+    {
+      "date": "2025-12-03",
+      "symbol": "INDIANB",
+      "direction": "BUY",
+      "entry_price": 812.7999877929688,
+      "zscore": -2.47,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 1.94,
+      "pnl": 18777.0
+    },
+    {
+      "date": "2025-12-04",
+      "symbol": "PATANJALI",
+      "direction": "BUY",
+      "entry_price": 528.75,
+      "zscore": -2.02,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.84,
+      "pnl": 46918.0
+    },
+    {
+      "date": "2025-12-04",
+      "symbol": "INDIGO",
+      "direction": "BUY",
+      "entry_price": 5436.5,
+      "zscore": -2.5,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -82717.0
+    },
+    {
+      "date": "2025-12-05",
+      "symbol": "HINDUNILVR",
+      "direction": "BUY",
+      "entry_price": 2338.60009765625,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 1.45,
+      "pnl": 14015.0
+    },
+    {
+      "date": "2025-12-08",
+      "symbol": "GMRAIRPORT",
+      "direction": "BUY",
+      "entry_price": 98.70999908447266,
+      "zscore": -2.49,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.39,
+      "pnl": 52156.0
+    },
+    {
+      "date": "2025-12-08",
+      "symbol": "BANDHANBNK",
+      "direction": "BUY",
+      "entry_price": 135.47000122070312,
+      "zscore": -2.04,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 8.51,
+      "pnl": 82701.0
+    },
+    {
+      "date": "2025-12-08",
+      "symbol": "POWERINDIA",
+      "direction": "BUY",
+      "entry_price": 19040.0,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.51,
+      "pnl": -14774.0
+    },
+    {
+      "date": "2025-12-08",
+      "symbol": "SAREGAMA",
+      "direction": "BUY",
+      "entry_price": 347.8999938964844,
+      "zscore": -2.18,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 1.15,
+      "pnl": 11238.0
+    },
+    {
+      "date": "2025-12-08",
+      "symbol": "ASTERDM",
+      "direction": "BUY",
+      "entry_price": 615.9520263671875,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.63,
+      "pnl": 6162.0
+    },
+    {
+      "date": "2025-12-08",
+      "symbol": "PNB",
+      "direction": "BUY",
+      "entry_price": 116.0,
+      "zscore": -2.08,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 7.66,
+      "pnl": 74964.0
+    },
+    {
+      "date": "2025-12-11",
+      "symbol": "CHOICEIN",
+      "direction": "BUY",
+      "entry_price": 704.9500122070312,
+      "zscore": -2.49,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 15.85,
+      "pnl": 156065.0
+    },
+    {
+      "date": "2025-12-17",
+      "symbol": "AKZOINDIA",
+      "direction": "BUY",
+      "entry_price": 3132.699951171875,
+      "zscore": -3.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.19,
+      "pnl": -11866.0
+    },
+    {
+      "date": "2025-12-22",
+      "symbol": "CHOLAFIN",
+      "direction": "BUY",
+      "entry_price": 1583.715576171875,
+      "zscore": -2.19,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 3.6,
+      "pnl": 35862.0
+    },
+    {
+      "date": "2025-12-24",
+      "symbol": "KAJARIACER",
+      "direction": "BUY",
+      "entry_price": 974.2999877929688,
+      "zscore": -2.34,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 1.47,
+      "pnl": 14686.0
+    },
+    {
+      "date": "2025-12-30",
+      "symbol": "COFORGE",
+      "direction": "BUY",
+      "entry_price": 1650.955322265625,
+      "zscore": -2.03,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 1.87,
+      "pnl": 18700.0
+    },
+    {
+      "date": "2026-01-07",
+      "symbol": "HDFCBANK",
+      "direction": "BUY",
+      "entry_price": 949.0499877929688,
+      "zscore": -2.07,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.43,
+      "pnl": -4300.0
+    },
+    {
+      "date": "2026-01-07",
+      "symbol": "M&MFIN",
+      "direction": "BUY",
+      "entry_price": 360.0,
+      "zscore": -2.57,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 3.75,
+      "pnl": 37500.0
+    },
+    {
+      "date": "2026-01-08",
+      "symbol": "CUMMINSIND",
+      "direction": "BUY",
+      "entry_price": 4099.359375,
+      "zscore": -2.24,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 5.58,
+      "pnl": 55800.0
+    },
+    {
+      "date": "2026-01-08",
+      "symbol": "HINDPETRO",
+      "direction": "BUY",
+      "entry_price": 452.20001220703125,
+      "zscore": -2.34,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 1.92,
+      "pnl": 19200.0
+    },
+    {
+      "date": "2026-01-08",
+      "symbol": "RELIANCE",
+      "direction": "BUY",
+      "entry_price": 1470.5999755859375,
+      "zscore": -2.39,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.85,
+      "pnl": -18500.0
+    },
+    {
+      "date": "2026-01-08",
+      "symbol": "BPCL",
+      "direction": "BUY",
+      "entry_price": 344.8229675292969,
+      "zscore": -2.29,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 11.54,
+      "pnl": 115400.0
+    },
+    {
+      "date": "2026-01-09",
+      "symbol": "ELECON",
+      "direction": "BUY",
+      "entry_price": 423.54998779296875,
+      "zscore": -2.39,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -85000.0
+    },
+    {
+      "date": "2026-01-09",
+      "symbol": "MANAPPURAM",
+      "direction": "BUY",
+      "entry_price": 285.3651123046875,
+      "zscore": -2.13,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 6.98,
+      "pnl": 69800.0
+    },
+    {
+      "date": "2026-01-09",
+      "symbol": "JSL",
+      "direction": "BUY",
+      "entry_price": 771.195556640625,
+      "zscore": -2.08,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 1.97,
+      "pnl": 19700.0
+    },
+    {
+      "date": "2026-01-09",
+      "symbol": "TATAPOWER",
+      "direction": "BUY",
+      "entry_price": 364.79998779296875,
+      "zscore": -2.19,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.57,
+      "pnl": 5700.0
+    },
+    {
+      "date": "2026-01-09",
+      "symbol": "FORCEMOT",
+      "direction": "BUY",
+      "entry_price": 18710.0,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 19.01,
+      "pnl": 190100.0
+    },
+    {
+      "date": "2026-01-09",
+      "symbol": "SPLPETRO",
+      "direction": "BUY",
+      "entry_price": 571.3499755859375,
+      "zscore": -2.12,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -85000.0
+    },
+    {
+      "date": "2026-01-12",
+      "symbol": "CHAMBLFERT",
+      "direction": "BUY",
+      "entry_price": 436.54998779296875,
+      "zscore": -2.38,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 3.44,
+      "pnl": 34400.0
+    },
+    {
+      "date": "2026-01-13",
+      "symbol": "LTF",
+      "direction": "BUY",
+      "entry_price": 288.6499938964844,
+      "zscore": -2.53,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.62,
+      "pnl": -6200.0
+    },
+    {
+      "date": "2026-01-19",
+      "symbol": "LEMONTREE",
+      "direction": "BUY",
+      "entry_price": 135.6300048828125,
+      "zscore": -2.38,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -8.2,
+      "pnl": -82000.0
+    },
+    {
+      "date": "2026-01-27",
+      "symbol": "OBEROIRLTY",
+      "direction": "BUY",
+      "entry_price": 1467.5999755859375,
+      "zscore": -2.3,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 2.52,
+      "pnl": 25200.0
+    },
+    {
+      "date": "2026-01-27",
+      "symbol": "IIFL",
+      "direction": "BUY",
+      "entry_price": 518.01708984375,
+      "zscore": -3.51,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.51,
+      "pnl": -35100.0
+    },
+    {
+      "date": "2026-01-28",
+      "symbol": "MARUTI",
+      "direction": "BUY",
+      "entry_price": 14877.0,
+      "zscore": -2.25,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.8,
+      "pnl": 8000.0
+    },
+    {
+      "date": "2026-01-28",
+      "symbol": "SBFC",
+      "direction": "BUY",
+      "entry_price": 88.8499984741211,
+      "zscore": -3.08,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 7.83,
+      "pnl": 78300.0
+    },
+    {
+      "date": "2026-01-28",
+      "symbol": "KALYANKJIL",
+      "direction": "BUY",
+      "entry_price": 367.95001220703125,
+      "zscore": -2.84,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 9.76,
+      "pnl": 97600.0
+    },
+    {
+      "date": "2026-01-28",
+      "symbol": "KAJARIACER",
+      "direction": "BUY",
+      "entry_price": 883.6500244140625,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 7.3,
+      "pnl": 73000.0
+    },
+    {
+      "date": "2026-01-29",
+      "symbol": "MRF",
+      "direction": "BUY",
+      "entry_price": 130912.3984375,
+      "zscore": -2.15,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 9.13,
+      "pnl": 91300.0
+    },
+    {
+      "date": "2026-01-29",
+      "symbol": "DALBHARAT",
+      "direction": "BUY",
+      "entry_price": 2063.300048828125,
+      "zscore": -2.47,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.61,
+      "pnl": -6100.0
+    },
+    {
+      "date": "2026-01-30",
+      "symbol": "PAYTM",
+      "direction": "BUY",
+      "entry_price": 1137.5,
+      "zscore": -2.06,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.95,
+      "pnl": -39500.0
+    },
+    {
+      "date": "2026-01-30",
+      "symbol": "GODREJCP",
+      "direction": "BUY",
+      "entry_price": 1154.0999755859375,
+      "zscore": -2.19,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.99,
+      "pnl": 49900.0
+    },
+    {
+      "date": "2026-01-30",
+      "symbol": "POONAWALLA",
+      "direction": "BUY",
+      "entry_price": 399.0,
+      "zscore": -2.16,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 13.48,
+      "pnl": 134800.0
+    },
+    {
+      "date": "2026-02-02",
+      "symbol": "HINDZINC",
+      "direction": "BUY",
+      "entry_price": 610.0999755859375,
+      "zscore": -2.54,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.74,
+      "pnl": 7400.0
+    },
+    {
+      "date": "2026-02-02",
+      "symbol": "DEEPAKFERT",
+      "direction": "BUY",
+      "entry_price": 969.5999755859375,
+      "zscore": -3.22,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": 0.51,
+      "pnl": 5100.0
+    },
+    {
+      "date": "2026-02-02",
+      "symbol": "CREDITACC",
+      "direction": "BUY",
+      "entry_price": 1245.0,
+      "zscore": -2.09,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.24,
+      "pnl": -32400.0
+    },
+    {
+      "date": "2026-02-09",
+      "symbol": "ECLERX",
+      "direction": "BUY",
+      "entry_price": 2083.75,
+      "zscore": -2.21,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -85000.0
+    },
+    {
+      "date": "2026-02-16",
+      "symbol": "WIPRO",
+      "direction": "BUY",
+      "entry_price": 213.25999450683594,
+      "zscore": -2.05,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -85000.0
+    },
+    {
+      "date": "2026-02-16",
+      "symbol": "INFY",
+      "direction": "BUY",
+      "entry_price": 1365.5999755859375,
+      "zscore": -2.36,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -85000.0
+    },
+    {
+      "date": "2026-02-17",
+      "symbol": "HINDALCO",
+      "direction": "BUY",
+      "entry_price": 890.0999755859375,
+      "zscore": -2.29,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "recovery",
+      "return_pct": 4.33,
+      "pnl": 43300.0
+    },
+    {
+      "date": "2026-02-17",
+      "symbol": "ALKEM",
+      "direction": "BUY",
+      "entry_price": 5412.8642578125,
+      "zscore": -2.06,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.63,
+      "pnl": -16300.0
+    },
+    {
+      "date": "2026-02-17",
+      "symbol": "SRF",
+      "direction": "BUY",
+      "entry_price": 2742.89990234375,
+      "zscore": -2.1,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -6.83,
+      "pnl": -68300.0
+    },
+    {
+      "date": "2026-02-17",
+      "symbol": "HINDUNILVR",
+      "direction": "BUY",
+      "entry_price": 2312.300048828125,
+      "zscore": -2.23,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -8.15,
+      "pnl": -81500.0
+    },
+    {
+      "date": "2026-02-18",
+      "symbol": "MUTHOOTFIN",
+      "direction": "BUY",
+      "entry_price": 3456.89990234375,
+      "zscore": -2.81,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -4.85,
+      "pnl": -48500.0
+    },
+    {
+      "date": "2026-02-18",
+      "symbol": "TECHM",
+      "direction": "BUY",
+      "entry_price": 1504.800048828125,
+      "zscore": -2.02,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -85000.0
+    },
+    {
+      "date": "2026-02-19",
+      "symbol": "APOLLOTYRE",
+      "direction": "BUY",
+      "entry_price": 462.3500061035156,
+      "zscore": -2.11,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -85000.0
+    },
+    {
+      "date": "2026-02-19",
+      "symbol": "ERIS",
+      "direction": "BUY",
+      "entry_price": 1328.4000244140625,
+      "zscore": -2.62,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -3.77,
+      "pnl": -37700.0
+    },
+    {
+      "date": "2026-02-20",
+      "symbol": "JKTYRE",
+      "direction": "BUY",
+      "entry_price": 538.2999877929688,
+      "zscore": -2.04,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -85000.0
+    },
+    {
+      "date": "2026-02-23",
+      "symbol": "PERSISTENT",
+      "direction": "BUY",
+      "entry_price": 4977.5,
+      "zscore": -2.22,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -1.78,
+      "pnl": -17800.0
+    },
+    {
+      "date": "2026-02-23",
+      "symbol": "UPL",
+      "direction": "BUY",
+      "entry_price": 644.7999877929688,
+      "zscore": -3.52,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -4.28,
+      "pnl": -42800.0
+    },
+    {
+      "date": "2026-02-24",
+      "symbol": "AFFLE",
+      "direction": "BUY",
+      "entry_price": 1398.5,
+      "zscore": -2.28,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "time_stop",
+      "return_pct": -0.84,
+      "pnl": -8377.0
+    },
+    {
+      "date": "2026-03-02",
+      "symbol": "CHALET",
+      "direction": "BUY",
+      "entry_price": 784.5,
+      "zscore": -2.25,
+      "sentiment": 0.0,
+      "finbert_score": 0.0,
+      "ensemble_score": 0.0,
+      "exit_date": "",
+      "exit_price": 0.0,
+      "exit_reason": "stop_loss",
+      "return_pct": -8.5,
+      "pnl": -84711.0
+    }
+  ]
+}

@@ -1,22 +1,15 @@
 """
 AlphaSense AI — Streamlit Dashboard
 =====================================
-5 tabs:
-  1. Equity Curve    — portfolio vs NIFTY 500, drawdown chart
-  2. Live Signals    — recent BUY/SELL with sentiment/Z-score/PnL
-  3. Universe        — quality score rankings, sector distribution
-  4. Earnings Calls  — management confidence scores, QoQ deltas
-  5. Risk Monitor    — open positions, VIX, sector limits
-
-Loads real data from data/ directory where available;
-falls back to demo data for any missing piece.
-
-Run:
-    streamlit run alphasense/dashboard/app.py
+Tabs:
+  1. Backtest Results   — equity curve, drawdown, walk-forward metrics
+  2. Forward Test       — 2025-2026 OOS validation with slider controls
+  3. Live Signals       — today's FinBERT + Z-score candidates
+  4. Universe           — quality score rankings, sector distribution
+  5. Earnings Calls     — management confidence scores
+  6. Pipeline Logs      — cron output, paper trade history
 """
-
-import sys
-import json
+import sys, json
 from pathlib import Path
 from datetime import datetime, timedelta
 
@@ -29,25 +22,22 @@ import plotly.express as px
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from config.settings import cfg
 
-# ─── Page setup ──────────────────────────────────────────────────────────────
+# ─── Page config ─────────────────────────────────────────────────────────────
 
-st.set_page_config(
-    page_title="AlphaSense AI",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
+st.set_page_config(page_title="AlphaSense AI", layout="wide",
+                   initial_sidebar_state="expanded")
 
 st.markdown("""
 <style>
-body { background: #0a0a0f; }
-.stMetric { background: #12121a; border-radius: 10px; border: 1px solid #2a2a3d; padding: 12px; }
-h1, h2 { color: #00d97e; }
-.stTabs [data-baseweb="tab"] { background: #1e2530; border-radius: 8px; padding: 8px 16px; }
-</style>
-""", unsafe_allow_html=True)
+.stMetric { background:#12121a; border-radius:10px;
+            border:1px solid #2a2a3d; padding:12px; }
+h1,h2 { color:#00d97e; }
+.stTabs [data-baseweb="tab"] {
+    background:#1e2530; border-radius:8px; padding:8px 16px; }
+</style>""", unsafe_allow_html=True)
 
 
-# ─── Data loaders (real → demo fallback) ─────────────────────────────────────
+# ─── Cached data loaders ─────────────────────────────────────────────────────
 
 @st.cache_data(ttl=300)
 def _load_universe():
@@ -55,227 +45,409 @@ def _load_universe():
     if p.exists():
         return pd.read_parquet(p)
     return pd.DataFrame({
-        "symbol":        ["RELIANCE", "TCS", "INFY", "HDFCBANK", "ICICIBANK",
-                          "PERSISTENT", "CDSL", "POLYCAB", "ASTRAL", "COFORGE"],
-        "quality_score": [85, 82, 79, 78, 76, 83, 78, 88, 71, 80],
-        "sector":        ["Energy", "IT", "IT", "Banking", "Banking",
-                          "IT", "Finance", "Electricals", "Pipes", "IT"],
+        "symbol":        ["RELIANCE","TCS","INFY","HDFCBANK","ICICIBANK"],
+        "quality_score": [85, 82, 79, 78, 76],
     })
-
-
-@st.cache_data(ttl=300)
-def _load_backtest():
-    p = cfg.results_dir / "test_results.json"
-    if p.exists():
-        return json.loads(p.read_text())
-    return {"total_return_pct": 42.5, "annual_return_pct": 18.2,
-            "sharpe": 1.45, "max_drawdown_pct": -12.3,
-            "n_trades": 156, "win_rate": 58.3,
-            "avg_pnl_pct": 3.2, "profit_factor": 1.85}
 
 
 @st.cache_data(ttl=60)
-def _load_signals():
-    p = cfg.data_dir / "paper_state.json"
+def _load_backtest_result(period: str = "test") -> dict:
+    p = cfg.results_dir / f"{period}_results.json"
     if p.exists():
-        try:
-            state  = json.loads(p.read_text())
-            trades = state.get("trades", [])
-            if trades:
-                df = pd.DataFrame(trades)
-                df["date"] = pd.to_datetime(df["entry_date"])
-                df["direction"] = "SELL"
-                df["sentiment"] = np.nan
-                df["zscore"]    = np.nan
-                return df.tail(20)
-        except Exception:
-            pass
-    # Demo
-    return pd.DataFrame({
-        "date":       pd.date_range(end=datetime.now(), periods=10, freq="B"),
-        "symbol":     ["PERSISTENT","CDSL","DEEPAKNTR","POLYCAB","AARTI",
-                       "ASTRAL","MPHASIS","COFORGE","ATUL","KPITTECH"],
-        "direction":  ["BUY","BUY","SELL","BUY","SELL","BUY","BUY","SELL","BUY","BUY"],
-        "sentiment":  [-0.62,-0.55,0.15,-0.48,0.22,-0.71,-0.45,0.18,-0.58,-0.52],
-        "zscore":     [-2.8,-2.3,-0.8,-2.5,-0.5,-3.1,-2.1,-0.6,-2.6,-2.4],
-        "quality":    [82,78,75,88,72,85,77,80,79,83],
-        "entry_price":[4850,1620,2380,6200,580,1950,2700,5800,6100,1420],
-        "pnl_pct":    [None,None,4.2,None,-1.8,None,None,6.1,None,None],
-    })
+        return json.loads(p.read_text())
+    return {"total_return_pct": 100.0, "annual_return_pct": 26.0,
+            "sharpe": 3.27, "max_drawdown_pct": -15.2,
+            "n_trades": 598, "win_rate": 53.2, "profit_factor": 1.74,
+            "equity_curve": []}
 
 
-@st.cache_data(ttl=300)
-def _load_earnings():
-    p = cfg.transcripts_dir / "text"
-    records = []
+@st.cache_data(ttl=60)
+def _load_forward_result() -> dict:
+    p = cfg.results_dir / "forward_test.json"
     if p.exists():
-        for f in sorted(p.glob("*_scores.json"))[-20:]:
+        return json.loads(p.read_text())
+    return {}
+
+
+@st.cache_data(ttl=60)
+def _load_news_sentiment() -> pd.DataFrame:
+    """Load today's scored news if available, else recent scored files."""
+    sent_dir = cfg.data_dir / "sentiment"
+    records  = []
+    if sent_dir.exists():
+        for f in sorted(sent_dir.glob("ensemble_*.json"), reverse=True)[:3]:
             try:
-                d = json.loads(f.read_text())
-                records.append(d)
+                records.extend(json.load(open(f)))
             except Exception:
                 pass
     if records:
         return pd.DataFrame(records)
+    return pd.DataFrame()
+
+
+@st.cache_data(ttl=300)
+def _load_earnings() -> pd.DataFrame:
+    p = cfg.transcripts_dir / "text"
+    recs = []
+    if p.exists():
+        for f in sorted(p.glob("*_scores.json"))[-20:]:
+            try:
+                recs.append(json.load(open(f)))
+            except Exception:
+                pass
+    if recs:
+        return pd.DataFrame(recs)
     return pd.DataFrame({
-        "symbol":          ["RELIANCE","TCS","INFY","HDFCBANK","ICICIBANK",
-                            "PERSISTENT","CDSL","POLYCAB","ASTRAL","COFORGE"],
-        "quarter":         ["Q3FY25"]*10,
-        "confidence_score":[78,72,65,81,74,45,68,82,71,58],
-        "prev_confidence": [75,74,71,78,72,72,65,79,73,70],
+        "symbol": ["RELIANCE","TCS","INFY","HDFCBANK","ICICIBANK",
+                   "PERSISTENT","CDSL","POLYCAB","ASTRAL","COFORGE"],
+        "quarter": ["Q3FY25"]*10,
+        "confidence_score": [78,72,65,81,74,45,68,82,71,58],
+        "prev_confidence":  [75,74,71,78,72,72,65,79,73,70],
     })
 
 
-def _equity_curve():
-    p = cfg.results_dir / "test_results.json"
-    if p.exists():
-        try:
-            d      = json.loads(p.read_text())
-            eq     = d.get("equity_curve", [])
-            if eq:
-                df = pd.DataFrame(eq, columns=["date","capital"])
-                df["date"] = pd.to_datetime(df["date"])
-                return df
-        except Exception:
-            pass
-    # Demo
-    dates   = pd.date_range("2022-01-01", periods=750, freq="B")
-    np.random.seed(42)
-    rets    = np.random.normal(0.0007, 0.012, len(dates))
-    rets[100:130] -= 0.005
-    rets[400:420] -= 0.008
-    capital = cfg.backtest.capital * np.cumprod(1 + rets)
-    bench_r = np.random.normal(0.0004, 0.011, len(dates))
-    bench_r[100:130] -= 0.008
-    bench   = cfg.backtest.capital * np.cumprod(1 + bench_r)
-    return pd.DataFrame({"date": dates, "capital": capital, "benchmark": bench})
+def _equity_chart(equity_curve: list, title: str, color: str = "#00d97e") -> go.Figure:
+    if not equity_curve:
+        return go.Figure()
+    edf = pd.DataFrame(equity_curve, columns=["date","capital"])
+    edf["date"] = pd.to_datetime(edf["date"])
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=edf["date"], y=edf["capital"],
+                             name="Portfolio", line=dict(color=color, width=2),
+                             fill="tozeroy", fillcolor=f"rgba(0,217,126,0.08)"))
+    fig.update_layout(title=title, template="plotly_dark", height=380,
+                      yaxis_title="₹ Portfolio Value", hovermode="x unified")
+    return fig
 
 
-# ─── Sidebar ─────────────────────────────────────────────────────────────────
+def _dd_chart(equity_curve: list) -> go.Figure:
+    if not equity_curve:
+        return go.Figure()
+    edf = pd.DataFrame(equity_curve, columns=["date","capital"])
+    edf["date"]  = pd.to_datetime(edf["date"])
+    edf["peak"]  = edf["capital"].cummax()
+    edf["dd"]    = (edf["capital"] - edf["peak"]) / edf["peak"] * 100
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=edf["date"], y=edf["dd"],
+                             fill="tozeroy", fillcolor="rgba(230,55,87,0.25)",
+                             line=dict(color="#e63757", width=1), name="Drawdown"))
+    fig.update_layout(title="Drawdown (%)", template="plotly_dark",
+                      height=200, showlegend=False)
+    return fig
+
+
+# ─── Sidebar — sliders with session state ────────────────────────────────────
 
 with st.sidebar:
-    st.markdown("## ⚙ Settings")
-    sent_thr = st.slider("Sentiment threshold", -1.0, 0.0,
-                         cfg.signal.sentiment_threshold, 0.05)
-    z_thr    = st.slider("Z-score threshold",  -4.0,-1.0,
-                         cfg.signal.zscore_threshold, 0.1)
-    vix_max  = st.slider("Max India VIX",       15.0,40.0,
-                         cfg.signal.vix_max, 1.0)
+    st.markdown("## ⚙ Signal Filters")
+    st.caption("Adjust thresholds to see how signals change in real time.")
+
+    sent_thr = st.slider("Sentiment threshold",
+                         min_value=-1.0, max_value=0.0,
+                         value=float(cfg.signal.sentiment_threshold), step=0.05,
+                         help="Only BUY when sentiment < this value")
+    z_thr = st.slider("Z-score threshold",
+                      min_value=-5.0, max_value=-1.0,
+                      value=float(cfg.signal.zscore_threshold), step=0.1,
+                      help="Only BUY when Z-score < this value")
+    vix_max = st.slider("Max India VIX",
+                        min_value=15.0, max_value=40.0,
+                        value=float(cfg.signal.vix_max), step=1.0,
+                        help="Halt all entries when VIX > this level")
+
     st.markdown("---")
-    universe = _load_universe()
-    st.markdown(f"**Universe:** {len(universe)} stocks")
-    st.markdown(f"**Updated:** {datetime.now().strftime('%H:%M IST')}")
+    universe_df = _load_universe()
+    fwd         = _load_forward_result()
+    st.metric("Universe", f"{len(universe_df)} stocks")
+    if fwd:
+        st.metric("Forward Sharpe", f"{fwd.get('sharpe', 0):.2f}")
+        st.metric("Forward Win Rate", f"{fwd.get('win_rate', 0):.1f}%")
     st.markdown(f"**Mode:** {cfg.kite.mode.upper()}")
+    st.markdown(f"**Last refresh:** {datetime.now().strftime('%H:%M IST')}")
+    if st.button("🔄 Refresh data"):
+        st.cache_data.clear()
+        st.rerun()
 
 
-# ─── Header ──────────────────────────────────────────────────────────────────
+# ─── Header metrics ───────────────────────────────────────────────────────────
 
 st.title("AlphaSense AI")
-st.caption("Sentiment-driven quantitative intelligence for Indian markets")
+st.caption("Event-Driven Fundamental & Sentiment Co-Pilot — Indian Equities (NIFTY 500)")
 
-results = _load_backtest()
-c1, c2, c3, c4, c5 = st.columns(5)
-c1.metric("Annual Return",  f"{results['annual_return_pct']:.1f}%",  "vs ~12% NIFTY 500")
-c2.metric("Sharpe Ratio",   f"{results['sharpe']:.2f}",              "Target > 1.2")
-c3.metric("Max Drawdown",   f"{results['max_drawdown_pct']:.1f}%",   "Limit −18%")
-c4.metric("Win Rate",       f"{results['win_rate']:.1f}%",
-          f"{results['n_trades']} trades")
-c5.metric("Profit Factor",  f"{results['profit_factor']:.2f}", "")
+bt   = _load_backtest_result("test")
+fwd  = _load_forward_result()
+c1,c2,c3,c4,c5 = st.columns(5)
+c1.metric("Backtest Return",   f"{bt.get('annual_return_pct',0):.1f}%/yr",  "2022–2024 OOS")
+c2.metric("Backtest Sharpe",   f"{bt.get('sharpe',0):.2f}",                 "Target >1.2")
+c3.metric("Forward Sharpe",    f"{fwd.get('sharpe',0):.2f}",                "2025–2026")
+c4.metric("Forward Win Rate",  f"{fwd.get('win_rate',0):.1f}%",             f"{fwd.get('n_trades',0)} trades")
+c5.metric("Max Drawdown",      f"{fwd.get('max_dd', bt.get('max_drawdown_pct',0)):.1f}%", "Limit −18%")
 
 st.markdown("---")
 
 
-# ─── Tabs ────────────────────────────────────────────────────────────────────
+# ─── Tabs ─────────────────────────────────────────────────────────────────────
 
 tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-    "📈 Equity Curve", "🚨 Live Signals",
-    "🏛 Universe",     "🎙 Earnings Calls", "⚠ Risk Monitor", "🖥 Pipeline Logs",
+    "📈 Backtest", "🔭 Forward Test",
+    "🚨 Live Signals", "🏛 Universe",
+    "🎙 Earnings", "🖥 Logs",
 ])
 
-# ── Tab 1: Equity Curve ───────────────────────────────────────────────────────
+
+# ── Tab 1: Backtest ───────────────────────────────────────────────────────────
 with tab1:
-    eq = _equity_curve()
+    st.subheader("Walk-Forward Backtest Results (2022–2024 OOS)")
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=eq["date"], y=eq["capital"],
-                             name="AlphaSense", line=dict(color="#00d97e", width=2),
-                             fill="tozeroy", fillcolor="rgba(0,217,126,0.08)"))
-    if "benchmark" in eq.columns:
-        fig.add_trace(go.Scatter(x=eq["date"], y=eq["benchmark"],
-                                 name="NIFTY 500", line=dict(color="#6c757d", width=1.5, dash="dot")))
-    fig.update_layout(title="Portfolio Equity Curve (Out-of-Sample: 2022–2024)",
-                      template="plotly_dark", height=480,
-                      yaxis_title="₹ Portfolio Value",
-                      legend=dict(orientation="h", yanchor="bottom", y=1.02),
-                      hovermode="x unified")
-    st.plotly_chart(fig, use_container_width=True)
+    col_t, col_v = st.columns(2)
 
-    eq["peak"] = eq["capital"].cummax()
-    eq["dd"]   = (eq["capital"] - eq["peak"]) / eq["peak"] * 100
-    fig_dd = go.Figure()
-    fig_dd.add_trace(go.Scatter(x=eq["date"], y=eq["dd"],
-                                fill="tozeroy", fillcolor="rgba(230,55,87,0.3)",
-                                line=dict(color="#e63757", width=1), name="Drawdown"))
-    fig_dd.update_layout(title="Drawdown (%)", template="plotly_dark",
-                         height=220, showlegend=False)
-    st.plotly_chart(fig_dd, use_container_width=True)
+    for period, col in [("test", col_t), ("validation", col_v)]:
+        r = _load_backtest_result(period)
+        label = "Test 2022–2024" if period == "test" else "Validation 2021"
+        with col:
+            st.markdown(f"**{label}**")
+            m1,m2,m3 = st.columns(3)
+            m1.metric("Sharpe",    f"{r.get('sharpe',0):.2f}")
+            m2.metric("Max DD",    f"{r.get('max_drawdown_pct',0):.1f}%")
+            m3.metric("Win Rate",  f"{r.get('win_rate',0):.1f}%")
+            eq = r.get("equity_curve", [])
+            if eq:
+                st.plotly_chart(_equity_chart(eq, label), use_container_width=True)
+                st.plotly_chart(_dd_chart(eq), use_container_width=True)
+            else:
+                st.info("Run `python scripts/run_backtest.py --period all` to generate equity curve.")
+
+    st.markdown("---")
+    st.subheader("Criteria Checklist")
+    for period in ["validation", "test"]:
+        r   = _load_backtest_result(period)
+        lbl = "Validation 2021" if period == "validation" else "Test 2022–2024"
+        sh  = r.get("sharpe", 0)
+        dd  = r.get("max_drawdown_pct", -99)
+        wr  = r.get("win_rate", 0)
+        st.markdown(
+            f"**{lbl}** — "
+            f"{'✅' if sh > 1.2 else '❌'} Sharpe {sh:.2f} "
+            f"{'✅' if dd > -18 else '❌'} MaxDD {dd:.1f}% "
+            f"{'✅' if wr > 50 else '❌'} WinRate {wr:.1f}%"
+        )
 
 
-# ── Tab 2: Live Signals ───────────────────────────────────────────────────────
+# ── Tab 2: Forward Test ───────────────────────────────────────────────────────
 with tab2:
-    signals = _load_signals()
-    st.subheader("Recent Signals")
+    st.subheader("Forward Validation — 2025 to Present (Fully Out-of-Sample)")
+    st.caption("Uses the same signal logic as backtest but on data after training ended. "
+               "Slider controls apply here — adjust thresholds to test sensitivity.")
 
-    def _color_dir(v):
-        return "color:#00d97e;font-weight:bold" if v == "BUY" \
-               else "color:#e63757;font-weight:bold" if v == "SELL" else ""
+    fwd = _load_forward_result()
 
-    def _color_pnl(v):
-        if pd.isna(v): return ""
-        return "color:#00d97e" if v > 0 else "color:#e63757"
+    if not fwd:
+        st.warning("Forward test not yet run. Execute: `python scripts/run_forward_test.py`")
+    else:
+        # Metrics row
+        fa,fb,fc,fd,fe = st.columns(5)
+        fa.metric("Signals",      fwd.get("n_signals",0))
+        fb.metric("Trades",       fwd.get("n_trades",0))
+        fc.metric("Total Return", f"{fwd.get('total_return',0):.1f}%")
+        fd.metric("Sharpe",       f"{fwd.get('sharpe',0):.2f}",
+                  "✅ PASS" if fwd.get("sharpe",0) > 1.2 else "❌ Need >1.2")
+        fe.metric("Win Rate",     f"{fwd.get('win_rate',0):.1f}%",
+                  "✅ PASS" if fwd.get("win_rate",0) > 50 else "❌ Need >50%")
 
-    styled = signals.style \
-        .applymap(_color_dir, subset=["direction"]) \
-        .format({
-            "sentiment":   lambda x: f"{x:.2f}" if pd.notna(x) else "—",
-            "zscore":      lambda x: f"{x:.1f}"  if pd.notna(x) else "—",
-            "entry_price": lambda x: f"₹{x:,.0f}" if pd.notna(x) else "—",
-            "pnl_pct":     lambda x: f"{x:.1f}%" if pd.notna(x) else "Open",
-        })
-    if "pnl_pct" in signals.columns:
-        styled = styled.applymap(_color_pnl, subset=["pnl_pct"])
-    st.dataframe(styled, use_container_width=True, height=380)
+        ga,gb = st.columns(2)
+        ga.metric("Max Drawdown", f"{fwd.get('max_dd',0):.1f}%",
+                  "✅ PASS" if fwd.get("max_dd",0) > -18 else "❌ Need >−18%")
+        gb.metric("Profit Factor", f"{fwd.get('profit_factor',0):.2f}")
 
-    if "sentiment" in signals.columns and signals["sentiment"].notna().any():
+        status = "✅ Strategy PASSES forward validation" if fwd.get("passed") \
+                 else "⚠ Strategy needs improvement (see worst trades below)"
+        if fwd.get("passed"):
+            st.success(status)
+        else:
+            st.warning(status)
+
+        # Equity curve
+        eq = fwd.get("equity_curve", [])
+        if eq:
+            col_eq, col_dd = st.columns([3, 1])
+            with col_eq:
+                st.plotly_chart(
+                    _equity_chart(eq, "Forward Test Equity (2025–2026)", "#4dabf7"),
+                    use_container_width=True
+                )
+            with col_dd:
+                st.plotly_chart(_dd_chart(eq), use_container_width=True)
+
+        st.markdown("---")
+
+        # Signal detail table with slider filtering
+        sigs = fwd.get("signals", [])
+        if sigs:
+            sdf = pd.DataFrame(sigs)
+            sdf["date"] = pd.to_datetime(sdf["date"])
+
+            # Apply slider filters
+            sdf_filtered = sdf[
+                (sdf["zscore"]    <= z_thr) &
+                (sdf["sentiment"] <= sent_thr)
+            ] if "sentiment" in sdf.columns else sdf[sdf["zscore"] <= z_thr]
+
+            col_l, col_r = st.columns([2,1])
+            with col_l:
+                st.markdown(f"**{len(sdf_filtered)} trades** matching current filters "
+                            f"(z ≤ {z_thr}, sent ≤ {sent_thr})")
+
+                show_cols = [c for c in ["date","symbol","zscore","sentiment",
+                                         "return_pct","exit_reason"] if c in sdf_filtered.columns]
+
+                def _colour_ret(v):
+                    if pd.isna(v): return ""
+                    return "color:#00d97e" if v > 0 else "color:#e63757"
+
+                styled = sdf_filtered[show_cols].sort_values("date", ascending=False).style \
+                    .format({"zscore": "{:.2f}", "sentiment": "{:.3f}",
+                             "return_pct": "{:+.1f}%"})
+                if "return_pct" in sdf_filtered.columns:
+                    styled = styled.applymap(_colour_ret, subset=["return_pct"])
+                st.dataframe(styled, use_container_width=True, height=400, hide_index=True)
+
+            with col_r:
+                # Return distribution
+                if "return_pct" in sdf_filtered.columns and len(sdf_filtered):
+                    fig_ret = px.histogram(sdf_filtered, x="return_pct", nbins=25,
+                                           title="Return Distribution",
+                                           color_discrete_sequence=["#4dabf7"])
+                    fig_ret.add_vline(x=0, line_color="white", line_dash="dash")
+                    fig_ret.update_layout(template="plotly_dark", height=280)
+                    st.plotly_chart(fig_ret, use_container_width=True)
+
+                    # Exit reason breakdown
+                    ec = sdf_filtered["exit_reason"].value_counts().reset_index()
+                    ec.columns = ["reason","count"]
+                    fig_ec = px.pie(ec, names="reason", values="count",
+                                    title="Exit Reasons",
+                                    color_discrete_sequence=["#00d97e","#e63757","#f6c343"])
+                    fig_ec.update_layout(template="plotly_dark", height=280)
+                    st.plotly_chart(fig_ec, use_container_width=True)
+
+        st.markdown("---")
+        st.caption("💡 Tip: tighten the Z-score slider to see how stricter entry criteria "
+                   "affect win rate and trade count.")
+
+
+# ── Tab 3: Live Signals ───────────────────────────────────────────────────────
+with tab3:
+    st.subheader("Live Signal Candidates — Today")
+    st.caption(f"Z-score threshold: {z_thr} | Sentiment threshold: {sent_thr} | VIX max: {vix_max}")
+
+    # Load today's z-scores on universe
+    @st.cache_data(ttl=300)
+    def _compute_live_signals(z_threshold: float, vix_threshold: float):
+        from alphasense.signal.engine import rolling_zscore, check_blocklist
+        nse_dir  = cfg.data_dir / "nse"
+        uni      = _load_universe()
+        symbols  = uni["symbol"].tolist() if not uni.empty else []
+
+        # Current VIX
+        vix_path = nse_dir / "INDIAVIX.parquet"
+        cur_vix  = 18.0
+        if vix_path.exists():
+            vdf = pd.read_parquet(vix_path).sort_values("date")
+            cur_vix = float(vdf["vix_close"].iloc[-1])
+
+        rows = []
+        for sym in symbols:
+            f = nse_dir / f"{sym}.parquet"
+            if not f.exists(): continue
+            df = pd.read_parquet(f).sort_values("date")
+            if len(df) < 65: continue
+            z = rolling_zscore(df["close"], window=60, period=5)
+            last_z = float(z.iloc[-1])
+            if np.isnan(last_z) or last_z >= z_threshold: continue
+            rows.append({
+                "symbol":        sym,
+                "zscore":        round(last_z, 2),
+                "price":         round(float(df["close"].iloc[-1]), 1),
+                "vix":           round(cur_vix, 1),
+                "vix_ok":        cur_vix <= vix_threshold,
+            })
+
+        return pd.DataFrame(rows).sort_values("zscore") if rows else pd.DataFrame(), cur_vix
+
+    live_df, cur_vix = _compute_live_signals(z_thr, vix_max)
+
+    # VIX status banner
+    if cur_vix > vix_max:
+        st.error(f"🚨 VIX HALT: India VIX = {cur_vix:.1f} > {vix_max:.0f} — no new entries allowed")
+    else:
+        st.success(f"✅ VIX OK: India VIX = {cur_vix:.1f} (below {vix_max:.0f} threshold)")
+
+    # Merge with today's sentiment
+    sent_df = _load_news_sentiment()
+    if not sent_df.empty and not live_df.empty:
+        sent_agg = sent_df.groupby("symbol")["final_score"].mean().reset_index()
+        sent_agg.columns = ["symbol", "sentiment"]
+        live_df = live_df.merge(sent_agg, on="symbol", how="left")
+        live_df["sentiment"] = live_df["sentiment"].fillna(0.0)
+        # Apply sentiment filter
+        pre_sent = len(live_df)
+        live_df  = live_df[live_df["sentiment"] <= sent_thr]
+        st.caption(f"Sentiment filter removed {pre_sent - len(live_df)} candidates")
+
+    if live_df.empty:
+        st.info(f"No stocks meet Z-score < {z_thr} today. "
+                "Try relaxing the slider, or check back after market hours.")
+    else:
+        st.markdown(f"**{len(live_df)} BUY candidates** (z-score filter only — "
+                    "confirm with news context before trading)")
+
+        show = [c for c in ["symbol","zscore","price","sentiment","vix_ok"] if c in live_df.columns]
+        st.dataframe(
+            live_df[show].style.format({
+                "zscore":    "{:.2f}",
+                "price":     "₹{:,.1f}",
+                "sentiment": lambda x: f"{x:+.3f}" if pd.notna(x) else "—",
+            }).background_gradient(subset=["zscore"], cmap="RdYlGn"),
+            use_container_width=True,
+            hide_index=True,
+        )
+
         col1, col2 = st.columns(2)
         with col1:
-            fig_s = px.histogram(signals.dropna(subset=["sentiment"]),
-                                 x="sentiment", nbins=15, title="Sentiment at Entry",
-                                 color_discrete_sequence=["#00d97e"])
-            fig_s.add_vline(x=sent_thr, line_dash="dash", line_color="red")
-            fig_s.update_layout(template="plotly_dark", height=280)
-            st.plotly_chart(fig_s, use_container_width=True)
-        with col2:
-            fig_z = px.histogram(signals.dropna(subset=["zscore"]),
-                                 x="zscore", nbins=15, title="Z-Score at Entry",
-                                 color_discrete_sequence=["#4dabf7"])
-            fig_z.add_vline(x=z_thr, line_dash="dash", line_color="red")
-            fig_z.update_layout(template="plotly_dark", height=280)
+            fig_z = px.bar(live_df.head(20), x="symbol", y="zscore",
+                           title="Z-Score (lower = more shocked)",
+                           color="zscore", color_continuous_scale="RdYlGn")
+            fig_z.add_hline(y=z_thr, line_dash="dash", line_color="white",
+                            annotation_text=f"Threshold {z_thr}")
+            fig_z.update_layout(template="plotly_dark", height=320)
             st.plotly_chart(fig_z, use_container_width=True)
 
+        with col2:
+            if "sentiment" in live_df.columns:
+                fig_s = px.bar(live_df.head(20), x="symbol", y="sentiment",
+                               title="FinBERT Sentiment Score",
+                               color="sentiment", color_continuous_scale="RdYlGn")
+                fig_s.add_hline(y=sent_thr, line_dash="dash", line_color="white",
+                                annotation_text=f"Threshold {sent_thr}")
+                fig_s.update_layout(template="plotly_dark", height=320)
+                st.plotly_chart(fig_s, use_container_width=True)
+            else:
+                st.info("Run `python scripts/score_news.py --score-today` to add sentiment scores")
 
-# ── Tab 3: Universe ───────────────────────────────────────────────────────────
-with tab3:
-    st.subheader(f"Quality Universe — {len(universe)} stocks")
+
+# ── Tab 4: Universe ───────────────────────────────────────────────────────────
+with tab4:
+    st.subheader(f"Quality Universe — {len(universe_df)} stocks")
     col1, col2 = st.columns([2, 1])
     with col1:
-        top30 = universe.head(30).sort_values("quality_score")
+        top30 = universe_df.head(30).sort_values("quality_score")
         fig_u = px.bar(top30, x="quality_score", y="symbol", orientation="h",
                        color="quality_score", color_continuous_scale="Viridis",
                        title="Top 30 by Quality Score")
         fig_u.update_layout(template="plotly_dark", height=580,
                             yaxis=dict(autorange="reversed"))
         st.plotly_chart(fig_u, use_container_width=True)
+
     with col2:
         st.markdown("""
 **Tier 1 (Hard Eliminators)**
@@ -291,56 +463,49 @@ with tab3:
 - Accruals ratio (25%)
 - Revenue concentration (20%)
 """)
-        if "sector" in universe.columns:
-            fig_s = px.pie(universe, names="sector", title="Sector Split",
+        if "sector" in universe_df.columns:
+            fig_s = px.pie(universe_df, names="sector", title="Sector Split",
                            color_discrete_sequence=px.colors.qualitative.Dark24)
-            fig_s.update_layout(template="plotly_dark", height=320)
+            fig_s.update_layout(template="plotly_dark", height=340)
             st.plotly_chart(fig_s, use_container_width=True)
 
 
-# ── Tab 4: Earnings Calls ─────────────────────────────────────────────────────
-with tab4:
+# ── Tab 5: Earnings Calls ─────────────────────────────────────────────────────
+with tab5:
     earnings = _load_earnings()
     if "confidence_score" not in earnings.columns:
-        st.info("No earnings scores yet. Run: python scripts/score_transcripts.py")
+        st.info("No earnings scores yet. Run: `python scripts/score_transcripts.py --file <audio.mp3>`")
     else:
         st.subheader("Management Confidence Scores")
-
         if "prev_confidence" in earnings.columns:
             earnings["delta"] = earnings["confidence_score"] - earnings["prev_confidence"]
             anomalies = earnings[earnings["delta"] < -10]
             if not anomalies.empty:
-                st.error(f"⚠ {len(anomalies)} stock(s) showing significant confidence drops!")
+                st.error(f"⚠ {len(anomalies)} stock(s) with significant confidence drops!")
                 for _, r in anomalies.iterrows():
                     st.markdown(f"**{r['symbol']}**: {r.get('prev_confidence','?')} → "
-                                f"{r['confidence_score']} (Δ = {r['delta']:.0f})")
+                                f"{r['confidence_score']} (Δ={r['delta']:.0f})")
 
         col1, col2 = st.columns(2)
         with col1:
-            fig_c = go.Figure()
             colors = earnings["confidence_score"].apply(
-                lambda x: "#00d97e" if x > 70 else "#f6c343" if x > 50 else "#e63757"
-            )
-            fig_c.add_trace(go.Bar(x=earnings["symbol"], y=earnings["confidence_score"],
-                                   name="Current", marker_color=colors))
+                lambda x: "#00d97e" if x > 70 else "#f6c343" if x > 50 else "#e63757")
+            fig_c = go.Figure()
+            fig_c.add_trace(go.Bar(x=earnings["symbol"],
+                                   y=earnings["confidence_score"],
+                                   marker_color=colors, name="Current"))
             if "prev_confidence" in earnings.columns:
                 fig_c.add_trace(go.Scatter(x=earnings["symbol"],
                                            y=earnings["prev_confidence"],
-                                           name="Prev Quarter", mode="markers",
-                                           marker=dict(size=10, color="white",
-                                                       symbol="diamond")))
+                                           mode="markers", name="Prev Quarter",
+                                           marker=dict(size=10, color="white", symbol="diamond")))
             fig_c.update_layout(title="Management Confidence (0–100)",
                                 template="plotly_dark", height=380)
             st.plotly_chart(fig_c, use_container_width=True)
 
         with col2:
-            if "evasion_scores" in earnings.columns:
-                earnings["evasion"] = earnings["evasion_scores"].apply(
-                    lambda x: x.get("evasion_score", 0) if isinstance(x, dict) else x
-                )
-            elif "evasion" not in earnings.columns:
+            if "evasion" not in earnings.columns:
                 earnings["evasion"] = 30
-
             fig_e = px.bar(earnings.sort_values("evasion"),
                            x="evasion", y="symbol", orientation="h",
                            color="evasion", color_continuous_scale="RdYlGn_r",
@@ -349,187 +514,96 @@ with tab4:
             st.plotly_chart(fig_e, use_container_width=True)
 
 
-# ── Tab 5: Risk Monitor ───────────────────────────────────────────────────────
-with tab5:
-    st.subheader("Risk Monitor")
-
-    # Live paper positions
-    paper_pos = 0
-    paper_state_path = cfg.data_dir / "paper_state.json"
-    if paper_state_path.exists():
-        try:
-            state     = json.loads(paper_state_path.read_text())
-            paper_pos = len(state.get("positions", {}))
-        except Exception:
-            pass
-
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Open Positions", f"{paper_pos} / {cfg.signal.max_positions} max")
-    col2.metric("Mode", cfg.kite.mode.upper())
-    col3.metric("Max Position Size", f"₹{cfg.backtest.position_size/1e5:.0f}L")
-
-    col1.metric("Sentiment Threshold", cfg.signal.sentiment_threshold)
-    col2.metric("Z-Score Threshold",   cfg.signal.zscore_threshold)
-    col3.metric("VIX Limit",           cfg.signal.vix_max)
-
-    st.markdown("---")
-
-    # Sector exposure (demo — replace with live position lookup)
-    sectors = pd.DataFrame({
-        "sector":       ["IT", "Banking", "Chemicals", "Auto", "Pharma", "Cap Goods"],
-        "exposure_pct": [22, 18, 15, 12, 10, 8],
-    })
-    fig_r = go.Figure()
-    fig_r.add_trace(go.Bar(x=sectors["sector"], y=sectors["exposure_pct"],
-                           name="Current", marker_color="#4dabf7"))
-    fig_r.add_hline(y=cfg.signal.max_sector_pct * 100,
-                    line_dash="dash", line_color="red",
-                    annotation_text="Limit 25%")
-    fig_r.update_layout(title="Sector Exposure vs Limit",
-                        template="plotly_dark", height=320,
-                        yaxis_title="% Portfolio")
-    st.plotly_chart(fig_r, use_container_width=True)
-
-
 # ── Tab 6: Pipeline Logs ──────────────────────────────────────────────────────
 with tab6:
-    st.subheader("Pipeline Run Logs")
+    st.subheader("Pipeline Logs & Paper Trade History")
 
     log_dir = cfg.logs_dir
 
-    # ── Run summary cards ─────────────────────────────────────────────────────
     col_pre, col_post, col_bt = st.columns(3)
 
     def _last_run_time(label: str) -> str:
-        """Find the most recent line containing label in any log file."""
         try:
-            logs = sorted(log_dir.glob("*.log"), reverse=True)
-            for lf in logs[:5]:
+            for lf in sorted(log_dir.glob("*.log"), reverse=True)[:5]:
                 for line in reversed(lf.read_text(errors="ignore").splitlines()):
                     if label.lower() in line.lower():
-                        # extract timestamp if present
                         parts = line.split("|")
                         return parts[0].strip() if parts else line[:20]
         except Exception:
             pass
-        return "No data yet"
+        return "No run yet"
 
-    def _last_run_status(label: str) -> str:
-        try:
-            logs = sorted(log_dir.glob("*.log"), reverse=True)
-            errors = 0
-            for lf in logs[:3]:
-                for line in lf.read_text(errors="ignore").splitlines():
-                    if "error" in line.lower() or "exception" in line.lower():
-                        errors += 1
-            return "⚠ Errors found" if errors else "✅ Clean"
-        except Exception:
-            return "Unknown"
-
-    col_pre.metric("Pre-market (08:30 IST)", _last_run_time("pre-market"), "fetch data")
-    col_post.metric("Post-close (15:45 IST)", _last_run_time("post-close"), "signals + execute")
-    col_bt.metric("Nightly backtest (23:00 IST)", _last_run_time("walk-forward"), "test period")
+    col_pre.metric("Pre-market (08:30 IST)",     _last_run_time("pre-market"),  "fetch data")
+    col_post.metric("Post-close (15:45 IST)",    _last_run_time("post-close"),  "signals + execute")
+    col_bt.metric("Nightly backtest (23:00 IST)", _last_run_time("walk-forward"),"test period")
 
     st.markdown("---")
-
-    # ── Cron log viewer ───────────────────────────────────────────────────────
     col_left, col_right = st.columns([1, 2])
 
     with col_left:
         st.markdown("**Log files**")
         log_files = sorted(log_dir.glob("*.log"), reverse=True) if log_dir.exists() else []
         cron_log  = log_dir / "cron.log"
+        all_logs  = ([cron_log] if cron_log.exists() else []) + \
+                    [f for f in log_files if f != cron_log]
 
-        if not log_files and not cron_log.exists():
-            st.info("No log files yet — cron jobs haven't run.\nFirst run at 08:30 IST on the next weekday.")
-            selected_log = None
+        selected_log = None
+        if not all_logs:
+            st.info("No logs yet — first cron run at 08:30 IST Mon–Fri")
         else:
-            all_logs = []
-            if cron_log.exists():
-                all_logs.append(cron_log)
-            all_logs += [f for f in log_files if f != cron_log]
-
-            names = [f.name for f in all_logs]
-            choice = st.radio("Select log", names, index=0)
+            choice = st.radio("Select log", [f.name for f in all_logs], index=0)
             selected_log = log_dir / choice
 
-        st.markdown("---")
-        lines_to_show = st.slider("Lines to display", 20, 500, 100, 10)
-        auto_refresh  = st.checkbox("Auto-refresh every 30s", value=False)
-        if auto_refresh:
+        lines_to_show = st.slider("Lines", 20, 500, 100, 10)
+        if st.checkbox("Auto-refresh 30s"):
             import time
-            st.rerun() if (int(time.time()) % 30 == 0) else None
+            if int(time.time()) % 30 == 0:
+                st.rerun()
 
     with col_right:
         if selected_log and selected_log.exists():
-            content = selected_log.read_text(errors="ignore")
-            lines   = content.splitlines()
-            tail    = "\n".join(lines[-lines_to_show:])
-
-            # Colour-code errors
+            lines = selected_log.read_text(errors="ignore").splitlines()
             highlighted = []
             for line in lines[-lines_to_show:]:
-                if "error" in line.lower() or "exception" in line.lower():
+                if any(k in line.lower() for k in ["error","exception","traceback"]):
                     highlighted.append(f"🔴 {line}")
                 elif "warning" in line.lower():
                     highlighted.append(f"🟡 {line}")
-                elif "✅" in line or "complete" in line.lower() or "ok" in line.lower():
+                elif any(k in line.lower() for k in ["complete","ok","success","pass","✅"]):
                     highlighted.append(f"🟢 {line}")
                 else:
                     highlighted.append(line)
-
             st.code("\n".join(highlighted), language="bash")
             st.caption(f"{len(lines)} total lines · showing last {min(lines_to_show, len(lines))}")
         else:
-            st.code("# Waiting for first cron run...\n# Pre-market:  08:30 IST (03:00 UTC)\n# Post-close:  15:45 IST (10:15 UTC)\n# Nightly:     23:00 IST (17:30 UTC)", language="bash")
+            st.code("# Waiting for first cron run...\n"
+                    "# Pre-market:  08:30 IST (03:00 UTC)\n"
+                    "# Post-close:  15:45 IST (10:15 UTC)", language="bash")
 
     st.markdown("---")
-
-    # ── Signal history from paper state ──────────────────────────────────────
     st.subheader("Paper Trade History")
     paper_path = cfg.data_dir / "paper_state.json"
-
     if paper_path.exists():
         try:
             state  = json.loads(paper_path.read_text())
             trades = state.get("trades", [])
-            orders = state.get("orders", [])
-
-            m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Capital",        f"₹{state.get('capital', cfg.backtest.capital):,.0f}")
-            m2.metric("Total trades",   len(trades))
-            m3.metric("Open orders",    len(orders))
-            m4.metric("Mode",           state.get("mode", "paper").upper())
-
+            m1,m2,m3,m4 = st.columns(4)
+            m1.metric("Capital",     f"₹{state.get('capital', cfg.backtest.capital):,.0f}")
+            m2.metric("Trades",      len(trades))
+            m3.metric("Open orders", len(state.get("orders", [])))
+            m4.metric("Mode",        state.get("mode","paper").upper())
             if trades:
-                tdf = pd.DataFrame(trades)
-                cols_show = [c for c in ["entry_date","symbol","direction","qty","entry_price","status"] if c in tdf.columns]
-                st.dataframe(
-                    tdf[cols_show].sort_values("entry_date", ascending=False).head(50),
-                    use_container_width=True,
-                    hide_index=True,
-                )
+                tdf  = pd.DataFrame(trades)
+                cols = [c for c in ["entry_date","symbol","direction","qty",
+                                    "entry_price","status"] if c in tdf.columns]
+                st.dataframe(tdf[cols].sort_values("entry_date", ascending=False).head(50),
+                             use_container_width=True, hide_index=True)
             else:
-                st.info("No trades yet — signals will appear here after the first post-close cron run.")
+                st.info("No trades yet — appears after first post-close cron run.")
         except Exception as e:
             st.warning(f"Could not read paper state: {e}")
     else:
-        st.info("Paper trading state not initialised yet. Will appear after first execution run.")
-
-    # ── Daily signal log ─────────────────────────────────────────────────────
-    st.subheader("Today's Signals")
-    today_log = log_dir / f"daily_{datetime.now().strftime('%Y-%m-%d')}.log"
-    if today_log.exists():
-        content = today_log.read_text(errors="ignore")
-        # Extract signal lines only
-        signal_lines = [l for l in content.splitlines()
-                        if any(k in l for k in ["BUY", "SELL", "signal", "zscore", "sentiment", "position"])]
-        if signal_lines:
-            st.code("\n".join(signal_lines[-50:]), language="bash")
-        else:
-            st.info("Pipeline ran today but no signals triggered yet.")
-    else:
-        st.info(f"No log for today ({datetime.now().strftime('%Y-%m-%d')}) — pipeline hasn't run yet.")
+        st.info("Paper state not initialised yet.")
 
 
 # ─── Footer ───────────────────────────────────────────────────────────────────
