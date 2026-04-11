@@ -19,7 +19,7 @@ if args.fetch:
     if articles:
         import pandas as pd
         df = pd.DataFrame(articles)
-        print(df[["published_at", "matched_symbols", "title"]].tail(args.tail).to_string())
+        print(df[["published_at", "matched_symbols", "headline"]].tail(args.tail).to_string())
 
 elif args.load:
     df = load_news()
@@ -32,7 +32,7 @@ elif args.load:
                 lambda x: args.symbol in (x if isinstance(x, list) else [])
             )]
             print(f"Filtered to {len(df)} rows for {args.symbol}")
-        print(df[["published_at", "matched_symbols", "title"]].tail(args.tail).to_string())
+        print(df[["published_at", "matched_symbols", "headline"]].tail(args.tail).to_string())
 
 else:
     p.print_help()
