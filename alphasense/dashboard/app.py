@@ -295,11 +295,19 @@ with tab2:
             sdf["date"] = pd.to_datetime(sdf["date"])
             sdf["win"]  = sdf["return_pct"] > 0
 
-            # Apply slider filters
-            sdf_filtered = sdf[
-                (sdf["zscore"]    <= z_thr) &
-                (sdf["sentiment"] <= sent_thr)
-            ] if "sentiment" in sdf.columns else sdf[sdf["zscore"] <= z_thr]
+            # Apply slider filters.
+            # Sentiment filter only applies when the column has real scores
+            # (non-zero). Forward test signals have sentiment=0.0 placeholder
+            # when no ensemble scoring has been run — don't filter those out.
+            has_real_sentiment = ("sentiment" in sdf.columns and
+                                  (sdf["sentiment"] != 0.0).any())
+            if has_real_sentiment:
+                sdf_filtered = sdf[
+                    (sdf["zscore"]    <= z_thr) &
+                    (sdf["sentiment"] <= sent_thr)
+                ]
+            else:
+                sdf_filtered = sdf[sdf["zscore"] <= z_thr]
 
             wins   = (sdf_filtered["return_pct"] > 0).sum()
             losses = (sdf_filtered["return_pct"] <= 0).sum()
@@ -333,10 +341,11 @@ with tab2:
                 st.plotly_chart(fig_m, use_container_width=True)
 
             # Full trade table
+            sent_label = f", sent ≤ {sent_thr}" if has_real_sentiment else " (no sentiment data — z-score filter only)"
             st.markdown(
                 f"**All {len(sdf_filtered)} trades** — "
                 f"{wins} wins / {losses} losses "
-                f"(filter: z ≤ {z_thr})  "
+                f"(filter: z ≤ {z_thr}{sent_label})  "
                 f"| Sort any column | Search with Ctrl+F in browser"
             )
 
