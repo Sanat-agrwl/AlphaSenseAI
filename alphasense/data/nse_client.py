@@ -222,16 +222,21 @@ def load_prices(symbols: list[str] = None) -> dict[str, pd.DataFrame]:
     nse_dir = cfg.data_dir / "nse"
     if not nse_dir.exists():
         return {}
-    files = [f for f in nse_dir.glob("*.parquet") if f.stem != "INDIAVIX"]
+    _SKIP = {"INDIAVIX", "india_vix", "nifty500_constituents"}
+    files = [f for f in nse_dir.glob("*.parquet") if f.stem not in _SKIP]
     if symbols:
         sym_set = set(symbols)
         files = [f for f in files if f.stem in sym_set]
     result = {}
     for f in files:
         try:
-            df = pd.read_parquet(f).sort_values("date")
+            df = pd.read_parquet(f)
+            # Handle both: date as column or date as index
+            if "date" not in df.columns:
+                df = df.reset_index()
             df["date"] = pd.to_datetime(df["date"])
-            result[f.stem] = df.set_index("date")
+            df = df.sort_values("date").reset_index(drop=True)
+            result[f.stem] = df
         except Exception:
             pass
     return result
