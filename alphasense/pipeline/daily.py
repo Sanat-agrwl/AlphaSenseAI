@@ -36,8 +36,8 @@ logger.add(
 def step_fetch():
     logger.info("── STEP 1: Fetch data ──────────────────────────────────")
     try:
-        from alphasense.data.bse_client  import fetch_today
-        anns = fetch_today()
+        from alphasense.data.bse_client import fetch_day
+        anns = fetch_day(datetime.now())
         logger.info(f"BSE: {len(anns)} announcements")
     except Exception as e:
         logger.error(f"BSE fetch failed: {e}")

@@ -136,9 +136,12 @@ class SignalEngine:
             if sym in self.open_positions:
                 continue
 
-            sent = sentiment.get(sym, 0.0)
-            if sent >= sc.sentiment_threshold:
+            # Only apply sentiment filter when we have a score for this stock.
+            # Stocks with no news today (score defaults to None) pass through.
+            sent = sentiment.get(sym, None)
+            if sent is not None and sent >= sc.sentiment_threshold:
                 continue
+            sent = sent if sent is not None else 0.0
 
             if sym not in prices or prices[sym].empty:
                 continue
