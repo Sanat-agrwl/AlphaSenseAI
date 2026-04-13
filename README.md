@@ -209,3 +209,7 @@ The fine-tuned model is saved to `models/finbert_indian/` and used automatically
 - **Point-in-time strict**: Backtest uses `df[df.index < date]` — no look-ahead bias
 - **Config singleton**: `cfg` imported from `config.settings` — one source of truth for all thresholds
 - **Loguru**: Structured daily log files in `logs/daily_YYYY-MM-DD.log`
+
+---
+
+*Last updated: 2026-04-13*
