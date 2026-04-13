@@ -177,11 +177,12 @@ def update_prices(symbols: list[str] = None, days: int = 7) -> int:
         for sym in batch:
             path = out_dir / f"{sym}.parquet"
             try:
-                # Multi-ticker download has a second level; single-ticker does not
+                # group_by="ticker" puts ticker at level 0 of MultiIndex columns
                 if len(batch) > 1:
-                    if f"{sym}.NS" not in data.columns.get_level_values(1):
+                    ticker_key = f"{sym}.NS"
+                    if ticker_key not in data.columns.get_level_values(0):
                         continue
-                    new = data.xs(f"{sym}.NS", axis=1, level=1).copy()
+                    new = data[ticker_key].copy()
                 else:
                     new = data.copy()
 
