@@ -188,10 +188,10 @@ st.markdown("---")
 
 # ─── Tabs ─────────────────────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "📈 Backtest", "🔭 Forward Test",
-    "🚨 Live Signals", "🏛 Universe",
-    "🎙 Earnings", "🖥 Logs",
+    "🚨 Live Signals", "💼 Paper Trades",
+    "🏛 Universe", "🎙 Earnings", "🖥 Logs",
 ])
 
 
@@ -480,8 +480,156 @@ with tab3:
                 st.info("Run `python scripts/score_news.py --score-today` to add sentiment scores")
 
 
-# ── Tab 4: Universe ───────────────────────────────────────────────────────────
+# ── Tab 4: Paper Trades ──────────────────────────────────────────────────────
 with tab4:
+    st.subheader("Paper Trading — Open Positions & Trade History")
+    st.caption("All trades executed by the cron pipeline in paper mode. "
+               "Current prices fetched live from yfinance.")
+
+    paper_path = cfg.data_dir / "paper_state.json"
+
+    if not paper_path.exists():
+        st.info("No paper trades yet — pipeline runs post-close at 15:45 IST on weekdays.")
+    else:
+        try:
+            state     = json.loads(paper_path.read_text())
+            positions = state.get("positions", {})
+            closed    = state.get("trades", [])
+
+            # ── Fetch current prices for open positions ───────────────────
+            @st.cache_data(ttl=300)
+            def _fetch_current_prices(symbols: tuple) -> dict[str, float]:
+                prices = {}
+                if not symbols:
+                    return prices
+                try:
+                    import yfinance as yf
+                    tickers = [f"{s}.NS" for s in symbols]
+                    data = yf.download(tickers, period="2d", interval="1d",
+                                       progress=False, auto_adjust=True)
+                    for sym in symbols:
+                        try:
+                            col = f"{sym}.NS"
+                            if len(tickers) == 1:
+                                px = float(data["Close"].iloc[-1])
+                            else:
+                                px = float(data["Close"][col].dropna().iloc[-1])
+                            prices[sym] = px
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
+                return prices
+
+            syms    = tuple(sorted(positions.keys()))
+            cur_px  = _fetch_current_prices(syms) if syms else {}
+
+            # ── Open positions ─────────────────────────────────────────────
+            if positions:
+                st.markdown("### Open Positions")
+                rows = []
+                total_invested = 0
+                total_current  = 0
+                for sym, p in positions.items():
+                    entry  = p["entry_price"]
+                    qty    = p["qty"]
+                    cur    = cur_px.get(sym, entry)
+                    unreal = (cur - entry) * qty
+                    pct    = (cur - entry) / entry * 100
+                    invested = entry * qty
+                    total_invested += invested
+                    total_current  += cur * qty
+                    rows.append({
+                        "Symbol":        sym,
+                        "Qty":           qty,
+                        "Entry ₹":       round(entry, 2),
+                        "Current ₹":     round(cur, 2),
+                        "Invested ₹":    round(invested, 0),
+                        "Unrealised ₹":  round(unreal, 0),
+                        "Return %":      round(pct, 2),
+                        "Entry Date":    p["entry_date"][:10],
+                        "Signal":        p.get("signal_id",""),
+                    })
+
+                pos_df = pd.DataFrame(rows)
+                total_unreal = total_current - total_invested
+                total_pct    = total_unreal / total_invested * 100 if total_invested else 0
+
+                # Summary metrics
+                m1, m2, m3, m4, m5 = st.columns(5)
+                m1.metric("Open Positions",  len(positions))
+                m2.metric("Invested",        f"₹{total_invested:,.0f}")
+                m3.metric("Current Value",   f"₹{total_current:,.0f}")
+                m4.metric("Unrealised P&L",  f"₹{total_unreal:+,.0f}",
+                          f"{total_pct:+.2f}%")
+                m5.metric("Closed Trades",   len(closed))
+
+                # Colour return column
+                def _colour(v):
+                    if pd.isna(v): return ""
+                    return "color:#00d97e;font-weight:bold" if v >= 0 else "color:#e63757;font-weight:bold"
+
+                styled = pos_df.style.format({
+                    "Entry ₹":      "₹{:,.2f}",
+                    "Current ₹":    "₹{:,.2f}",
+                    "Invested ₹":   "₹{:,.0f}",
+                    "Unrealised ₹": "₹{:+,.0f}",
+                    "Return %":     "{:+.2f}%",
+                }).applymap(_colour, subset=["Return %", "Unrealised ₹"])
+
+                st.dataframe(styled, use_container_width=True, hide_index=True)
+                st.caption("Prices refresh every 5 min. Click 🔄 Refresh in sidebar for latest.")
+
+                # P&L bar chart per position
+                fig_pnl = px.bar(pos_df, x="Symbol", y="Return %",
+                                 title="Unrealised Return per Position (%)",
+                                 color="Return %",
+                                 color_continuous_scale=["#e63757","#f6c343","#00d97e"],
+                                 color_continuous_midpoint=0)
+                fig_pnl.add_hline(y=0, line_color="white", line_dash="dash")
+                fig_pnl.update_layout(template="plotly_dark", height=300,
+                                      showlegend=False)
+                st.plotly_chart(fig_pnl, use_container_width=True)
+
+            else:
+                st.info("No open positions right now.")
+
+            st.markdown("---")
+
+            # ── Closed trades ──────────────────────────────────────────────
+            st.markdown("### Closed Trades")
+            if closed:
+                cdf = pd.DataFrame(closed)
+                wins   = (cdf["pnl"] > 0).sum()
+                losses = (cdf["pnl"] <= 0).sum()
+                total_pnl = cdf["pnl"].sum()
+
+                c1, c2, c3, c4 = st.columns(4)
+                c1.metric("Total Closed",  len(closed))
+                c2.metric("Wins / Losses", f"{wins} / {losses}")
+                c3.metric("Win Rate",      f"{wins/len(closed)*100:.1f}%")
+                c4.metric("Total P&L",     f"₹{total_pnl:+,.0f}")
+
+                show = [c for c in ["entry_date","exit_date","symbol","qty",
+                                    "entry_price","exit_price","pnl","pnl_pct"] if c in cdf.columns]
+                st.dataframe(
+                    cdf[show].sort_values("exit_date", ascending=False)
+                    .style.format({"entry_price": "₹{:,.2f}", "exit_price": "₹{:,.2f}",
+                                   "pnl": "₹{:+,.0f}", "pnl_pct": "{:+.2%}"}),
+                    use_container_width=True, hide_index=True
+                )
+                csv = cdf[show].to_csv(index=False)
+                st.download_button("Download trade history (CSV)", csv,
+                                   "paper_trades.csv", "text/csv")
+            else:
+                st.info("No closed trades yet — positions exit after 20 days or stop-loss at -8%.")
+
+        except Exception as e:
+            st.error(f"Could not load paper state: {e}")
+
+
+# ── Tab 5: Universe ───────────────────────────────────────────────────────────
+with tab5:
     st.subheader(f"Quality Universe — {len(universe_df)} stocks")
     col1, col2 = st.columns([2, 1])
     with col1:
@@ -516,7 +664,7 @@ with tab4:
 
 
 # ── Tab 5: Earnings Calls ─────────────────────────────────────────────────────
-with tab5:
+with tab6:
     earnings = _load_earnings()
     if "confidence_score" not in earnings.columns:
         st.info("No earnings scores yet. Run: `python scripts/score_transcripts.py --file <audio.mp3>`")
@@ -560,8 +708,8 @@ with tab5:
 
 
 # ── Tab 6: Pipeline Logs ──────────────────────────────────────────────────────
-with tab6:
-    st.subheader("Pipeline Logs & Paper Trade History")
+with tab7:
+    st.subheader("Pipeline Logs")
 
     log_dir = cfg.logs_dir
 
@@ -625,30 +773,6 @@ with tab6:
                     "# Pre-market:  08:30 IST (03:00 UTC)\n"
                     "# Post-close:  15:45 IST (10:15 UTC)", language="bash")
 
-    st.markdown("---")
-    st.subheader("Paper Trade History")
-    paper_path = cfg.data_dir / "paper_state.json"
-    if paper_path.exists():
-        try:
-            state  = json.loads(paper_path.read_text())
-            trades = state.get("trades", [])
-            m1,m2,m3,m4 = st.columns(4)
-            m1.metric("Capital",     f"₹{state.get('capital', cfg.backtest.capital):,.0f}")
-            m2.metric("Trades",      len(trades))
-            m3.metric("Open orders", len(state.get("orders", [])))
-            m4.metric("Mode",        state.get("mode","paper").upper())
-            if trades:
-                tdf  = pd.DataFrame(trades)
-                cols = [c for c in ["entry_date","symbol","direction","qty",
-                                    "entry_price","status"] if c in tdf.columns]
-                st.dataframe(tdf[cols].sort_values("entry_date", ascending=False).head(50),
-                             use_container_width=True, hide_index=True)
-            else:
-                st.info("No trades yet — appears after first post-close cron run.")
-        except Exception as e:
-            st.warning(f"Could not read paper state: {e}")
-    else:
-        st.info("Paper state not initialised yet.")
 
 
 # ─── Footer ───────────────────────────────────────────────────────────────────
