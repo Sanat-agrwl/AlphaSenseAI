@@ -35,6 +35,15 @@ logger.add(
 
 def step_fetch():
     logger.info("── STEP 1: Fetch data ──────────────────────────────────")
+
+    # Update NSE prices first — signals depend on fresh close prices
+    try:
+        from alphasense.data.nse_client import update_prices
+        n = update_prices(days=5)
+        logger.info(f"Prices: {n} stocks updated")
+    except Exception as e:
+        logger.error(f"Price update failed: {e}")
+
     try:
         from alphasense.data.bse_client import fetch_day
         anns = fetch_day(datetime.now())
