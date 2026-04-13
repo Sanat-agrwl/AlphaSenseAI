@@ -119,29 +119,19 @@ def step_signals(sentiment: dict[str, float]) -> list:
 def step_execute(signals: list):
     logger.info("── STEP 4: Execute signals ─────────────────────────────")
     try:
-        from alphasense.signal.engine import position_size
+        from alphasense.broker.kite       import Broker
+        from alphasense.signal.engine     import position_size
 
-        # Route to IBKR if enabled, else fall back to paper/Kite
-        if cfg.ibkr.enabled:
-            from alphasense.broker.ibkr import IBKRBroker
-            broker = IBKRBroker()
-            broker.connect()
-        else:
-            from alphasense.broker.kite import Broker
-            broker = Broker()
-
+        broker  = Broker()
         capital = cfg.backtest.capital
 
         for sig in signals:
-            adv = 100_000  # fallback ADV
+            adv = 100_000  # fallback ADV — replace with real avg volume
             qty = position_size(capital, sig.entry_price, adv)
             if qty <= 0:
                 continue
             sid = f"SIG-{datetime.now().strftime('%Y%m%d')}-{sig.symbol}"
             broker.place(sig.symbol, sig.direction, qty, sig.entry_price, sid)
-
-        if cfg.ibkr.enabled:
-            broker.disconnect()
 
         logger.info("Execution complete")
     except Exception as e:

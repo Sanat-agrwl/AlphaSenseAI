@@ -45,15 +45,6 @@ class KiteConfig:
 
 
 @dataclass
-class IBKRConfig:
-    host:      str = field(default_factory=lambda: os.getenv("IBKR_HOST", "127.0.0.1"))
-    # 4002 = paper gateway, 4001 = live gateway
-    port:      int = field(default_factory=lambda: int(os.getenv("IBKR_PORT", "4002")))
-    client_id: int = field(default_factory=lambda: int(os.getenv("IBKR_CLIENT_ID", "1")))
-    enabled:   bool = field(default_factory=lambda: os.getenv("IBKR_ENABLED", "false").lower() == "true")
-
-
-@dataclass
 class SignalConfig:
     # Entry
     sentiment_threshold: float = -0.4
@@ -127,7 +118,6 @@ class BacktestConfig:
 @dataclass
 class AppConfig:
     kite:      KiteConfig      = field(default_factory=KiteConfig)
-    ibkr:      IBKRConfig      = field(default_factory=IBKRConfig)
     signal:    SignalConfig    = field(default_factory=SignalConfig)
     screener:  ScreenerConfig  = field(default_factory=ScreenerConfig)
     sentiment: SentimentConfig = field(default_factory=SentimentConfig)
