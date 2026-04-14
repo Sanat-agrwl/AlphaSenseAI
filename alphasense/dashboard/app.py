@@ -524,31 +524,62 @@ with tab4:
             syms    = tuple(sorted(positions.keys()))
             cur_px  = _fetch_current_prices(syms) if syms else {}
 
+            # ── Detect stale / market-closed prices ───────────────────────
+            @st.cache_data(ttl=300)
+            def _last_price_date(symbols: tuple) -> str | None:
+                """Return the date string of the most recent close in local parquet."""
+                try:
+                    nse_dir = cfg.data_dir / "nse"
+                    for sym in symbols:
+                        p = nse_dir / f"{sym}.parquet"
+                        if p.exists():
+                            df = pd.read_parquet(p)
+                            if "date" in df.columns:
+                                return str(pd.to_datetime(df["date"]).max().date())
+                except Exception:
+                    pass
+                return None
+
+            price_date = _last_price_date(syms) if syms else None
+            today_str  = datetime.now().strftime("%Y-%m-%d")
+            is_stale   = price_date is not None and price_date < today_str
+
+            if is_stale:
+                st.warning(
+                    f"Market may be closed or data not yet updated. "
+                    f"Prices shown are **as of {price_date}** (latest available)."
+                )
+
             # ── Open positions ─────────────────────────────────────────────
             if positions:
                 st.markdown("### Open Positions")
                 rows = []
                 total_invested = 0
                 total_current  = 0
+                today_dt = datetime.now().date()
                 for sym, p in positions.items():
-                    entry  = p["entry_price"]
-                    qty    = p["qty"]
-                    cur    = cur_px.get(sym, entry)
-                    unreal = (cur - entry) * qty
-                    pct    = (cur - entry) / entry * 100
-                    invested = entry * qty
+                    entry      = p["entry_price"]
+                    qty        = p["qty"]
+                    cur        = cur_px.get(sym, entry)
+                    unreal     = (cur - entry) * qty
+                    pct        = (cur - entry) / entry * 100
+                    invested   = entry * qty
                     total_invested += invested
                     total_current  += cur * qty
+                    entry_dt   = pd.to_datetime(p["entry_date"]).date()
+                    days_held  = (today_dt - entry_dt).days
+                    exit_dt    = entry_dt + timedelta(days=20)
                     rows.append({
                         "Symbol":        sym,
                         "Qty":           qty,
                         "Entry ₹":       round(entry, 2),
-                        "Current ₹":     round(cur, 2),
+                        f"Price ({price_date or 'latest'})": round(cur, 2),
                         "Invested ₹":    round(invested, 0),
                         "Unrealised ₹":  round(unreal, 0),
                         "Return %":      round(pct, 2),
-                        "Entry Date":    p["entry_date"][:10],
-                        "Signal":        p.get("signal_id",""),
+                        "Entry Date":    str(entry_dt),
+                        "Days Held":     days_held,
+                        "Expected Exit": str(exit_dt),
                     })
 
                 pos_df = pd.DataFrame(rows)
@@ -569,16 +600,21 @@ with tab4:
                     if pd.isna(v): return ""
                     return "color:#00d97e;font-weight:bold" if v >= 0 else "color:#e63757;font-weight:bold"
 
+                price_col = f"Price ({price_date or 'latest'})"
                 styled = pos_df.style.format({
                     "Entry ₹":      "₹{:,.2f}",
-                    "Current ₹":    "₹{:,.2f}",
+                    price_col:      "₹{:,.2f}",
                     "Invested ₹":   "₹{:,.0f}",
                     "Unrealised ₹": "₹{:+,.0f}",
                     "Return %":     "{:+.2f}%",
                 }).applymap(_colour, subset=["Return %", "Unrealised ₹"])
 
                 st.dataframe(styled, use_container_width=True, hide_index=True)
-                st.caption("Prices refresh every 5 min. Click 🔄 Refresh in sidebar for latest.")
+                st.caption(
+                    f"Prices as of **{price_date or 'latest available'}**. "
+                    "Positions auto-exit after 20 days or at -8% stop-loss. "
+                    "Refresh page for latest."
+                )
 
                 # P&L bar chart per position
                 fig_pnl = px.bar(pos_df, x="Symbol", y="Return %",
