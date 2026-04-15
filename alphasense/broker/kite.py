@@ -31,11 +31,21 @@ STATE_FILE = cfg.data_dir / "paper_state.json"
 
 @dataclass
 class Position:
-    symbol:     str
-    qty:        int
+    symbol:      str
+    qty:         int
     entry_price: float
-    entry_date: str
-    signal_id:  str = ""
+    entry_date:  str
+    signal_id:   str = ""
+    signal_price: float = 0.0   # close price that triggered the signal
+
+
+@dataclass
+class PendingOrder:
+    symbol:       str
+    qty:          int
+    signal_price: float   # yesterday's close that triggered the signal
+    signal_date:  str     # date the signal fired (post-close)
+    signal_id:    str = ""
 
 
 @dataclass
@@ -55,18 +65,24 @@ class Trade:
 # ─── Paper Trading Engine ────────────────────────────────────────────────────
 
 class PaperEngine:
-    """Simulates order fills with slippage. State persists across runs."""
+    """
+    Simulates realistic order execution:
+      • Post-close (15:45 IST): signals are queued as PENDING orders
+      • Pre-market next day (08:30 IST): pending orders fill at that day's OPEN + slippage
+    This mirrors real trading — you can't buy at yesterday's close after the bell.
+    """
 
     SLIPPAGE_BPS = 10       # 0.10%
-    MAX_ORDER_VALUE = 10_00_000   # ₹10L
+    MAX_ORDER_VALUE = 10_00_000   # ₹10L per position
     MAX_DAILY_ORDERS = 20
 
     def __init__(self):
-        self.positions:  dict[str, Position] = {}
-        self.trades:     list[Trade]         = []
-        self.order_count = 0
-        self._daily_count = 0
-        self._daily_date  = None
+        self.positions:     dict[str, Position]     = {}
+        self.pending:       dict[str, PendingOrder] = {}
+        self.trades:        list[Trade]             = []
+        self.order_count    = 0
+        self._daily_count   = 0
+        self._daily_date    = None
         self._load()
 
     def _load(self):
@@ -74,17 +90,22 @@ class PaperEngine:
             try:
                 state = json.loads(STATE_FILE.read_text())
                 for sym, d in state.get("positions", {}).items():
+                    d.setdefault("signal_price", d.get("entry_price", 0.0))
                     self.positions[sym] = Position(**d)
+                for sym, d in state.get("pending", {}).items():
+                    self.pending[sym] = PendingOrder(**d)
                 self.trades = [Trade(**t) for t in state.get("trades", [])]
                 self.order_count = state.get("order_count", 0)
+                n_pend = len(self.pending)
                 logger.info(f"Paper state loaded: {len(self.positions)} positions, "
-                            f"{len(self.trades)} closed trades")
+                            f"{n_pend} pending, {len(self.trades)} closed trades")
             except Exception as e:
                 logger.warning(f"Could not load paper state: {e}")
 
     def save(self):
         state = {
             "positions":   {s: p.__dict__ for s, p in self.positions.items()},
+            "pending":     {s: p.__dict__ for s, p in self.pending.items()},
             "trades":      [t.__dict__ for t in self.trades],
             "order_count": self.order_count,
         }
@@ -97,8 +118,81 @@ class PaperEngine:
             self._daily_count = 0
             self._daily_date  = today
 
+    def stage(self, symbol: str, qty: int, signal_price: float,
+              signal_id: str = "") -> Optional[str]:
+        """
+        Queue a BUY signal as a pending order (post-close step).
+        The order will fill at next-day open via fill_pending().
+        """
+        if symbol in self.positions:
+            logger.info(f"⏭  SKIP {symbol} — already in position "
+                        f"(entered {self.positions[symbol].entry_date[:10]})")
+            return None
+        if symbol in self.pending:
+            logger.info(f"⏭  SKIP {symbol} — already pending from "
+                        f"{self.pending[symbol].signal_date[:10]}")
+            return None
+
+        order_value = qty * signal_price
+        if order_value > self.MAX_ORDER_VALUE:
+            qty = int(self.MAX_ORDER_VALUE / signal_price)
+
+        self.pending[symbol] = PendingOrder(
+            symbol=symbol, qty=qty,
+            signal_price=signal_price,
+            signal_date=datetime.now().isoformat(),
+            signal_id=signal_id,
+        )
+        logger.info(f"⏳ PENDING BUY {symbol} ×{qty} | signal @ ₹{signal_price:.2f} "
+                    f"— will fill at tomorrow's open")
+        self.save()
+        return f"PENDING-{symbol}"
+
+    def fill_pending(self, open_prices: dict[str, float]) -> int:
+        """
+        Fill all pending orders at today's open prices (pre-market step).
+        open_prices: {symbol: today_open_price}
+        Returns number of orders filled.
+        """
+        filled = 0
+        for sym, order in list(self.pending.items()):
+            open_px = open_prices.get(sym)
+            if open_px is None or open_px <= 0:
+                logger.warning(f"  No open price for {sym} — keeping pending")
+                continue
+
+            self._reset_daily()
+            if self._daily_count >= self.MAX_DAILY_ORDERS:
+                logger.warning("Daily order limit reached during fill_pending")
+                break
+
+            slip = open_px * (self.SLIPPAGE_BPS / 10_000)
+            fill = round(open_px + slip, 2)
+            self.order_count  += 1
+            self._daily_count += 1
+            oid = f"PAPER-{self.order_count:06d}"
+
+            self.positions[sym] = Position(
+                symbol=sym, qty=order.qty, entry_price=fill,
+                entry_date=datetime.now().isoformat(),
+                signal_id=order.signal_id, signal_price=order.signal_price,
+            )
+            del self.pending[sym]
+            filled += 1
+            logger.info(f"📗 FILL BUY {sym} ×{order.qty} @ ₹{fill:.2f} "
+                        f"(open, signal was ₹{order.signal_price:.2f}) | {oid}")
+
+        if filled:
+            self.save()
+        return filled
+
     def place(self, symbol: str, direction: str, qty: int,
               price: float, signal_id: str = "") -> Optional[str]:
+        """
+        SELL: exit an open position at current price + slippage.
+        BUY: use stage() + fill_pending() for realistic next-open execution.
+             This direct-buy path is kept for manual/emergency use only.
+        """
         self._reset_daily()
         if self._daily_count >= self.MAX_DAILY_ORDERS:
             logger.warning("Daily order limit reached")
@@ -106,26 +200,27 @@ class PaperEngine:
 
         order_value = qty * price
         if order_value > self.MAX_ORDER_VALUE:
-            qty          = int(self.MAX_ORDER_VALUE / price)
-            order_value  = qty * price
-            logger.info(f"  Order reduced to {qty} shares (₹{order_value:,.0f} limit)")
+            qty         = int(self.MAX_ORDER_VALUE / price)
+            order_value = qty * price
 
-        slip     = price * (self.SLIPPAGE_BPS / 10_000)
-        fill     = price + slip if direction == "BUY" else price - slip
-        fill     = round(fill, 2)
+        slip = price * (self.SLIPPAGE_BPS / 10_000)
+        fill = price + slip if direction == "BUY" else price - slip
+        fill = round(fill, 2)
         self.order_count  += 1
         self._daily_count += 1
         oid = f"PAPER-{self.order_count:06d}"
 
         if direction == "BUY":
             if symbol in self.positions:
-                logger.info(f"⏭  SKIP {symbol} — already in position (entered {self.positions[symbol].entry_date[:10]})")
+                logger.info(f"⏭  SKIP {symbol} — already in position "
+                            f"(entered {self.positions[symbol].entry_date[:10]})")
                 self.order_count  -= 1
                 self._daily_count -= 1
                 return None
             self.positions[symbol] = Position(
                 symbol=symbol, qty=qty, entry_price=fill,
-                entry_date=datetime.now().isoformat(), signal_id=signal_id,
+                entry_date=datetime.now().isoformat(),
+                signal_id=signal_id, signal_price=price,
             )
             logger.info(f"📗 BUY  {symbol} ×{qty} @ ₹{fill:,.2f} | {oid}")
 

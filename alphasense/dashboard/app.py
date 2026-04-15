@@ -494,7 +494,16 @@ with tab4:
         try:
             state     = json.loads(paper_path.read_text())
             positions = state.get("positions", {})
+            pending   = state.get("pending", {})
             closed    = state.get("trades", [])
+
+            # ── Pending orders (staged post-close, fill at next open) ──────
+            if pending:
+                st.info(
+                    f"**{len(pending)} pending order(s)** staged post-close — "
+                    f"will fill at tomorrow's market open. "
+                    f"Symbols: {', '.join(pending.keys())}"
+                )
 
             # ── Fetch current prices for open positions ───────────────────
             # Reads from local parquet (updated by cron post-close) first —

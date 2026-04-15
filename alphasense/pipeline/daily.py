@@ -123,28 +123,72 @@ def step_signals(sentiment: dict[str, float]) -> list:
         return []
 
 
-# ─── Step 4: Execute ─────────────────────────────────────────────────────────
+# ─── Step 4: Stage signals (post-close) ──────────────────────────────────────
 
 def step_execute(signals: list):
-    logger.info("── STEP 4: Execute signals ─────────────────────────────")
+    """Queue BUY signals as pending orders — filled at next-day open in pre-market."""
+    logger.info("── STEP 4: Stage signals (fill tomorrow's open) ────────")
     try:
-        from alphasense.broker.kite       import Broker
-        from alphasense.signal.engine     import position_size
+        from alphasense.broker.kite   import Broker
+        from alphasense.signal.engine import position_size
 
         broker  = Broker()
         capital = cfg.backtest.capital
+        staged  = 0
 
         for sig in signals:
-            adv = 100_000  # fallback ADV — replace with real avg volume
+            if sig.direction != "BUY":
+                continue
+            adv = 100_000  # fallback ADV
             qty = position_size(capital, sig.entry_price, adv)
             if qty <= 0:
                 continue
             sid = f"SIG-{datetime.now().strftime('%Y%m%d')}-{sig.symbol}"
-            broker.place(sig.symbol, sig.direction, qty, sig.entry_price, sid)
+            result = broker.stage(sig.symbol, qty, sig.entry_price, sid)
+            if result:
+                staged += 1
 
-        logger.info("Execution complete")
+        logger.info(f"Staging complete: {staged} orders pending next-day open fill")
     except Exception as e:
         logger.error(f"Execution failed: {e}")
+
+
+# ─── Step 4b: Fill pending orders at today's open (pre-market) ───────────────
+
+def step_fill_pending():
+    """Fill any pending orders using today's open price from parquet."""
+    logger.info("── STEP 4b: Fill pending orders at today's open ────────")
+    try:
+        from alphasense.broker.kite import Broker
+
+        broker = Broker()
+        if not broker.paper or not broker.paper.pending:
+            logger.info("No pending orders to fill")
+            return
+
+        # Load today's open price from parquet for each pending symbol
+        nse_dir    = cfg.data_dir / "nse"
+        open_prices: dict[str, float] = {}
+        for sym in list(broker.paper.pending.keys()):
+            p = nse_dir / f"{sym}.parquet"
+            if p.exists():
+                try:
+                    df = pd.read_parquet(p)
+                    if "open" in df.columns and not df.empty:
+                        today_str = pd.Timestamp.now().normalize()
+                        today_row = df[pd.to_datetime(df["date"]) >= today_str]
+                        if not today_row.empty:
+                            open_prices[sym] = float(today_row["open"].iloc[0])
+                        else:
+                            # Market holiday or data not yet available — skip today
+                            logger.info(f"  {sym}: no open price for today yet, stays pending")
+                except Exception as e:
+                    logger.warning(f"  {sym}: could not read open price: {e}")
+
+        filled = broker.paper.fill_pending(open_prices)
+        logger.info(f"Filled {filled} pending orders at today's open")
+    except Exception as e:
+        logger.error(f"Fill pending failed: {e}")
 
 
 # ─── Orchestrators ────────────────────────────────────────────────────────────
@@ -153,7 +197,8 @@ def run_pre_market():
     logger.info(f"\n{'#'*55}")
     logger.info(f"PRE-MARKET  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'#'*55}")
-    step_fetch()
+    step_fetch()          # update prices first (get today's open)
+    step_fill_pending()   # fill any pending orders at today's open
 
 
 def run_post_close():
@@ -163,7 +208,7 @@ def run_post_close():
     step_fetch()
     sentiment = step_sentiment()
     signals   = step_signals(sentiment)
-    step_execute(signals)
+    step_execute(signals)   # stages pending, fills tomorrow
 
 
 def run_full():
@@ -171,6 +216,7 @@ def run_full():
     logger.info(f"FULL RUN    {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'#'*55}")
     step_fetch()
+    step_fill_pending()
     sentiment = step_sentiment()
     signals   = step_signals(sentiment)
     step_execute(signals)
