@@ -118,6 +118,11 @@ class PaperEngine:
         oid = f"PAPER-{self.order_count:06d}"
 
         if direction == "BUY":
+            if symbol in self.positions:
+                logger.info(f"⏭  SKIP {symbol} — already in position (entered {self.positions[symbol].entry_date[:10]})")
+                self.order_count  -= 1
+                self._daily_count -= 1
+                return None
             self.positions[symbol] = Position(
                 symbol=symbol, qty=qty, entry_price=fill,
                 entry_date=datetime.now().isoformat(), signal_id=signal_id,
