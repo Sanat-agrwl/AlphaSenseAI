@@ -497,28 +497,44 @@ with tab4:
             closed    = state.get("trades", [])
 
             # ── Fetch current prices for open positions ───────────────────
+            # Reads from local parquet (updated by cron post-close) first —
+            # more reliable than live yfinance which can return NaN for today.
             @st.cache_data(ttl=300)
             def _fetch_current_prices(symbols: tuple) -> dict[str, float]:
                 prices = {}
                 if not symbols:
                     return prices
-                try:
-                    import yfinance as yf
-                    tickers = [f"{s}.NS" for s in symbols]
-                    data = yf.download(tickers, period="2d", interval="1d",
-                                       progress=False, auto_adjust=True)
-                    for sym in symbols:
-                        try:
-                            col = f"{sym}.NS"
-                            if len(tickers) == 1:
-                                px = float(data["Close"].iloc[-1])
-                            else:
-                                px = float(data["Close"][col].dropna().iloc[-1])
-                            prices[sym] = px
-                        except Exception:
-                            pass
-                except Exception:
-                    pass
+                nse_dir = cfg.data_dir / "nse"
+                for sym in symbols:
+                    try:
+                        p = nse_dir / f"{sym}.parquet"
+                        if p.exists():
+                            df = pd.read_parquet(p)
+                            if "close" in df.columns and not df.empty:
+                                px = float(df["close"].dropna().iloc[-1])
+                                prices[sym] = px
+                    except Exception:
+                        pass
+                # Fall back to yfinance for any symbols not in parquet
+                missing = [s for s in symbols if s not in prices]
+                if missing:
+                    try:
+                        import yfinance as yf
+                        tickers = [f"{s}.NS" for s in missing]
+                        data = yf.download(tickers, period="5d", interval="1d",
+                                           progress=False, auto_adjust=True)
+                        for sym in missing:
+                            try:
+                                col = f"{sym}.NS"
+                                if len(tickers) == 1:
+                                    px = float(data["Close"].dropna().iloc[-1])
+                                else:
+                                    px = float(data["Close"][col].dropna().iloc[-1])
+                                prices[sym] = px
+                            except Exception:
+                                pass
+                    except Exception:
+                        pass
                 return prices
 
             syms    = tuple(sorted(positions.keys()))
