@@ -141,7 +141,8 @@ class SignalEngine:
             sent = sentiment.get(sym, None)
             if sent is not None and sent >= sc.sentiment_threshold:
                 continue
-            sent = sent if sent is not None else 0.0
+            has_news = sent is not None
+            sent     = sent if has_news else 0.0   # 0.0 stored in signal; N/A in log
 
             if sym not in prices or prices[sym].empty:
                 continue
@@ -169,7 +170,8 @@ class SignalEngine:
             )
             signals.append(sig)
             self.open_positions[sym] = sig
-            logger.info(f"  BUY {sym} @ ₹{entry_price:.2f} | sent={sent:.2f} z={z:.2f}")
+            sent_str = f"{sent:.2f}" if has_news else "N/A (no news)"
+            logger.info(f"  BUY {sym} @ ₹{entry_price:.2f} | sent={sent_str} z={z:.2f}")
 
             if len(self.open_positions) >= sc.max_positions:
                 break

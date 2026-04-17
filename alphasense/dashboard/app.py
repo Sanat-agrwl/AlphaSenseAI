@@ -583,28 +583,32 @@ with tab4:
                 total_current  = 0
                 today_dt = datetime.now().date()
                 for sym, p in positions.items():
-                    entry      = p["entry_price"]
-                    qty        = p["qty"]
-                    cur        = cur_px.get(sym, entry)
-                    unreal     = (cur - entry) * qty
-                    pct        = (cur - entry) / entry * 100
-                    invested   = entry * qty
+                    entry        = p["entry_price"]
+                    signal_px    = p.get("signal_price", entry)
+                    slippage_rs  = p.get("slippage", round(entry - signal_px, 2))
+                    qty          = p["qty"]
+                    cur          = cur_px.get(sym, entry)
+                    unreal       = (cur - entry) * qty
+                    pct          = (cur - entry) / entry * 100
+                    invested     = entry * qty
                     total_invested += invested
                     total_current  += cur * qty
                     entry_dt   = pd.to_datetime(p["entry_date"]).date()
                     days_held  = (today_dt - entry_dt).days
                     exit_dt    = entry_dt + timedelta(days=20)
                     rows.append({
-                        "Symbol":        sym,
-                        "Qty":           qty,
-                        "Entry ₹":       round(entry, 2),
+                        "Symbol":          sym,
+                        "Qty":             qty,
+                        "Signal ₹":        round(signal_px, 2),
+                        "Entry ₹":         round(entry, 2),
+                        "Slip ₹/share":    round(slippage_rs, 2),
                         f"Price ({price_date or 'latest'})": round(cur, 2),
-                        "Invested ₹":    round(invested, 0),
-                        "Unrealised ₹":  round(unreal, 0),
-                        "Return %":      round(pct, 2),
-                        "Entry Date":    str(entry_dt),
-                        "Days Held":     days_held,
-                        "Expected Exit": str(exit_dt),
+                        "Invested ₹":      round(invested, 0),
+                        "Unrealised ₹":    round(unreal, 0),
+                        "Return %":        round(pct, 2),
+                        "Entry Date":      str(entry_dt),
+                        "Days Held":       days_held,
+                        "Expected Exit":   str(exit_dt),
                     })
 
                 pos_df = pd.DataFrame(rows)
@@ -627,7 +631,9 @@ with tab4:
 
                 price_col = f"Price ({price_date or 'latest'})"
                 styled = pos_df.style.format({
+                    "Signal ₹":     "₹{:,.2f}",
                     "Entry ₹":      "₹{:,.2f}",
+                    "Slip ₹/share": "₹{:+.2f}",
                     price_col:      "₹{:,.2f}",
                     "Invested ₹":   "₹{:,.0f}",
                     "Unrealised ₹": "₹{:+,.0f}",

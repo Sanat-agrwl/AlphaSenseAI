@@ -31,12 +31,13 @@ STATE_FILE = cfg.data_dir / "paper_state.json"
 
 @dataclass
 class Position:
-    symbol:      str
-    qty:         int
-    entry_price: float
-    entry_date:  str
-    signal_id:   str = ""
-    signal_price: float = 0.0   # close price that triggered the signal
+    symbol:       str
+    qty:          int
+    entry_price:  float   # actual fill = signal_price + slippage
+    entry_date:   str
+    signal_id:    str   = ""
+    signal_price: float = 0.0   # yesterday's close that triggered the signal
+    slippage:     float = 0.0   # rupee slippage paid (entry_price - signal_price)
 
 
 @dataclass
@@ -172,15 +173,18 @@ class PaperEngine:
             self._daily_count += 1
             oid = f"PAPER-{self.order_count:06d}"
 
+            slip_rs = round(fill - open_px, 2)
             self.positions[sym] = Position(
                 symbol=sym, qty=order.qty, entry_price=fill,
                 entry_date=datetime.now().isoformat(),
                 signal_id=order.signal_id, signal_price=order.signal_price,
+                slippage=slip_rs,
             )
             del self.pending[sym]
             filled += 1
             logger.info(f"📗 FILL BUY {sym} ×{order.qty} @ ₹{fill:.2f} "
-                        f"(open, signal was ₹{order.signal_price:.2f}) | {oid}")
+                        f"(open ₹{open_px:.2f} + slip ₹{slip_rs:.2f}) "
+                        f"signal was ₹{order.signal_price:.2f} | {oid}")
 
         if filled:
             self.save()
@@ -217,12 +221,14 @@ class PaperEngine:
                 self.order_count  -= 1
                 self._daily_count -= 1
                 return None
+            slip_rs = round(fill - price, 2)
             self.positions[symbol] = Position(
                 symbol=symbol, qty=qty, entry_price=fill,
                 entry_date=datetime.now().isoformat(),
-                signal_id=signal_id, signal_price=price,
+                signal_id=signal_id, signal_price=price, slippage=slip_rs,
             )
-            logger.info(f"📗 BUY  {symbol} ×{qty} @ ₹{fill:,.2f} | {oid}")
+            logger.info(f"📗 BUY  {symbol} ×{qty} @ ₹{fill:,.2f} "
+                        f"(signal ₹{price:.2f} + slip ₹{slip_rs:.2f}) | {oid}")
 
         elif direction == "SELL" and symbol in self.positions:
             pos     = self.positions.pop(symbol)
@@ -330,6 +336,20 @@ class Broker:
     def place(self, symbol: str, direction: str, qty: int,
               price: float, signal_id: str = "") -> Optional[str]:
         return self._engine.place(symbol, direction, qty, price, signal_id)
+
+    def stage(self, symbol: str, qty: int, signal_price: float,
+              signal_id: str = "") -> Optional[str]:
+        """Queue a BUY signal as pending — paper mode only."""
+        if isinstance(self._engine, PaperEngine):
+            return self._engine.stage(symbol, qty, signal_price, signal_id)
+        logger.warning("stage() only supported in paper mode")
+        return None
+
+    def fill_pending(self, open_prices: dict[str, float]) -> int:
+        """Fill pending orders at today's open — paper mode only."""
+        if isinstance(self._engine, PaperEngine):
+            return self._engine.fill_pending(open_prices)
+        return 0
 
     @property
     def paper(self) -> Optional[PaperEngine]:
