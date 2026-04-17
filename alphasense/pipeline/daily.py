@@ -33,10 +33,13 @@ logger.add(
 
 # ─── Step 1: Fetch data ───────────────────────────────────────────────────────
 
-def step_fetch():
+def step_fetch(extra_symbols: list[str] = None):
+    """
+    extra_symbols: pass Z-score candidates so we can fetch targeted
+    Google News articles for stocks not covered by general RSS feeds.
+    """
     logger.info("── STEP 1: Fetch data ──────────────────────────────────")
 
-    # Update NSE prices first — signals depend on fresh close prices
     try:
         from alphasense.data.nse_client import update_prices
         n = update_prices(days=5)
@@ -53,20 +56,66 @@ def step_fetch():
 
     try:
         from alphasense.data.news_client import fetch_and_save
-        articles = fetch_and_save()
+        articles = fetch_and_save(extra_symbols=extra_symbols)
         logger.info(f"News: {len(articles)} articles")
     except Exception as e:
         logger.error(f"News fetch failed: {e}")
 
 
-# ─── Step 2: Score sentiment ─────────────────────────────────────────────────
+# ─── Step 2: Score sentiment (ensemble: FinBERT + Claude if key available) ────
 
 def step_sentiment() -> dict[str, float]:
     logger.info("── STEP 2: Score sentiment ─────────────────────────────")
+    import os
+
+    use_ensemble = bool(os.getenv("ANTHROPIC_API_KEY") or os.getenv("OPENAI_API_KEY"))
+
+    if use_ensemble:
+        logger.info("   Mode: Ensemble (FinBERT + LLM)")
+        try:
+            from alphasense.sentiment.ensemble import EnsembleScorer, save_ensemble_scores
+            from alphasense.data.news_client   import load_news
+
+            news = load_news(days=1)
+            if news.empty:
+                return {}
+
+            articles = []
+            for _, row in news.iterrows():
+                syms = row.get("matched_symbols", [])
+                if isinstance(syms, list) and syms:
+                    articles.append({
+                        "headline":        row.get("headline", ""),
+                        "body":            row.get("body", ""),
+                        "matched_symbols": syms,
+                    })
+
+            if not articles:
+                logger.warning("No stock-matched articles for ensemble scoring")
+                # Fall through to FinBERT below
+                use_ensemble = False
+            else:
+                scorer  = EnsembleScorer()
+                results = scorer.score_batch(articles)
+                save_ensemble_scores(results)
+                sentiment = scorer.aggregate_by_symbol(results)
+
+                for sym, s in sorted(sentiment.items(), key=lambda x: x[1]):
+                    if s < -0.4:
+                        logger.info(f"  🔴 {sym}: {s:.3f}")
+                    elif s > 0.3:
+                        logger.info(f"  🟢 {sym}: {s:.3f}")
+                logger.info(f"Sentiment (ensemble): {len(sentiment)} stocks scored")
+                return sentiment
+        except Exception as e:
+            logger.error(f"Ensemble sentiment failed: {e} — falling back to FinBERT")
+
+    # FinBERT-only fallback (no API keys, or ensemble failed)
+    logger.info("   Mode: FinBERT only")
     try:
         from alphasense.sentiment.text import TextSentimentPipeline, aggregate_sentiment_by_stock
-        pipe   = TextSentimentPipeline(use_finetuned=True)
-        scored = pipe.score_today()
+        pipe      = TextSentimentPipeline(use_finetuned=True)
+        scored    = pipe.score_today()
         if scored.empty:
             return {}
         sentiment = aggregate_sentiment_by_stock(scored)
@@ -75,11 +124,42 @@ def step_sentiment() -> dict[str, float]:
                 logger.info(f"  🔴 {sym}: {s:.3f}")
             elif s > 0.3:
                 logger.info(f"  🟢 {sym}: {s:.3f}")
-        logger.info(f"Sentiment: {len(sentiment)} stocks scored")
+        logger.info(f"Sentiment (FinBERT): {len(sentiment)} stocks scored")
         return sentiment
     except Exception as e:
         logger.error(f"Sentiment failed: {e}")
         return {}
+
+
+# ─── Step 2b: Pre-signal Z-score scan (get candidates for targeted news fetch) ─
+
+def _get_zscore_candidates() -> list[str]:
+    """Quick Z-score scan to find candidate symbols before fetching targeted news."""
+    try:
+        from alphasense.screener.fundamental import load_universe
+        from alphasense.data.nse_client      import load_prices
+        from alphasense.signal.engine        import rolling_zscore
+        from config.settings                 import cfg as _cfg
+
+        universe = load_universe()
+        if universe.empty:
+            return []
+        prices   = load_prices(universe["symbol"].tolist())
+        sc       = _cfg.signal
+        cands    = []
+        for sym in universe["symbol"].tolist():
+            if sym not in prices or prices[sym].empty:
+                continue
+            df = prices[sym]
+            if len(df) < sc.rolling_window + 10:
+                continue
+            z = rolling_zscore(df["close"], sc.rolling_window, sc.return_period).iloc[-1]
+            if not pd.isna(z) and z < sc.zscore_threshold + 0.5:   # slightly wider net
+                cands.append(sym)
+        logger.info(f"Z-score candidates for targeted news: {len(cands)} stocks")
+        return cands
+    except Exception:
+        return []
 
 
 # ─── Step 3: Generate signals ────────────────────────────────────────────────
@@ -109,11 +189,6 @@ def step_signals(sentiment: dict[str, float]) -> list:
             sentiment=sentiment,
             india_vix=india_vix,
         )
-
-        for s in signals:
-            icon = "🟢" if s.direction == "BUY" else "🔴"
-            logger.info(f"  {icon} {s.direction} {s.symbol} @ ₹{s.entry_price:,.2f} "
-                        f"sent={s.sentiment_score:.2f} z={s.zscore:.2f}")
 
         logger.info(f"Signals: {len(signals)} generated")
         return signals
@@ -197,25 +272,28 @@ def run_pre_market():
     logger.info(f"\n{'#'*55}")
     logger.info(f"PRE-MARKET  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'#'*55}")
-    step_fetch()          # update prices first (get today's open)
-    step_fill_pending()   # fill any pending orders at today's open
+    step_fetch()          # update prices (get today's open)
+    step_fill_pending()   # fill any staged orders at today's open
 
 
 def run_post_close():
     logger.info(f"\n{'#'*55}")
     logger.info(f"POST-CLOSE  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'#'*55}")
-    step_fetch()
+    # Quick Z-score scan first → pass candidates to news fetch for targeted search
+    candidates = _get_zscore_candidates()
+    step_fetch(extra_symbols=candidates)
     sentiment = step_sentiment()
     signals   = step_signals(sentiment)
-    step_execute(signals)   # stages pending, fills tomorrow
+    step_execute(signals)   # stages as pending, fills at tomorrow's open
 
 
 def run_full():
     logger.info(f"\n{'#'*55}")
     logger.info(f"FULL RUN    {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'#'*55}")
-    step_fetch()
+    candidates = _get_zscore_candidates()
+    step_fetch(extra_symbols=candidates)
     step_fill_pending()
     sentiment = step_sentiment()
     signals   = step_signals(sentiment)

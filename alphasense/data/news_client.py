@@ -171,13 +171,72 @@ def fetch_all_feeds() -> list[dict]:
     return unique
 
 
-def fetch_and_save() -> list[dict]:
-    """Fetch today's news, match to stocks, save to disk."""
+def fetch_stock_news(symbols: list[str], max_per_stock: int = 3) -> list[dict]:
+    """
+    Fetch Google News RSS for specific stocks — fills the gap for mid/small caps
+    that never appear in general ET/MC feeds.
+    Free, no API key needed. Called for signal candidates only.
+    """
+    import urllib.parse
+    articles = []
+    seen_urls: set[str] = set()
+
+    for sym in symbols:
+        # Use company alias if available, else just symbol
+        query_terms = COMPANY_ALIASES.get(sym, [sym.lower()])
+        query = query_terms[0]   # most descriptive alias
+        url   = f"https://news.google.com/rss/search?q={urllib.parse.quote(query + ' NSE India stock')}&hl=en-IN&gl=IN&ceid=IN:en"
+        try:
+            feed  = feedparser.parse(url)
+            count = 0
+            for e in feed.entries[:10]:
+                link = e.get("link", "")
+                if link in seen_urls:
+                    continue
+                if hasattr(e, "published_parsed") and e.published_parsed:
+                    pub = datetime(*e.published_parsed[:6])
+                else:
+                    pub = datetime.now()
+                articles.append({
+                    "headline":       e.get("title", "").strip(),
+                    "body":           "",
+                    "url":            link,
+                    "source":         "GoogleNews",
+                    "published_at":   pub.isoformat(),
+                    "matched_symbols": [sym],
+                })
+                seen_urls.add(link)
+                count += 1
+                if count >= max_per_stock:
+                    break
+            logger.debug(f"  GoogleNews {sym}: {count} articles")
+            time.sleep(0.5)
+        except Exception as e:
+            logger.warning(f"  GoogleNews {sym}: {e}")
+
+    logger.info(f"Stock-specific news: {len(articles)} articles for {len(symbols)} stocks")
+    return articles
+
+
+def fetch_and_save(extra_symbols: list[str] = None) -> list[dict]:
+    """
+    Fetch today's news, match to stocks, save to disk.
+    extra_symbols: specific stocks to search Google News for (signal candidates).
+    """
     matcher  = StockMatcher()
     articles = fetch_all_feeds()
 
     for a in articles:
         a["matched_symbols"] = matcher.match(f"{a['headline']} {a['body']}")
+
+    # Top-up with stock-specific Google News for any requested symbols
+    if extra_symbols:
+        stock_articles = fetch_stock_news(extra_symbols)
+        # Dedup by URL against what we already have
+        existing_urls = {a["url"] for a in articles}
+        new_ones = [a for a in stock_articles if a["url"] not in existing_urls]
+        articles.extend(new_ones)
+        logger.info(f"Added {len(new_ones)} stock-specific articles from Google News")
 
     matched = sum(1 for a in articles if a["matched_symbols"])
     logger.info(f"Matched {matched}/{len(articles)} articles to stocks")
