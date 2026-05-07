@@ -484,7 +484,7 @@ with tab3:
 with tab4:
     st.subheader("Paper Trading — Open Positions & Trade History")
     st.caption("All trades executed by the cron pipeline in paper mode. "
-               "Current prices fetched live from yfinance.")
+               "Current prices: Groww live LTP (market hours) or last close (post-market).")
 
     paper_path = cfg.data_dir / "paper_state.json"
 
@@ -506,44 +506,58 @@ with tab4:
                 )
 
             # ── Fetch current prices for open positions ───────────────────
-            # Reads from local parquet (updated by cron post-close) first —
-            # more reliable than live yfinance which can return NaN for today.
-            @st.cache_data(ttl=300)
+            # Priority: Groww live LTP → parquet last close → yfinance fallback
+            @st.cache_data(ttl=60)   # 1-minute cache for live prices
             def _fetch_current_prices(symbols: tuple) -> dict[str, float]:
                 prices = {}
                 if not symbols:
                     return prices
+
+                # 1. Groww live LTP (real-time during market hours)
+                groww_ok = False
+                try:
+                    from alphasense.data.groww_client import get_groww_client
+                    groww = get_groww_client()
+                    if groww.available:
+                        ltp_map = groww.get_ltp(list(symbols))
+                        prices.update(ltp_map)
+                        groww_ok = len(ltp_map) > 0
+                except Exception:
+                    pass
+
+                # 2. Parquet last close for any symbols Groww missed
+                missing = [s for s in symbols if s not in prices]
                 nse_dir = cfg.data_dir / "nse"
-                for sym in symbols:
+                for sym in missing:
                     try:
                         p = nse_dir / f"{sym}.parquet"
                         if p.exists():
                             df = pd.read_parquet(p)
                             if "close" in df.columns and not df.empty:
-                                px = float(df["close"].dropna().iloc[-1])
-                                prices[sym] = px
+                                prices[sym] = float(df["close"].dropna().iloc[-1])
                     except Exception:
                         pass
-                # Fall back to yfinance for any symbols not in parquet
-                missing = [s for s in symbols if s not in prices]
-                if missing:
+
+                # 3. yfinance for anything still missing
+                missing2 = [s for s in symbols if s not in prices]
+                if missing2:
                     try:
                         import yfinance as yf
-                        tickers = [f"{s}.NS" for s in missing]
+                        tickers = [f"{s}.NS" for s in missing2]
                         data = yf.download(tickers, period="5d", interval="1d",
                                            progress=False, auto_adjust=True)
-                        for sym in missing:
+                        for sym in missing2:
                             try:
                                 col = f"{sym}.NS"
-                                if len(tickers) == 1:
-                                    px = float(data["Close"].dropna().iloc[-1])
-                                else:
-                                    px = float(data["Close"][col].dropna().iloc[-1])
+                                px = float(data["Close"].dropna().iloc[-1]) \
+                                     if len(tickers) == 1 \
+                                     else float(data["Close"][col].dropna().iloc[-1])
                                 prices[sym] = px
                             except Exception:
                                 pass
                     except Exception:
                         pass
+
                 return prices
 
             syms    = tuple(sorted(positions.keys()))
@@ -569,9 +583,18 @@ with tab4:
             today_str  = datetime.now().strftime("%Y-%m-%d")
             is_stale   = price_date is not None and price_date < today_str
 
-            if is_stale:
+            # Check if Groww gave us live prices
+            try:
+                from alphasense.data.groww_client import get_groww_client
+                _groww_live = get_groww_client().available
+            except Exception:
+                _groww_live = False
+
+            if _groww_live:
+                st.success("📡 **Live prices** from Groww API (refreshes every 60s)")
+            elif is_stale:
                 st.warning(
-                    f"Market may be closed or data not yet updated. "
+                    f"Market closed or Groww unavailable. "
                     f"Prices shown are **as of {price_date}** (latest available)."
                 )
 

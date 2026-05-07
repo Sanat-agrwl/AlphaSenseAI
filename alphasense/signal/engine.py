@@ -176,6 +176,15 @@ class SignalEngine:
             if pd.isna(z) or z >= sc.zscore_threshold:
                 continue
 
+            # Volume confirmation: today's volume must be ≥ 1.5× 20-day average.
+            # Filters out thin-market dips that aren't genuine panic selling.
+            if "volume" in price_df.columns and len(price_df) >= 20:
+                vol_today = float(price_df["volume"].iloc[-1])
+                vol_avg   = float(price_df["volume"].iloc[-20:].mean())
+                if vol_avg > 0 and vol_today < 1.5 * vol_avg:
+                    logger.debug(f"  {sym}: volume {vol_today:.0f} < 1.5× avg {vol_avg:.0f} — skip")
+                    continue
+
             blocked, reason = check_blocklist(recent_news.get(sym, []))
             if blocked:
                 logger.debug(f"  {sym} blocked: {reason}")
