@@ -251,13 +251,13 @@ def step_execute(buy_signals: list):
         from alphasense.broker.kite   import Broker
         from alphasense.signal.engine import position_size
 
-        broker  = Broker()
-        capital = cfg.backtest.capital
-        staged  = 0
+        broker        = Broker()
+        paper_capital = cfg.signal.paper_capital   # ₹10L (env: PAPER_CAPITAL)
+        staged        = 0
 
         for sig in buy_signals:
             adv = 100_000
-            qty = position_size(capital, sig.entry_price, adv)
+            qty = position_size(paper_capital, sig.entry_price, adv)
             if qty <= 0:
                 continue
             sid = f"SIG-{datetime.now().strftime('%Y%m%d')}-{sig.symbol}"
@@ -265,7 +265,8 @@ def step_execute(buy_signals: list):
             if result:
                 staged += 1
 
-        logger.info(f"Staging complete: {staged} orders pending next-day open fill")
+        logger.info(f"Staging complete: {staged} orders pending next-day open fill "
+                    f"(paper capital ₹{paper_capital:,.0f})")
     except Exception as e:
         logger.error(f"Execution failed: {e}")
 

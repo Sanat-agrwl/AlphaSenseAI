@@ -26,7 +26,8 @@ from loguru import logger
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 from config.settings import cfg
 
-STATE_FILE = cfg.data_dir / "paper_state.json"
+STATE_FILE      = cfg.data_dir / "paper_state.json"
+REAL_STATE_FILE = cfg.data_dir / "real_state.json"
 
 
 @dataclass
@@ -286,6 +287,108 @@ class PaperEngine:
         return pd.DataFrame([t.__dict__ for t in self.trades])
 
 
+# ─── Real Capital Manager ─────────────────────────────────────────────────────
+
+class RealStateManager:
+    """
+    Tracks real Groww positions and cash separately from paper trades.
+    Capital model: `capital` = liquid cash available (not yet deployed).
+      BUY  → capital -= qty × fill_price
+      SELL → capital += qty × fill_price   (realises P&L automatically)
+
+    real_state.json is written on every mutation.
+    """
+
+    MAX_PCT_CAPITAL = 0.10   # allocate at most 10% of free cash per position
+
+    def __init__(self):
+        self.capital:     float = 0.0
+        self.positions:   dict  = {}
+        self.pending:     dict  = {}
+        self.trades:      list  = []
+        self.order_count: int   = 0
+        self._load()
+
+    def _load(self):
+        if REAL_STATE_FILE.exists():
+            try:
+                s = json.loads(REAL_STATE_FILE.read_text())
+                self.capital     = float(s.get("capital", 0))
+                self.positions   = s.get("positions", {})
+                self.pending     = s.get("pending", {})
+                self.trades      = s.get("trades", [])
+                self.order_count = s.get("order_count", 0)
+            except Exception as e:
+                logger.warning(f"Could not load real state: {e}")
+
+    def save(self):
+        state = {
+            "capital":     round(self.capital, 2),
+            "positions":   self.positions,
+            "pending":     self.pending,
+            "trades":      self.trades,
+            "order_count": self.order_count,
+        }
+        REAL_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
+        REAL_STATE_FILE.write_text(json.dumps(state, indent=2, default=str))
+
+    @property
+    def available(self) -> float:
+        return max(0.0, self.capital)
+
+    def qty_for(self, price: float) -> int:
+        """Shares buyable with 10% of available cash at given price."""
+        if price <= 0 or self.capital < price:
+            return 0
+        budget = self.capital * self.MAX_PCT_CAPITAL
+        return int(budget / price)
+
+    def record_buy(self, symbol: str, qty: int, fill_price: float,
+                   order_id: str, signal_id: str = ""):
+        cost = qty * fill_price
+        self.capital -= cost
+        self.order_count += 1
+        self.positions[symbol] = {
+            "symbol":      symbol,
+            "qty":         qty,
+            "entry_price": fill_price,
+            "entry_date":  datetime.now().isoformat(),
+            "order_id":    order_id,
+            "signal_id":   signal_id,
+        }
+        self.save()
+        logger.info(f"Real BUY  {symbol} ×{qty} @ ₹{fill_price:.2f} | "
+                    f"cost ₹{cost:,.0f} | cash left ₹{self.capital:,.0f} | {order_id}")
+
+    def record_sell(self, symbol: str, fill_price: float,
+                    exit_reason: str = "", order_id: str = ""):
+        pos = self.positions.pop(symbol, None)
+        if pos is None:
+            return
+        qty     = pos["qty"]
+        proceeds = qty * fill_price
+        pnl      = proceeds - qty * pos["entry_price"]
+        pnl_pct  = pnl / (qty * pos["entry_price"])
+        self.capital += proceeds
+        self.trades.append({
+            "symbol":      symbol,
+            "qty":         qty,
+            "entry_price": pos["entry_price"],
+            "exit_price":  fill_price,
+            "entry_date":  pos["entry_date"],
+            "exit_date":   datetime.now().isoformat(),
+            "pnl":         round(pnl, 2),
+            "pnl_pct":     round(pnl_pct, 4),
+            "exit_reason": exit_reason,
+            "order_id":    order_id,
+        })
+        self.save()
+        emoji = "📈" if pnl >= 0 else "📉"
+        logger.info(f"Real SELL {symbol} ×{qty} @ ₹{fill_price:.2f} | "
+                    f"PnL ₹{pnl:+,.0f} ({pnl_pct*100:+.1f}%) | "
+                    f"cash ₹{self.capital:,.0f} | {order_id}")
+
+
 # ─── Live Kite Connect ────────────────────────────────────────────────────────
 
 class KiteEngine:
@@ -381,7 +484,14 @@ class Broker:
               price: float, signal_id: str = "") -> Optional[str]:
         result = self._engine.place(symbol, direction, qty, price, signal_id)
         if result and direction == "SELL" and self.actual_trade:
-            self._groww_sell(symbol, qty)
+            real = RealStateManager()
+            real_pos = real.positions.get(symbol)
+            if real_pos:
+                real_qty = real_pos["qty"]
+                oid = self._groww_sell(symbol, real_qty) or ""
+                real.record_sell(symbol, price, signal_id, oid)
+            else:
+                self._groww_sell(symbol, qty)   # fallback: use paper qty
         return result
 
     def stage(self, symbol: str, qty: int, signal_price: float,
@@ -393,19 +503,33 @@ class Broker:
         return None
 
     def fill_pending(self, open_prices: dict[str, float]) -> int:
-        """Fill pending orders at today's open (paper + optional live Groww)."""
+        """
+        Fill pending orders at today's open price.
+        Paper: fills at open + slippage, using paper capital sizing.
+        Real:  sizes independently from RealStateManager (10% of real cash),
+               places Groww market order, records in real_state.json.
+        """
         if not isinstance(self._engine, PaperEngine):
             return 0
-        # Snapshot pending before fill to know which ones get filled
         pre_pending = set(self._engine.pending.keys())
-        filled = self._engine.fill_pending(open_prices)
+        filled      = self._engine.fill_pending(open_prices)
         if filled > 0 and self.actual_trade:
             post_pending = set(self._engine.pending.keys())
-            filled_syms = pre_pending - post_pending
+            filled_syms  = pre_pending - post_pending
+            real = RealStateManager()
             for sym in filled_syms:
-                pos = self._engine.positions.get(sym)
-                if pos:
-                    self._groww_buy(sym, pos.qty)
+                paper_pos  = self._engine.positions.get(sym)
+                fill_price = paper_pos.entry_price if paper_pos else open_prices.get(sym, 0)
+                if not fill_price:
+                    continue
+                real_qty = real.qty_for(fill_price)
+                if real_qty <= 0:
+                    logger.info(f"Real {sym}: ₹{real.available:,.0f} available — "
+                                f"insufficient for {fill_price:.0f}/share, skipping")
+                    continue
+                sid = paper_pos.signal_id if paper_pos else ""
+                oid = self._groww_buy(sym, real_qty) or ""
+                real.record_buy(sym, real_qty, fill_price, oid, sid)
         return filled
 
     @property

@@ -61,6 +61,8 @@ class SignalConfig:
     max_positions:       int   = 15
     max_sector_pct:      float = 0.25
     risk_per_trade_pct:  float = 0.02
+    # Capital (paper vs real are sized independently)
+    paper_capital:       float = field(default_factory=lambda: float(os.getenv("PAPER_CAPITAL", "1000000")))
     # Rolling window
     rolling_window:      int   = 252
     return_period:       int   = 5

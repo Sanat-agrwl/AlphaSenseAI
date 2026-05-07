@@ -832,6 +832,141 @@ with tab4b:
 
         st.caption("Prices from Groww LTP (live during market hours). Refresh page to update.")
 
+    # ── Real Capital Allocation ───────────────────────────────────────────────
+    st.divider()
+    st.subheader("Real Capital Allocation")
+
+    real_state_path = cfg.data_dir / "real_state.json"
+
+    if not real_state_path.exists():
+        st.info("No real_state.json yet — will be created after tomorrow's portfolio liquidation.")
+    else:
+        try:
+            rs = json.loads(real_state_path.read_text())
+            r_capital   = float(rs.get("capital", 0))
+            r_positions = rs.get("positions", {})
+            r_trades    = rs.get("trades", [])
+            r_deployed  = sum(p["qty"] * p["entry_price"] for p in r_positions.values())
+            r_available = max(0.0, r_capital)
+            per_pos_budget = r_available * 0.10
+
+            cm1, cm2, cm3, cm4 = st.columns(4)
+            cm1.metric("Real Cash Available", f"₹{r_available:,.0f}")
+            cm2.metric("Deployed (real positions)", f"₹{r_deployed:,.0f}",
+                       f"{len(r_positions)} stocks")
+            cm3.metric("Per-Position Budget (10%)", f"₹{per_pos_budget:,.0f}")
+            cm4.metric("Real Closed Trades", len(r_trades))
+
+            # How many universe stocks are affordable at this per-position budget?
+            if not universe_df.empty and "symbol" in universe_df.columns:
+                from alphasense.data.nse_client import load_prices as _lp
+                try:
+                    uni_syms  = universe_df["symbol"].tolist()[:50]
+                    prices_now = _fetch_current_prices(tuple(uni_syms))
+                    afford_rows = []
+                    for sym in uni_syms:
+                        px = prices_now.get(sym, 0)
+                        if px <= 0:
+                            continue
+                        paper_alloc = cfg.signal.paper_capital * cfg.signal.max_pct_capital
+                        paper_qty  = max(0, int(paper_alloc / px))
+                        real_qty   = max(0, int(per_pos_budget / px)) if per_pos_budget > 0 else 0
+                        afford_rows.append({
+                            "Symbol":       sym,
+                            "Price ₹":      round(px, 2),
+                            "Paper Qty":    paper_qty,
+                            "Paper Cost ₹": round(paper_qty * px, 0),
+                            "Real Qty":     real_qty,
+                            "Real Cost ₹":  round(real_qty * px, 0),
+                            "Affordable":   "✅" if real_qty >= 1 else "❌ < ₹" + str(int(px)),
+                        })
+                    if afford_rows:
+                        adf = pd.DataFrame(afford_rows)
+                        n_afford  = (adf["Real Qty"] >= 1).sum()
+                        n_total   = len(adf)
+                        st.caption(f"**{n_afford}/{n_total}** universe stocks affordable at "
+                                   f"₹{per_pos_budget:,.0f}/position budget")
+
+                        col_af, col_dist = st.columns([3, 2])
+                        with col_af:
+                            def _afford_color(val):
+                                if isinstance(val, str) and val.startswith("✅"):
+                                    return "color:#00d97e"
+                                if isinstance(val, str) and val.startswith("❌"):
+                                    return "color:#e63757"
+                                return ""
+                            styled_af = adf.style.format({
+                                "Price ₹":      "₹{:,.2f}",
+                                "Paper Cost ₹": "₹{:,.0f}",
+                                "Real Cost ₹":  "₹{:,.0f}",
+                            }).applymap(_afford_color, subset=["Affordable"])
+                            st.dataframe(styled_af, use_container_width=True,
+                                         hide_index=True, height=320)
+
+                        with col_dist:
+                            price_bins = pd.cut(adf["Price ₹"],
+                                                bins=[0, 500, 1000, 2000, 5000, 100000],
+                                                labels=["<500", "500-1k", "1k-2k",
+                                                        "2k-5k", ">5k"])
+                            bin_df = price_bins.value_counts().sort_index().reset_index()
+                            bin_df.columns = ["Price Range", "Count"]
+                            fig_bins = px.bar(bin_df, x="Price Range", y="Count",
+                                             title="Universe price distribution",
+                                             color="Count",
+                                             color_continuous_scale="Blues")
+                            fig_bins.add_vline(x=1.5 if per_pos_budget < 1000
+                                               else (2.5 if per_pos_budget < 2000 else 3.5),
+                                               line_dash="dash", line_color="yellow",
+                                               annotation_text=f"Budget cutoff ₹{per_pos_budget:,.0f}")
+                            fig_bins.update_layout(template="plotly_dark", height=320,
+                                                   showlegend=False)
+                            st.plotly_chart(fig_bins, use_container_width=True)
+                except Exception as _e:
+                    st.caption(f"Could not compute affordability: {_e}")
+
+            # Real closed trades
+            if r_trades:
+                st.markdown("**Real Closed Trades**")
+                rtdf = pd.DataFrame(r_trades)
+                if "pnl" in rtdf.columns:
+                    total_real_pnl = rtdf["pnl"].sum()
+                    st.metric("Total Real P&L", f"₹{total_real_pnl:+,.0f}")
+                st.dataframe(rtdf, use_container_width=True, hide_index=True)
+
+            # Open real positions
+            if r_positions:
+                st.markdown("**Open Real Positions**")
+                rpos_rows = []
+                for sym, p in r_positions.items():
+                    curr_ltp = 0
+                    try:
+                        from alphasense.data.groww_client import GrowwClient
+                        from dotenv import load_dotenv
+                        load_dotenv(cfg.root / ".env", override=True)
+                        _gc = GrowwClient()
+                        curr_ltp = _gc.get_ltp([sym]).get(sym, 0)
+                    except Exception:
+                        pass
+                    entry = float(p["entry_price"])
+                    qty   = int(p["qty"])
+                    ltp   = curr_ltp or entry
+                    unreal = (ltp - entry) * qty
+                    rpos_rows.append({
+                        "Symbol":       sym,
+                        "Qty":          qty,
+                        "Entry ₹":      round(entry, 2),
+                        "LTP ₹":        round(ltp, 2),
+                        "Invested ₹":   round(entry * qty, 0),
+                        "Unrealised ₹": round(unreal, 0),
+                        "Return %":     round((ltp - entry) / entry * 100, 2),
+                    })
+                if rpos_rows:
+                    rpdf = pd.DataFrame(rpos_rows)
+                    st.dataframe(rpdf, use_container_width=True, hide_index=True)
+
+        except Exception as _exc:
+            st.warning(f"Could not load real_state.json: {_exc}")
+
 
 # ── Tab 5: Universe ───────────────────────────────────────────────────────────
 with tab5:
