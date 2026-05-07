@@ -65,7 +65,7 @@ def _score_finbert(headline: str) -> ModelVote:
         _cache = _score_finbert.__dict__.setdefault("_pipe", None)
         if _cache is None:
             # Check for fine-tuned model first
-            ft_path = cfg.base_dir / "models" / "finbert_indian"
+            ft_path = cfg.models_dir / "finbert_indian"
             model   = str(ft_path) if ft_path.exists() else "ProsusAI/finbert"
             _score_finbert._pipe = hf_pipeline(
                 "text-classification", model=model, top_k=None, device=-1
