@@ -113,10 +113,15 @@ class SignalEngine:
         recent_news:   dict[str, list[str]] = None,
         broker_positions: dict = None,     # Position objects from PaperEngine
         pending_count: int = 0,            # number of pending orders waiting
+        bse_signals:   dict = None,        # from bse_signal.load_recent()
     ) -> list[Signal]:
-        sc       = self.sc
-        signals  = []
+        sc          = self.sc
+        signals     = []
         recent_news = recent_news or {}
+        bse         = bse_signals or {}
+        bse_block   = bse.get("blocklist_hits", {})
+        bse_boost   = bse.get("sentiment_boost", {})   # sym → threshold delta (+)
+        bse_drag    = bse.get("sentiment_drag", {})     # sym → threshold delta (-)
 
         # Restore open positions from broker state (engine is stateless across runs)
         if broker_positions:
@@ -156,13 +161,23 @@ class SignalEngine:
             if sym in self.open_positions:
                 continue
 
-            # Only apply sentiment filter when we have a score for this stock.
-            # Stocks with no news today (score defaults to None) pass through.
+            # ── BSE hard blocklist (fraud, regulatory, CEO departure) ─────────
+            if sym in bse_block:
+                logger.debug(f"  {sym} BSE-blocked: {bse_block[sym]}")
+                continue
+
+            # ── Sentiment filter (BSE boost/drag adjusts threshold) ───────────
+            # boost  → positive corporate event → relax by +0.2 (easier to enter)
+            # drag   → negative corporate event → tighten by 0.3 (harder to enter)
+            sent_thresh = sc.sentiment_threshold \
+                          + bse_boost.get(sym, 0.0) \
+                          + bse_drag.get(sym, 0.0)
+
             sent = sentiment.get(sym, None)
-            if sent is not None and sent >= sc.sentiment_threshold:
+            if sent is not None and sent >= sent_thresh:
                 continue
             has_news = sent is not None
-            sent     = sent if has_news else 0.0   # 0.0 stored in signal; N/A in log
+            sent     = sent if has_news else 0.0
 
             if sym not in prices or prices[sym].empty:
                 continue
@@ -177,7 +192,6 @@ class SignalEngine:
                 continue
 
             # Volume confirmation: today's volume must be ≥ 1.5× 20-day average.
-            # Filters out thin-market dips that aren't genuine panic selling.
             if "volume" in price_df.columns and len(price_df) >= 20:
                 vol_today = float(price_df["volume"].iloc[-1])
                 vol_avg   = float(price_df["volume"].iloc[-20:].mean())
@@ -191,6 +205,8 @@ class SignalEngine:
                 continue
 
             entry_price = float(price_df["close"].iloc[-1])
+            bse_tag = (" [BSE+]" if sym in bse_boost else
+                       " [BSE-]" if sym in bse_drag  else "")
             sig = Signal(
                 symbol=sym, date=date, direction="BUY",
                 sentiment_score=sent, zscore=z,
@@ -200,7 +216,7 @@ class SignalEngine:
             signals.append(sig)
             self.open_positions[sym] = sig
             sent_str = f"{sent:.2f}" if has_news else "N/A (no news)"
-            logger.info(f"  BUY {sym} @ ₹{entry_price:.2f} | sent={sent_str} z={z:.2f}")
+            logger.info(f"  BUY {sym} @ ₹{entry_price:.2f} | sent={sent_str} z={z:.2f}{bse_tag}")
 
             if len(self.open_positions) >= sc.max_positions:
                 break

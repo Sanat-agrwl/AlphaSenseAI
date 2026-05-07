@@ -69,9 +69,108 @@ CUSTOM_VOCAB = [
 ]
 
 
-# ─── Transcriber ─────────────────────────────────────────────────────────────
+# ─── Deepgram Transcriber (primary) ──────────────────────────────────────────
+
+class DeepgramTranscriber:
+    """
+    Transcribes earnings call audio via Deepgram Nova-2.
+    Advantages over local Whisper:
+      - Handles Hindi-English code-switching natively
+      - Built-in speaker diarization (no pyannote needed)
+      - ~30× faster than real-time (vs Whisper large-v3 at ~3× on CPU)
+      - Supports Gujarati, Tamil, Marathi for future expansion
+
+    Requires: DEEPGRAM_API_KEY in .env
+              pip install deepgram-sdk
+    """
+
+    LANGUAGE_HINTS = ["hi", "en-IN"]   # Hindi + Indian English
+
+    def __init__(self):
+        import os
+        self.api_key = os.getenv("DEEPGRAM_API_KEY", "")
+
+    @property
+    def available(self) -> bool:
+        return bool(self.api_key)
+
+    def transcribe(self, audio_path: Path, output_path: Path = None) -> dict:
+        if not self.available:
+            raise RuntimeError("DEEPGRAM_API_KEY not set")
+
+        from deepgram import DeepgramClient, PrerecordedOptions
+        logger.info(f"Deepgram transcribing {audio_path.name}...")
+
+        dg      = DeepgramClient(self.api_key)
+        options = PrerecordedOptions(
+            model            = "nova-2",
+            language         = "hi",        # Hindi — Deepgram auto-detects English within it
+            detect_language  = True,
+            diarize          = True,        # free speaker separation
+            punctuate        = True,
+            utterances       = True,        # sentence-level with speaker labels
+            keywords         = CUSTOM_VOCAB,
+        )
+
+        with open(audio_path, "rb") as f:
+            audio_data = f.read()
+
+        resp = dg.listen.prerecorded.v("1").transcribe_file(
+            {"buffer": audio_data, "mimetype": "audio/mpeg"},
+            options,
+        )
+
+        result   = resp.results
+        channel  = result.channels[0].alternatives[0]
+        full_text = channel.transcript
+
+        # Build segment list compatible with existing EarningsCallScorer
+        segments = []
+        if result.utterances:
+            for u in result.utterances:
+                segments.append({
+                    "id":       u.id,
+                    "start":    u.start,
+                    "end":      u.end,
+                    "text":     u.transcript,
+                    "speaker":  f"SPEAKER_{u.speaker:02d}",
+                    "confidence": u.confidence,
+                })
+        else:
+            # Fallback: use words grouped into ~30s chunks
+            words = channel.words or []
+            chunk, t0 = [], 0.0
+            for w in words:
+                chunk.append(w.word)
+                if w.end - t0 > 30 or w == words[-1]:
+                    segments.append({"id": len(segments), "start": t0,
+                                     "end": w.end, "text": " ".join(chunk),
+                                     "speaker": "SPEAKER_00"})
+                    chunk, t0 = [], w.end
+
+        duration = segments[-1]["end"] if segments else 0.0
+        transcript = {
+            "text":             full_text,
+            "language":         result.channels[0].detected_language or "hi",
+            "segments":         segments,
+            "duration_seconds": duration,
+            "engine":           "deepgram-nova-2",
+        }
+
+        if output_path:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            output_path.write_text(json.dumps(transcript, indent=2, ensure_ascii=False))
+
+        logger.info(f"  {duration/60:.1f} min | {transcript['language']} | "
+                    f"{len(segments)} utterances")
+        return transcript
+
+
+# ─── Whisper Transcriber (fallback when no Deepgram key) ─────────────────────
 
 class Transcriber:
+    """Local Whisper large-v3. Slower but free. Used when DEEPGRAM_API_KEY absent."""
+
     def __init__(self):
         self.model = None
 
@@ -84,7 +183,7 @@ class Transcriber:
     def transcribe(self, audio_path: Path, output_path: Path = None) -> dict:
         if self.model is None:
             self.load()
-        logger.info(f"Transcribing {audio_path.name}...")
+        logger.info(f"Whisper transcribing {audio_path.name}...")
         result = self.model.transcribe(
             str(audio_path),
             verbose=False,
@@ -98,16 +197,28 @@ class Transcriber:
             "text":     result["text"],
             "language": result.get("language", "unknown"),
             "segments": [
-                {"id": s["id"], "start": s["start"], "end": s["end"], "text": s["text"]}
+                {"id": s["id"], "start": s["start"], "end": s["end"],
+                 "text": s["text"], "speaker": "SPEAKER_00"}
                 for s in result["segments"]
             ],
             "duration_seconds": result["segments"][-1]["end"] if result["segments"] else 0,
+            "engine": "whisper",
         }
         if output_path:
             output_path.parent.mkdir(parents=True, exist_ok=True)
             output_path.write_text(json.dumps(transcript, indent=2, ensure_ascii=False))
         logger.info(f"  {transcript['duration_seconds']/60:.1f} min | {transcript['language']}")
         return transcript
+
+
+def get_transcriber():
+    """Returns Deepgram if key is set, otherwise falls back to Whisper."""
+    dg = DeepgramTranscriber()
+    if dg.available:
+        logger.info("Transcriber: Deepgram Nova-2")
+        return dg
+    logger.info("Transcriber: Whisper (no DEEPGRAM_API_KEY)")
+    return Transcriber()
 
 
 # ─── Diarizer ────────────────────────────────────────────────────────────────
@@ -269,8 +380,8 @@ class ConfidenceDeltaDetector:
 
 class AudioPipeline:
     def __init__(self):
-        self.transcriber = Transcriber()
-        self.diarizer    = Diarizer()
+        self.transcriber = get_transcriber()   # Deepgram if key set, else Whisper
+        self.diarizer    = Diarizer()          # fallback pyannote (Whisper path only)
         self.scorer      = EarningsCallScorer()
 
     def process(self, audio_path: Path, symbol: str, quarter: str,
@@ -285,21 +396,40 @@ class AudioPipeline:
         else:
             transcript = self.transcriber.transcribe(audio_path, t_path)
 
-        # Diarize
+        # Speaker roles — Deepgram provides labels directly in segments;
+        # Whisper path needs pyannote diarization separately.
         speaker_roles = {}
-        try:
-            self.diarizer.load()
-            segs         = self.diarizer.diarize(audio_path)
-            speaker_roles = Diarizer.identify_management(segs)
-        except Exception as e:
-            logger.warning(f"Diarization skipped: {e}")
+        if transcript.get("engine") == "deepgram-nova-2":
+            # Identify management from Deepgram's diarized utterances
+            diar_segs = [
+                {"speaker": s["speaker"],
+                 "start":   s["start"],
+                 "end":     s["end"],
+                 "duration": s["end"] - s["start"]}
+                for s in transcript.get("segments", [])
+                if "speaker" in s
+            ]
+            speaker_roles = Diarizer.identify_management(diar_segs)
+        else:
+            try:
+                self.diarizer.load()
+                segs          = self.diarizer.diarize(audio_path)
+                speaker_roles = Diarizer.identify_management(segs)
+            except Exception as e:
+                logger.warning(f"Diarization skipped: {e}")
 
         # Score
         scores = self.scorer.score(transcript, speaker_roles)
-        result = {"symbol": symbol, "quarter": quarter, **scores}
+        result = {
+            "symbol":  symbol,
+            "quarter": quarter,
+            "engine":  transcript.get("engine", "unknown"),
+            **scores,
+        }
 
         out = output_dir / "text" / f"{symbol}_{quarter}_scores.json"
         out.write_text(json.dumps(result, indent=2))
+        logger.info(f"Scores saved → {out.name}")
         return result
 
     def load_all_scores(self) -> pd.DataFrame:

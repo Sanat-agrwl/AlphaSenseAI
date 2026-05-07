@@ -172,6 +172,7 @@ def step_signals(sentiment: dict[str, float]) -> tuple[list, list]:
         from alphasense.data.nse_client      import load_prices, load_vix
         from alphasense.signal.engine        import SignalEngine
         from alphasense.broker.kite          import Broker
+        from alphasense.data.bse_signal      import analyze_today, load_recent
 
         universe = load_universe()
         if universe.empty:
@@ -182,6 +183,18 @@ def step_signals(sentiment: dict[str, float]) -> tuple[list, list]:
         prices    = load_prices(symbols)
         vix_df    = load_vix()
         india_vix = float(vix_df["vix_close"].iloc[-1]) if not vix_df.empty else 15.0
+
+        # BSE signals: today + last 5 days rolling
+        try:
+            analyze_today()
+            bse_signals = load_recent(days=5)
+            logger.info(f"BSE signals loaded: "
+                        f"{len(bse_signals['blocklist_hits'])} blocked, "
+                        f"{len(bse_signals['sentiment_boost'])} boosted, "
+                        f"{len(bse_signals['sentiment_drag'])} dragged")
+        except Exception as e:
+            logger.warning(f"BSE signals failed (non-fatal): {e}")
+            bse_signals = {}
 
         broker = Broker()
         broker_positions = broker.paper.positions if broker.paper else {}
@@ -196,6 +209,7 @@ def step_signals(sentiment: dict[str, float]) -> tuple[list, list]:
             india_vix=india_vix,
             broker_positions=broker_positions,
             pending_count=pending_count,
+            bse_signals=bse_signals,
         )
 
         buy_signals  = [s for s in signals if s.direction == "BUY"]
