@@ -516,8 +516,10 @@ with tab4:
                 # 1. Groww live LTP (real-time during market hours)
                 groww_ok = False
                 try:
-                    from alphasense.data.groww_client import get_groww_client
-                    groww = get_groww_client()
+                    from dotenv import load_dotenv as _lde
+                    _lde(Path(__file__).parent.parent.parent / ".env", override=True)
+                    from alphasense.data.groww_client import GrowwClient as _GC
+                    groww = _GC()
                     if groww.available:
                         ltp_map = groww.get_ltp(list(symbols))
                         prices.update(ltp_map)
@@ -583,10 +585,12 @@ with tab4:
             today_str  = datetime.now().strftime("%Y-%m-%d")
             is_stale   = price_date is not None and price_date < today_str
 
-            # Check if Groww gave us live prices
+            # Check if Groww gave us live prices — use same fresh-client approach
             try:
-                from alphasense.data.groww_client import get_groww_client
-                _groww_live = get_groww_client().available
+                from dotenv import load_dotenv as _lde
+                _lde(Path(__file__).parent.parent.parent / ".env", override=True)
+                from alphasense.data.groww_client import GrowwClient as _GC
+                _groww_live = _GC().available
             except Exception:
                 _groww_live = False
 
@@ -726,23 +730,29 @@ with tab4b:
     @st.cache_data(ttl=60)
     def _load_real_portfolio():
         try:
-            from alphasense.data.groww_client import get_groww_client
-            groww = get_groww_client()
+            # Force-reload .env so credentials are always fresh regardless of
+            # when the Streamlit process was started or where it is running.
+            from dotenv import load_dotenv
+            load_dotenv(Path(__file__).parent.parent.parent / ".env", override=True)
+
+            from alphasense.data.groww_client import GrowwClient
+            groww = GrowwClient()   # fresh instance — reads env vars just set above
             if not groww.available:
-                return pd.DataFrame(), {}, False
+                return pd.DataFrame(), {}, False, "Groww client could not authenticate. Check GROWW_API_KEY and GROWW_TOTP_SECRET in .env."
             holdings = groww.get_holdings()
             if holdings.empty:
-                return holdings, {}, True
+                return holdings, {}, True, ""
             syms    = holdings["trading_symbol"].tolist()
             ltp_map = groww.get_ltp(syms)
-            return holdings, ltp_map, True
+            return holdings, ltp_map, True, ""
         except Exception as e:
-            return pd.DataFrame(), {}, False
+            return pd.DataFrame(), {}, False, str(e)
 
-    holdings, ltp_map, groww_ok = _load_real_portfolio()
+    holdings, ltp_map, groww_ok, groww_err = _load_real_portfolio()
 
     if not groww_ok:
-        st.warning("Groww credentials not configured. Add GROWW_API_KEY + GROWW_TOTP_SECRET to .env.")
+        st.warning(f"Could not load Groww portfolio: {groww_err}" if groww_err
+                   else "Groww credentials not configured. Add GROWW_API_KEY + GROWW_TOTP_SECRET to .env.")
     elif holdings.empty:
         st.info("No holdings found in your Groww demat account.")
     else:
