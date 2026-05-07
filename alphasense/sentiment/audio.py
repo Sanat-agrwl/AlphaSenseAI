@@ -115,7 +115,7 @@ class DeepgramTranscriber:
         with open(audio_path, "rb") as f:
             audio_data = f.read()
 
-        resp = dg.listen.prerecorded.v("1").transcribe_file(
+        resp = dg.listen.rest.v("1").transcribe_file(
             {"buffer": audio_data, "mimetype": "audio/mpeg"},
             options,
         )
