@@ -114,6 +114,7 @@ class SignalEngine:
         broker_positions: dict = None,     # Position objects from PaperEngine
         pending_count: int = 0,            # number of pending orders waiting
         bse_signals:   dict = None,        # from bse_signal.load_recent()
+        fundamental_modifiers: dict = None,  # from fundamental_signal.get_modifiers()
     ) -> list[Signal]:
         sc          = self.sc
         signals     = []
@@ -122,6 +123,7 @@ class SignalEngine:
         bse_block   = bse.get("blocklist_hits", {})
         bse_boost   = bse.get("sentiment_boost", {})   # sym → threshold delta (+)
         bse_drag    = bse.get("sentiment_drag", {})     # sym → threshold delta (-)
+        fund_mods   = fundamental_modifiers or {}       # sym → FundamentalModifier
 
         # Restore open positions from broker state (engine is stateless across runs)
         if broker_positions:
@@ -166,12 +168,22 @@ class SignalEngine:
                 logger.debug(f"  {sym} BSE-blocked: {bse_block[sym]}")
                 continue
 
-            # ── Sentiment filter (BSE boost/drag adjusts threshold) ───────────
+            # ── Fundamental block (XBRL deterioration + evasive management) ────
+            fmod = fund_mods.get(sym)
+            if fmod and fmod.blocked:
+                logger.debug(f"  {sym} fundamental-blocked: {fmod.reason}")
+                continue
+
+            # ── Sentiment filter (BSE boost/drag + fundamental modifier) ─────────
             # boost  → positive corporate event → relax by +0.2 (easier to enter)
             # drag   → negative corporate event → tighten by 0.3 (harder to enter)
+            # fmod   → XBRL + audio adjust thresholds further
+            fund_sent  = fmod.sentiment_delta if fmod else 0.0
+            fund_z     = fmod.zscore_delta    if fmod else 0.0
             sent_thresh = sc.sentiment_threshold \
                           + bse_boost.get(sym, 0.0) \
-                          + bse_drag.get(sym, 0.0)
+                          + bse_drag.get(sym, 0.0) \
+                          + fund_sent
 
             sent = sentiment.get(sym, None)
             if sent is not None and sent >= sent_thresh:
@@ -186,9 +198,10 @@ class SignalEngine:
             if len(price_df) < sc.rolling_window + 10:
                 continue
 
-            z_series = rolling_zscore(price_df["close"], sc.rolling_window, sc.return_period)
-            z        = z_series.iloc[-1]
-            if pd.isna(z) or z >= sc.zscore_threshold:
+            z_series   = rolling_zscore(price_df["close"], sc.rolling_window, sc.return_period)
+            z          = z_series.iloc[-1]
+            z_thresh   = sc.zscore_threshold + fund_z
+            if pd.isna(z) or z >= z_thresh:
                 continue
 
             # Volume confirmation: today's volume must be ≥ 1.5× 20-day average.
@@ -205,8 +218,10 @@ class SignalEngine:
                 continue
 
             entry_price = float(price_df["close"].iloc[-1])
-            bse_tag = (" [BSE+]" if sym in bse_boost else
-                       " [BSE-]" if sym in bse_drag  else "")
+            bse_tag  = (" [BSE+]" if sym in bse_boost else
+                        " [BSE-]" if sym in bse_drag  else "")
+            fund_tag = (" [F+]"   if fmod and fmod.sentiment_delta > 0 else
+                        " [F-]"   if fmod and fmod.sentiment_delta < 0 else "")
             sig = Signal(
                 symbol=sym, date=date, direction="BUY",
                 sentiment_score=sent, zscore=z,
@@ -216,7 +231,7 @@ class SignalEngine:
             signals.append(sig)
             self.open_positions[sym] = sig
             sent_str = f"{sent:.2f}" if has_news else "N/A (no news)"
-            logger.info(f"  BUY {sym} @ ₹{entry_price:.2f} | sent={sent_str} z={z:.2f}{bse_tag}")
+            logger.info(f"  BUY {sym} @ ₹{entry_price:.2f} | sent={sent_str} z={z:.2f}{bse_tag}{fund_tag}")
 
             if len(self.open_positions) >= sc.max_positions:
                 break

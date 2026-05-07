@@ -200,6 +200,14 @@ def step_signals(sentiment: dict[str, float]) -> tuple[list, list]:
         broker_positions = broker.paper.positions if broker.paper else {}
         pending_count    = len(broker.paper.pending) if broker.paper else 0
 
+        # Fundamental modifiers (XBRL + audio) — non-fatal if unavailable
+        try:
+            from alphasense.signal.fundamental_signal import get_modifiers
+            fund_mods = get_modifiers(symbols)
+        except Exception as e:
+            logger.warning(f"Fundamental modifiers unavailable (non-fatal): {e}")
+            fund_mods = {}
+
         engine  = SignalEngine()
         signals = engine.generate(
             date=pd.Timestamp.now(),
@@ -210,6 +218,7 @@ def step_signals(sentiment: dict[str, float]) -> tuple[list, list]:
             broker_positions=broker_positions,
             pending_count=pending_count,
             bse_signals=bse_signals,
+            fundamental_modifiers=fund_mods,
         )
 
         buy_signals  = [s for s in signals if s.direction == "BUY"]
