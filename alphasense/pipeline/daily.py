@@ -164,22 +164,28 @@ def _get_zscore_candidates() -> list[str]:
 
 # ─── Step 3: Generate signals ────────────────────────────────────────────────
 
-def step_signals(sentiment: dict[str, float]) -> list:
+def step_signals(sentiment: dict[str, float]) -> tuple[list, list]:
+    """Returns (buy_signals, sell_signals)."""
     logger.info("── STEP 3: Generate signals ────────────────────────────")
     try:
         from alphasense.screener.fundamental import load_universe
         from alphasense.data.nse_client      import load_prices, load_vix
         from alphasense.signal.engine        import SignalEngine
+        from alphasense.broker.kite          import Broker
 
         universe = load_universe()
         if universe.empty:
             logger.warning("No universe — run build_universe.py first")
-            return []
+            return [], []
 
         symbols   = universe["symbol"].tolist()
         prices    = load_prices(symbols)
         vix_df    = load_vix()
         india_vix = float(vix_df["vix_close"].iloc[-1]) if not vix_df.empty else 15.0
+
+        broker = Broker()
+        broker_positions = broker.paper.positions if broker.paper else {}
+        pending_count    = len(broker.paper.pending) if broker.paper else 0
 
         engine  = SignalEngine()
         signals = engine.generate(
@@ -188,21 +194,59 @@ def step_signals(sentiment: dict[str, float]) -> list:
             prices=prices,
             sentiment=sentiment,
             india_vix=india_vix,
+            broker_positions=broker_positions,
+            pending_count=pending_count,
         )
 
-        logger.info(f"Signals: {len(signals)} generated")
-        return signals
+        buy_signals  = [s for s in signals if s.direction == "BUY"]
+        sell_signals = [s for s in signals if s.direction == "SELL"]
+
+        for s in sell_signals:
+            logger.info(f"  🔴 SELL {s.symbol} @ ₹{s.exit_price:.2f} | "
+                        f"PnL={s.pnl_pct*100:.1f}% | {s.exit_reason}")
+        for s in buy_signals:
+            sent_str = f"{s.sentiment_score:.2f}" if s.sentiment_score != 0.0 else "N/A (no news)"
+            logger.info(f"  🟢 BUY {s.symbol} @ ₹{s.entry_price:.2f} | "
+                        f"sent={sent_str} z={s.zscore:.2f}")
+
+        logger.info(f"Signals: {len(buy_signals)} BUY, {len(sell_signals)} SELL")
+        return buy_signals, sell_signals
 
     except Exception as e:
         logger.error(f"Signal generation failed: {e}")
-        return []
+        return [], []
+
+
+# ─── Step 3b: Execute SELL signals ───────────────────────────────────────────
+
+def step_sell(sell_signals: list):
+    """Execute SELL signals — exit open positions."""
+    if not sell_signals:
+        return
+    logger.info("── STEP 3b: Execute SELL signals ───────────────────────")
+    try:
+        from alphasense.broker.kite import Broker
+        broker = Broker()
+        sold = 0
+        for sig in sell_signals:
+            pos = broker.paper.positions.get(sig.symbol)
+            if pos is None:
+                logger.warning(f"  {sig.symbol}: no open position to sell")
+                continue
+            result = broker.place(sig.symbol, "SELL", pos.qty, sig.exit_price,
+                                  signal_id=pos.signal_id)
+            if result:
+                sold += 1
+        logger.info(f"Sold {sold}/{len(sell_signals)} positions")
+    except Exception as e:
+        logger.error(f"Sell execution failed: {e}")
 
 
 # ─── Step 4: Stage signals (post-close) ──────────────────────────────────────
 
-def step_execute(signals: list):
-    """Queue BUY signals as pending orders — filled at next-day open in pre-market."""
-    logger.info("── STEP 4: Stage signals (fill tomorrow's open) ────────")
+def step_execute(buy_signals: list):
+    """Queue BUY signals as pending orders — filled at next post-close open price."""
+    logger.info("── STEP 4: Stage BUY signals (fill at tomorrow's open) ─")
     try:
         from alphasense.broker.kite   import Broker
         from alphasense.signal.engine import position_size
@@ -211,10 +255,8 @@ def step_execute(signals: list):
         capital = cfg.backtest.capital
         staged  = 0
 
-        for sig in signals:
-            if sig.direction != "BUY":
-                continue
-            adv = 100_000  # fallback ADV
+        for sig in buy_signals:
+            adv = 100_000
             qty = position_size(capital, sig.entry_price, adv)
             if qty <= 0:
                 continue
@@ -279,14 +321,13 @@ def run_post_close():
     logger.info(f"\n{'#'*55}")
     logger.info(f"POST-CLOSE  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'#'*55}")
-    # Z-score scan + fetch prices and news
     candidates = _get_zscore_candidates()
     step_fetch(extra_symbols=candidates)
-    # Fill yesterday's pending orders using today's open (now in parquet after update_prices)
-    step_fill_pending()
+    step_fill_pending()                      # fill yesterday's pending at today's open
     sentiment = step_sentiment()
-    signals   = step_signals(sentiment)
-    step_execute(signals)   # stage new signals as pending for tomorrow's open
+    buy_signals, sell_signals = step_signals(sentiment)
+    step_sell(sell_signals)                  # execute SELLs immediately
+    step_execute(buy_signals)                # stage BUYs for tomorrow's open
 
 
 def run_full():
@@ -297,8 +338,9 @@ def run_full():
     step_fetch(extra_symbols=candidates)
     step_fill_pending()
     sentiment = step_sentiment()
-    signals   = step_signals(sentiment)
-    step_execute(signals)
+    buy_signals, sell_signals = step_signals(sentiment)
+    step_sell(sell_signals)
+    step_execute(buy_signals)
 
 
 # ─── CLI ─────────────────────────────────────────────────────────────────────

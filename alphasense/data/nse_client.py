@@ -20,6 +20,19 @@ def _yf():
         raise ImportError("yfinance not installed — run: pip install yfinance")
 
 
+def _fetch_history_groww(symbol: str, days: int = 400) -> pd.DataFrame:
+    """Fetch daily OHLCV from Groww API. Returns empty df if unavailable."""
+    try:
+        from alphasense.data.groww_client import get_groww_client
+        client = get_groww_client()
+        if not client.available:
+            return pd.DataFrame()
+        return client.get_historical(symbol, days=days)
+    except Exception as e:
+        logger.debug(f"Groww history {symbol}: {e}")
+        return pd.DataFrame()
+
+
 # ── Constituents ──────────────────────────────────────────────────────────────
 
 def fetch_constituents() -> list[str]:
@@ -67,6 +80,13 @@ def load_constituents() -> list[str]:
 # ── Price history ─────────────────────────────────────────────────────────────
 
 def fetch_history(symbol: str, period: str = "2y") -> pd.DataFrame:
+    # Try Groww first (live, accurate for Indian equities)
+    days_map = {"1y": 365, "2y": 730, "3y": 1095, "5y": 1825, "max": 1460}
+    days = days_map.get(period, 730)
+    df = _fetch_history_groww(symbol, days=days)
+    if not df.empty:
+        return df
+    # Fallback: yfinance
     yf = _yf()
     try:
         df = yf.Ticker(f"{symbol}.NS").history(period=period, auto_adjust=True)
@@ -149,15 +169,61 @@ def backfill(symbols: list[str] = None, period: str = "max",
     logger.info(f"Backfill done: {ok} OK / {fail} failed of {total}")
 
 
-def update_prices(symbols: list[str] = None, days: int = 7) -> int:
-    """Incremental daily update — append last N days to existing parquets."""
+def update_prices_groww(symbols: list[str] = None, days: int = 7) -> int:
+    """
+    Update prices using Groww historical API.
+    Returns number of stocks updated, or -1 if Groww unavailable.
+    """
+    try:
+        from alphasense.data.groww_client import get_groww_client
+        client = get_groww_client()
+        if not client.available:
+            return -1
+    except Exception:
+        return -1
+
     if symbols is None:
         symbols = load_constituents()
-
-    # Strip any non-stock symbols that may have crept in
     _SKIP = {"INDIAVIX", "india_vix", "nifty500_constituents"}
     symbols = [s for s in symbols if s not in _SKIP]
 
+    out_dir = cfg.data_dir / "nse"
+    updated = 0
+    for sym in symbols:
+        df = client.get_historical(sym, days=max(days + 5, 14))
+        if df.empty:
+            continue
+        path = out_dir / f"{sym}.parquet"
+        try:
+            if path.exists():
+                old = pd.read_parquet(path)
+                df = pd.concat([old, df]).drop_duplicates("date").sort_values("date")
+            df.to_parquet(path, index=False)
+            updated += 1
+        except Exception as e:
+            logger.warning(f"  {sym}: save failed: {e}")
+        time.sleep(0.05)  # stay within Groww rate limits
+
+    logger.info(f"Groww price update: {updated}/{len(symbols)} stocks updated")
+    return updated
+
+
+def _update_vix(days: int = 7) -> None:
+    """Update India VIX from yfinance."""
+    period = f"{max(days, 7)}d"
+    vdf = fetch_vix(period=period)
+    vpath = cfg.data_dir / "nse" / "INDIAVIX.parquet"
+    if not vdf.empty:
+        if vpath.exists():
+            vdf = pd.concat([pd.read_parquet(vpath), vdf]).drop_duplicates("date").sort_values("date")
+        vdf.to_parquet(vpath, index=False)
+        logger.info(f"VIX updated: last date={vdf['date'].iloc[-1].date()}, value={vdf['vix_close'].iloc[-1]:.1f}")
+    else:
+        logger.warning("VIX update returned empty")
+
+
+def _update_prices_yfinance(symbols: list[str], days: int = 7) -> int:
+    """Incremental daily update via yfinance — append last N days to existing parquets."""
     out_dir    = cfg.data_dir / "nse"
     yf         = _yf()
     period     = f"{max(days, 7)}d"
@@ -201,9 +267,32 @@ def update_prices(symbols: list[str] = None, days: int = 7) -> int:
                 pass
         time.sleep(0.2)
 
+    return updated
+
+
+def update_prices(symbols: list[str] = None, days: int = 7) -> int:
+    """Incremental daily update — try Groww first, fall back to yfinance."""
+    if symbols is None:
+        symbols = load_constituents()
+    _SKIP = {"INDIAVIX", "india_vix", "nifty500_constituents"}
+    symbols = [s for s in symbols if s not in _SKIP]
+
+    # Try Groww API first (more reliable for Indian equities)
+    n = update_prices_groww(symbols, days=days)
+    if n >= 0:
+        # Groww succeeded — still update VIX via yfinance
+        _update_vix(days=days)
+        logger.info(f"Daily price update complete: {n}/{len(symbols)} stocks refreshed")
+        return n
+
+    # Groww unavailable — fall back to yfinance
+    logger.info("Groww unavailable — using yfinance fallback")
+    updated = _update_prices_yfinance(symbols, days)
+
     # VIX update
+    period = f"{max(days, 7)}d"
     vdf = fetch_vix(period=period)
-    vpath = out_dir / "INDIAVIX.parquet"
+    vpath = cfg.data_dir / "nse" / "INDIAVIX.parquet"
     if not vdf.empty:
         if vpath.exists():
             vdf = pd.concat([pd.read_parquet(vpath), vdf]).drop_duplicates("date").sort_values("date")

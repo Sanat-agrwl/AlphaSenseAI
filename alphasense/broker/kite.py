@@ -350,18 +350,39 @@ class Broker:
     """
 
     def __init__(self):
-        mode = cfg.kite.mode
-        if mode == "live":
-            logger.warning("🔴 LIVE MODE — real money at risk")
-            self._engine = KiteEngine()
-        else:
-            logger.info("🔵 PAPER MODE")
-            self._engine = PaperEngine()
-        self.mode = mode
+        self._engine = PaperEngine()
+        self.actual_trade = cfg.actual_trade
+        mode_label = "PAPER + LIVE (Groww)" if self.actual_trade else "PAPER ONLY"
+        logger.info(f"🔵 {mode_label}")
+
+    def _groww_buy(self, symbol: str, qty: int) -> Optional[str]:
+        """Place a real BUY via Groww if actual_trade is enabled."""
+        if not self.actual_trade:
+            return None
+        try:
+            from alphasense.data.groww_client import get_groww_client
+            return get_groww_client().place_market_order(symbol, qty, "BUY")
+        except Exception as e:
+            logger.error(f"Groww BUY failed {symbol}: {e}")
+            return None
+
+    def _groww_sell(self, symbol: str, qty: int) -> Optional[str]:
+        """Place a real SELL via Groww if actual_trade is enabled."""
+        if not self.actual_trade:
+            return None
+        try:
+            from alphasense.data.groww_client import get_groww_client
+            return get_groww_client().place_market_order(symbol, qty, "SELL")
+        except Exception as e:
+            logger.error(f"Groww SELL failed {symbol}: {e}")
+            return None
 
     def place(self, symbol: str, direction: str, qty: int,
               price: float, signal_id: str = "") -> Optional[str]:
-        return self._engine.place(symbol, direction, qty, price, signal_id)
+        result = self._engine.place(symbol, direction, qty, price, signal_id)
+        if result and direction == "SELL" and self.actual_trade:
+            self._groww_sell(symbol, qty)
+        return result
 
     def stage(self, symbol: str, qty: int, signal_price: float,
               signal_id: str = "") -> Optional[str]:
@@ -372,10 +393,20 @@ class Broker:
         return None
 
     def fill_pending(self, open_prices: dict[str, float]) -> int:
-        """Fill pending orders at today's open — paper mode only."""
-        if isinstance(self._engine, PaperEngine):
-            return self._engine.fill_pending(open_prices)
-        return 0
+        """Fill pending orders at today's open (paper + optional live Groww)."""
+        if not isinstance(self._engine, PaperEngine):
+            return 0
+        # Snapshot pending before fill to know which ones get filled
+        pre_pending = set(self._engine.pending.keys())
+        filled = self._engine.fill_pending(open_prices)
+        if filled > 0 and self.actual_trade:
+            post_pending = set(self._engine.pending.keys())
+            filled_syms = pre_pending - post_pending
+            for sym in filled_syms:
+                pos = self._engine.positions.get(sym)
+                if pos:
+                    self._groww_buy(sym, pos.qty)
+        return filled
 
     @property
     def paper(self) -> Optional[PaperEngine]:

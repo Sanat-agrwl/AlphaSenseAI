@@ -72,11 +72,12 @@ def rolling_zscore(prices: pd.Series,
 # ─── Signal dataclass ────────────────────────────────────────────────────────
 
 class ExitReason(str, Enum):
-    SENTIMENT_RECOVERY = "sentiment_recovery"
-    PRICE_RECOVERY     = "price_recovery"
-    STOP_LOSS          = "stop_loss"
-    TIME_STOP          = "time_stop"
-    VIX_BREACH         = "vix_breach"
+    SENTIMENT_RECOVERY  = "sentiment_recovery"
+    PRICE_RECOVERY      = "price_recovery"
+    STOP_LOSS           = "stop_loss"
+    TIME_STOP           = "time_stop"
+    VIX_BREACH          = "vix_breach"
+    PROFIT_WITH_PENDING = "profit_with_pending"
 
 
 @dataclass
@@ -104,20 +105,39 @@ class SignalEngine:
 
     def generate(
         self,
-        date:         pd.Timestamp,
-        universe:     pd.DataFrame,              # symbol, quality_score
-        prices:       dict[str, pd.DataFrame],   # symbol → OHLCV (indexed by date)
-        sentiment:    dict[str, float],          # symbol → score
-        india_vix:    float,
-        recent_news:  dict[str, list[str]] = None,  # symbol → headlines
+        date:          pd.Timestamp,
+        universe:      pd.DataFrame,
+        prices:        dict[str, pd.DataFrame],
+        sentiment:     dict[str, float],
+        india_vix:     float,
+        recent_news:   dict[str, list[str]] = None,
+        broker_positions: dict = None,     # Position objects from PaperEngine
+        pending_count: int = 0,            # number of pending orders waiting
     ) -> list[Signal]:
         sc       = self.sc
         signals  = []
         recent_news = recent_news or {}
 
+        # Restore open positions from broker state (engine is stateless across runs)
+        if broker_positions:
+            for sym, pos in broker_positions.items():
+                if sym not in self.open_positions:
+                    self.open_positions[sym] = Signal(
+                        symbol=sym,
+                        date=pd.Timestamp(pos.entry_date),
+                        direction="BUY",
+                        sentiment_score=0.0,
+                        zscore=-2.5,
+                        quality_score=50.0,
+                        india_vix=india_vix,
+                        entry_price=pos.entry_price,
+                    )
+
         # ── Check exits ──────────────────────────────────────────────────────
         for sym in list(self.open_positions.keys()):
-            exit_sig = self._check_exit(self.open_positions[sym], date, prices, sentiment, india_vix)
+            exit_sig = self._check_exit(
+                self.open_positions[sym], date, prices, sentiment, india_vix, pending_count
+            )
             if exit_sig:
                 signals.append(exit_sig)
                 del self.open_positions[sym]
@@ -181,7 +201,8 @@ class SignalEngine:
     def _check_exit(self, pos: Signal, date: pd.Timestamp,
                     prices: dict[str, pd.DataFrame],
                     sentiment: dict[str, float],
-                    india_vix: float) -> Optional[Signal]:
+                    india_vix: float,
+                    pending_count: int = 0) -> Optional[Signal]:
         sc  = self.sc
         sym = pos.symbol
         if sym not in prices or prices[sym].empty:
@@ -204,6 +225,8 @@ class SignalEngine:
             reason = ExitReason.STOP_LOSS
         elif days_held >= sc.time_stop_days:
             reason = ExitReason.TIME_STOP
+        elif pnl >= sc.profit_exit_pct and pending_count > 0:
+            reason = ExitReason.PROFIT_WITH_PENDING
 
         if reason:
             logger.info(f"  SELL {sym} @ ₹{curr_price:.2f} | PnL={pnl*100:.1f}% | {reason.value}")
