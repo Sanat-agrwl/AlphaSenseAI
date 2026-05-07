@@ -272,20 +272,21 @@ def run_pre_market():
     logger.info(f"\n{'#'*55}")
     logger.info(f"PRE-MARKET  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'#'*55}")
-    step_fetch()          # update prices (get today's open)
-    step_fill_pending()   # fill any staged orders at today's open
+    step_fetch()   # update prices only — today's open not available yet (pre-market)
 
 
 def run_post_close():
     logger.info(f"\n{'#'*55}")
     logger.info(f"POST-CLOSE  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'#'*55}")
-    # Quick Z-score scan first → pass candidates to news fetch for targeted search
+    # Z-score scan + fetch prices and news
     candidates = _get_zscore_candidates()
     step_fetch(extra_symbols=candidates)
+    # Fill yesterday's pending orders using today's open (now in parquet after update_prices)
+    step_fill_pending()
     sentiment = step_sentiment()
     signals   = step_signals(sentiment)
-    step_execute(signals)   # stages as pending, fills at tomorrow's open
+    step_execute(signals)   # stage new signals as pending for tomorrow's open
 
 
 def run_full():

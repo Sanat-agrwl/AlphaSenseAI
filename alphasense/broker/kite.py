@@ -16,7 +16,7 @@ Usage:
 
 import sys, json
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 from dataclasses import dataclass, field
 from typing import Optional
 
@@ -69,13 +69,16 @@ class PaperEngine:
     """
     Simulates realistic order execution:
       • Post-close (15:45 IST): signals are queued as PENDING orders
-      • Pre-market next day (08:30 IST): pending orders fill at that day's OPEN + slippage
+      • Post-close next day (15:45 IST): pending orders fill at that day's OPEN + slippage
+        (today's open is available in parquet after update_prices runs at post-close)
     This mirrors real trading — you can't buy at yesterday's close after the bell.
     """
 
-    SLIPPAGE_BPS = 10       # 0.10%
-    MAX_ORDER_VALUE = 10_00_000   # ₹10L per position
+    SLIPPAGE_BPS = 10           # 0.10%
+    MAX_ORDER_VALUE = 10_00_000 # ₹10L per position
     MAX_DAILY_ORDERS = 20
+    MAX_PENDING = 10            # max concurrent pending orders
+    MAX_PENDING_DAYS = 3        # cancel pending orders older than this many calendar days
 
     def __init__(self):
         self.positions:     dict[str, Position]     = {}
@@ -133,6 +136,9 @@ class PaperEngine:
             logger.info(f"⏭  SKIP {symbol} — already pending from "
                         f"{self.pending[symbol].signal_date[:10]}")
             return None
+        if len(self.pending) >= self.MAX_PENDING:
+            logger.warning(f"⏭  SKIP {symbol} — max pending orders ({self.MAX_PENDING}) reached")
+            return None
 
         order_value = qty * signal_price
         if order_value > self.MAX_ORDER_VALUE:
@@ -149,12 +155,32 @@ class PaperEngine:
         self.save()
         return f"PENDING-{symbol}"
 
+    def expire_pending(self) -> int:
+        """Cancel pending orders older than MAX_PENDING_DAYS. Returns count expired."""
+        expired = 0
+        cutoff = datetime.now() - timedelta(days=self.MAX_PENDING_DAYS)
+        for sym in list(self.pending.keys()):
+            try:
+                signal_dt = datetime.fromisoformat(self.pending[sym].signal_date)
+                if signal_dt < cutoff:
+                    logger.info(f"  EXPIRE {sym} — pending since "
+                                f"{signal_dt.date()} (>{self.MAX_PENDING_DAYS} days old)")
+                    del self.pending[sym]
+                    expired += 1
+            except Exception:
+                pass
+        if expired:
+            self.save()
+            logger.info(f"Expired {expired} stale pending orders")
+        return expired
+
     def fill_pending(self, open_prices: dict[str, float]) -> int:
         """
-        Fill all pending orders at today's open prices (pre-market step).
+        Fill all pending orders at today's open prices (post-close step).
         open_prices: {symbol: today_open_price}
         Returns number of orders filled.
         """
+        self.expire_pending()
         filled = 0
         for sym, order in list(self.pending.items()):
             open_px = open_prices.get(sym)
