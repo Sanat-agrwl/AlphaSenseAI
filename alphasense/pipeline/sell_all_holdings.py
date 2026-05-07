@@ -67,6 +67,8 @@ def run():
                                        "avgPrice", "costPrice"])
     if not col_sym or not col_qty:
         logger.error(f"Cannot find symbol/qty columns. Got: {holdings_df.columns.tolist()}")
+        logger.error("MANUAL ACTION REQUIRED: sell holdings manually in Groww app "
+                     "and then set real_state.json capital to the actual proceeds.")
         return
 
     syms = [str(holdings_df.loc[i, col_sym]) for i in holdings_df.index
@@ -102,6 +104,11 @@ def run():
     logger.info(f"\nLiquidation complete: {sold} confirmed, {failed} uncertain")
     logger.info(f"Estimated proceeds:   ₹{total_proceeds:,.0f}")
 
+    if total_proceeds <= 0:
+        logger.error("Proceeds are ₹0 — NOT writing real_state.json. "
+                     "Check Groww holdings/orders manually before trading.")
+        return
+
     _write_real_state(total_proceeds)
     DONE_FLAG.touch()
     logger.info("Done-flag written — script will skip on next invocation.")
@@ -115,8 +122,6 @@ def _find_col(df, candidates: list) -> str:
 
 
 def _write_real_state(capital: float):
-    import pandas as pd  # noqa: F401
-
     existing_trades = []
     existing_orders = 0
     if REAL_STATE_FILE.exists():
@@ -139,9 +144,6 @@ def _write_real_state(capital: float):
     REAL_STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
     REAL_STATE_FILE.write_text(json.dumps(state, indent=2))
     logger.info(f"real_state.json written → capital ₹{capital:,.0f}")
-
-
-import pandas as pd  # needed for _find_col fallback check
 
 
 if __name__ == "__main__":

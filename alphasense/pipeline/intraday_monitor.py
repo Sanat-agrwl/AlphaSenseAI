@@ -74,7 +74,8 @@ def job_stoploss():
         logger.debug(f"  {sym}: entry ₹{pos.entry_price:.2f} | ltp ₹{ltp:.2f} | {pnl*100:.1f}%")
         if pnl <= sc.stop_loss_pct:
             logger.info(f"  🔴 INTRADAY STOP-LOSS {sym}: {pnl*100:.1f}% ≤ {sc.stop_loss_pct*100:.1f}%")
-            result = broker.place(sym, "SELL", pos.qty, ltp, signal_id=pos.signal_id)
+            result = broker.place(sym, "SELL", pos.qty, ltp, signal_id=pos.signal_id,
+                                  exit_reason="stop_loss")
             if result:
                 sold += 1
 
@@ -128,7 +129,7 @@ def job_intraday_buy():
         logger.info(f"Live prices: {len(live_px)}/{len(candidates)} symbols")
 
         new_signals = 0
-        capital     = cfg.backtest.capital
+        capital     = cfg.signal.paper_capital   # ₹10L (env: PAPER_CAPITAL)
 
         for sym in candidates:
             ltp = live_px.get(sym)
@@ -236,7 +237,8 @@ def job_intraday_sell():
                 logger.info(f"  🔴 INTRADAY SELL {sym} @ ₹{ltp:.2f} | "
                             f"PnL={pnl*100:.1f}% | {exit_reason}")
                 result = broker.place(sym, "SELL", pos.qty, ltp,
-                                      signal_id=pos.signal_id)
+                                      signal_id=pos.signal_id,
+                                      exit_reason=exit_reason)
                 if result:
                     sold += 1
 

@@ -481,17 +481,22 @@ class Broker:
             return None
 
     def place(self, symbol: str, direction: str, qty: int,
-              price: float, signal_id: str = "") -> Optional[str]:
+              price: float, signal_id: str = "",
+              exit_reason: str = "") -> Optional[str]:
         result = self._engine.place(symbol, direction, qty, price, signal_id)
         if result and direction == "SELL" and self.actual_trade:
             real = RealStateManager()
             real_pos = real.positions.get(symbol)
             if real_pos:
+                # Only sell the qty we actually recorded buying via AlphaSense.
+                # Never fall back to paper qty — that risks selling unrelated demat holdings.
                 real_qty = real_pos["qty"]
-                oid = self._groww_sell(symbol, real_qty) or ""
-                real.record_sell(symbol, price, signal_id, oid)
+                oid      = self._groww_sell(symbol, real_qty) or ""
+                reason   = exit_reason or signal_id or "signal_exit"
+                real.record_sell(symbol, price, reason, oid)
             else:
-                self._groww_sell(symbol, qty)   # fallback: use paper qty
+                logger.info(f"Real: no tracked position for {symbol} — "
+                            "Groww SELL skipped (not bought via AlphaSense)")
         return result
 
     def stage(self, symbol: str, qty: int, signal_price: float,
@@ -528,8 +533,13 @@ class Broker:
                                 f"insufficient for {fill_price:.0f}/share, skipping")
                     continue
                 sid = paper_pos.signal_id if paper_pos else ""
-                oid = self._groww_buy(sym, real_qty) or ""
-                real.record_buy(sym, real_qty, fill_price, oid, sid)
+                oid = self._groww_buy(sym, real_qty)
+                if oid:
+                    real.record_buy(sym, real_qty, fill_price, oid, sid)
+                else:
+                    logger.warning(f"Real BUY {sym}: Groww order returned no ID — "
+                                   "position NOT recorded to avoid ghost tracking. "
+                                   "Check Groww order book manually.")
         return filled
 
     @property

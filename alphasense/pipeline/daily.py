@@ -234,7 +234,8 @@ def step_sell(sell_signals: list):
                 logger.warning(f"  {sig.symbol}: no open position to sell")
                 continue
             result = broker.place(sig.symbol, "SELL", pos.qty, sig.exit_price,
-                                  signal_id=pos.signal_id)
+                                  signal_id=pos.signal_id,
+                                  exit_reason=sig.exit_reason or "")
             if result:
                 sold += 1
         logger.info(f"Sold {sold}/{len(sell_signals)} positions")
