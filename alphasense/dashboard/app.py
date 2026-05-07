@@ -188,10 +188,10 @@ st.markdown("---")
 
 # ─── Tabs ─────────────────────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
+tab1, tab2, tab3, tab4, tab4b, tab5, tab6, tab7, tab8 = st.tabs([
     "📈 Backtest", "🔭 Forward Test",
-    "🚨 Live Signals", "💼 Paper Trades",
-    "🏛 Universe", "🎙 Earnings", "🖥 Logs",
+    "🚨 Live Signals", "💼 Paper Trades", "📊 Real Portfolio",
+    "🏛 Universe", "🎙 Earnings", "🔁 Feedback", "🖥 Logs",
 ])
 
 
@@ -718,6 +718,111 @@ with tab4:
             st.error(f"Could not load paper state: {e}")
 
 
+# ── Tab 4b: Real Portfolio ────────────────────────────────────────────────────
+with tab4b:
+    st.subheader("Real Portfolio — Groww Holdings")
+    st.caption("Live positions from your Groww demat account. Prices refresh every 60s.")
+
+    @st.cache_data(ttl=60)
+    def _load_real_portfolio():
+        try:
+            from alphasense.data.groww_client import get_groww_client
+            groww = get_groww_client()
+            if not groww.available:
+                return pd.DataFrame(), {}, False
+            holdings = groww.get_holdings()
+            if holdings.empty:
+                return holdings, {}, True
+            syms    = holdings["trading_symbol"].tolist()
+            ltp_map = groww.get_ltp(syms)
+            return holdings, ltp_map, True
+        except Exception as e:
+            return pd.DataFrame(), {}, False
+
+    holdings, ltp_map, groww_ok = _load_real_portfolio()
+
+    if not groww_ok:
+        st.warning("Groww credentials not configured. Add GROWW_API_KEY + GROWW_TOTP_SECRET to .env.")
+    elif holdings.empty:
+        st.info("No holdings found in your Groww demat account.")
+    else:
+        rows = []
+        total_invested = 0.0
+        total_current  = 0.0
+        for _, h in holdings.iterrows():
+            sym     = h["trading_symbol"]
+            qty     = float(h.get("quantity", 0))
+            avg     = float(h.get("average_price", 0))
+            ltp     = ltp_map.get(sym, avg)
+            unrealised = (ltp - avg) * qty
+            pct        = (ltp - avg) / avg * 100 if avg else 0
+            invested   = avg * qty
+            total_invested += invested
+            total_current  += ltp * qty
+            rows.append({
+                "Symbol":       sym,
+                "Qty":          int(qty),
+                "Avg Cost ₹":   round(avg, 2),
+                "LTP ₹":        round(ltp, 2),
+                "Invested ₹":   round(invested, 0),
+                "Unrealised ₹": round(unrealised, 0),
+                "Return %":     round(pct, 2),
+            })
+
+        port_df     = pd.DataFrame(rows).sort_values("Return %", ascending=False)
+        total_unreal = total_current - total_invested
+        total_pct    = total_unreal / total_invested * 100 if total_invested else 0
+
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("Holdings",       len(holdings))
+        m2.metric("Invested",       f"₹{total_invested:,.0f}")
+        m3.metric("Current Value",  f"₹{total_current:,.0f}")
+        m4.metric("Unrealised P&L", f"₹{total_unreal:+,.0f}", f"{total_pct:+.2f}%")
+
+        def _col(v):
+            if pd.isna(v): return ""
+            return "color:#00d97e;font-weight:bold" if v >= 0 else "color:#e63757;font-weight:bold"
+
+        styled = port_df.style.format({
+            "Avg Cost ₹":   "₹{:,.2f}",
+            "LTP ₹":        "₹{:,.2f}",
+            "Invested ₹":   "₹{:,.0f}",
+            "Unrealised ₹": "₹{:+,.0f}",
+            "Return %":     "{:+.2f}%",
+        }).applymap(_col, subset=["Return %", "Unrealised ₹"])
+        st.dataframe(styled, use_container_width=True, hide_index=True)
+
+        col_a, col_b = st.columns(2)
+        with col_a:
+            fig_pnl = px.bar(port_df, x="Symbol", y="Return %",
+                             title="Unrealised Return per Holding (%)",
+                             color="Return %",
+                             color_continuous_scale=["#e63757","#f6c343","#00d97e"],
+                             color_continuous_midpoint=0)
+            fig_pnl.add_hline(y=0, line_color="white", line_dash="dash")
+            fig_pnl.update_layout(template="plotly_dark", height=320, showlegend=False)
+            st.plotly_chart(fig_pnl, use_container_width=True)
+
+        with col_b:
+            # Compare real holdings vs paper signals — overlap
+            paper_path = cfg.data_dir / "paper_state.json"
+            if paper_path.exists():
+                paper_syms = set(json.loads(paper_path.read_text()).get("positions", {}).keys())
+                real_syms  = set(port_df["Symbol"].tolist())
+                overlap    = real_syms & paper_syms
+                only_real  = real_syms - paper_syms
+                only_paper = paper_syms - real_syms
+                st.markdown("**Paper vs Real overlap**")
+                if overlap:
+                    st.success(f"In both:  {', '.join(sorted(overlap))}")
+                if only_real:
+                    st.info(f"Real only: {', '.join(sorted(only_real))}")
+                if only_paper:
+                    st.warning(f"Paper only (not yet in demat): {', '.join(sorted(only_paper))}")
+
+        st.caption("Prices from Groww LTP (live during market hours). Refresh page to update.")
+
+
 # ── Tab 5: Universe ───────────────────────────────────────────────────────────
 with tab5:
     st.subheader(f"Quality Universe — {len(universe_df)} stocks")
@@ -753,7 +858,151 @@ with tab5:
             st.plotly_chart(fig_s, use_container_width=True)
 
 
-# ── Tab 5: Earnings Calls ─────────────────────────────────────────────────────
+# ── Tab 7: Feedback Analysis ──────────────────────────────────────────────────
+with tab7:
+    st.subheader("Signal Feedback Loop — Live Strategy Performance")
+    st.caption("Analyzes every closed paper trade to measure signal quality and guide parameter tuning. "
+               "Updated nightly by feedback_loop.py.")
+
+    @st.cache_data(ttl=300)
+    def _load_feedback() -> dict:
+        p = cfg.results_dir / "feedback_report.json"
+        if p.exists():
+            return json.loads(p.read_text())
+        return {}
+
+    fb = _load_feedback()
+
+    if not fb or fb.get("status") == "no_trades":
+        st.info("No closed trades yet. Feedback analysis will populate as positions are exited.")
+    else:
+        gen_at = fb.get("generated_at", "")
+        st.caption(f"Last updated: {gen_at[:19].replace('T',' ')} IST")
+
+        # ── Top metrics ───────────────────────────────────────────────────────
+        r30  = fb.get("rolling_30", {})
+        rall = fb.get("all_time", {})
+
+        st.markdown("### Rolling Performance (last 30 trades vs all-time)")
+        c1,c2,c3,c4,c5 = st.columns(5)
+        c1.metric("Win Rate (30)",    f"{r30.get('win_rate',0)*100:.0f}%",
+                  f"All-time: {rall.get('win_rate',0)*100:.0f}%")
+        c2.metric("Avg Return (30)",  f"{r30.get('avg_return_pct',0):+.1f}%",
+                  f"All-time: {rall.get('avg_return_pct',0):+.1f}%")
+        c3.metric("Sharpe (30)",      f"{r30.get('sharpe',0):.2f}",
+                  f"All-time: {rall.get('sharpe',0):.2f}")
+        c4.metric("Avg Days Held",    f"{r30.get('avg_days_held',0):.0f}d")
+        c5.metric("Total Closed",     fb.get("total_trades", 0))
+
+        st.markdown("---")
+
+        col_left, col_right = st.columns(2)
+
+        # ── Exit reasons ─────────────────────────────────────────────────────
+        with col_left:
+            exits = fb.get("exit_reasons", {})
+            counts = exits.get("counts", {})
+            wr_by  = exits.get("win_rate_by_reason", {})
+            if counts:
+                st.markdown("#### Exit Reason Breakdown")
+                exit_df = pd.DataFrame([
+                    {"Exit Reason": k, "Count": v,
+                     "Win Rate": f"{wr_by.get(k,0)*100:.0f}%"}
+                    for k, v in sorted(counts.items(), key=lambda x: -x[1])
+                ])
+                st.dataframe(exit_df, use_container_width=True, hide_index=True)
+
+                fig_ex = px.pie(
+                    exit_df, names="Exit Reason", values="Count",
+                    title="How are we exiting?",
+                    color_discrete_sequence=["#00d97e","#4dabf7","#f6c343","#e63757","#cc5de8"],
+                )
+                fig_ex.update_layout(template="plotly_dark", height=280)
+                st.plotly_chart(fig_ex, use_container_width=True)
+
+                st.caption(
+                    "**Healthy mix:** sentiment_recovery + price_recovery = signal working. "
+                    "**Too many time_stop:** positions not recovering — widen recovery threshold. "
+                    "**Too many stop_loss:** entry conditions too loose."
+                )
+
+        # ── Signal split: news vs no-news ─────────────────────────────────────
+        with col_right:
+            split = fb.get("signal_split", {})
+            if split:
+                st.markdown("#### With News vs Without News")
+                split_rows = []
+                for label, data in split.items():
+                    split_rows.append({
+                        "Signal Type":   label.replace("_", " ").title(),
+                        "Trades":        data.get("trades", 0),
+                        "Win Rate":      f"{data.get('win_rate',0)*100:.0f}%",
+                        "Avg Return":    f"{data.get('avg_return',0):+.1f}%",
+                    })
+                if split_rows:
+                    st.dataframe(pd.DataFrame(split_rows), use_container_width=True, hide_index=True)
+                    st.caption("Trades entering WITHOUT news sentiment signal are Z-score-only entries. "
+                               "If win rate is much lower, consider requiring sentiment coverage.")
+
+        st.markdown("---")
+
+        # ── Model calibration ─────────────────────────────────────────────────
+        model_cal = fb.get("model_calibration", {})
+        if model_cal:
+            st.markdown("#### Ensemble Model Calibration")
+            st.caption("Accuracy = % of times model's negative score at entry correctly predicted a winning trade.")
+            cal_rows = []
+            for model, stats in model_cal.items():
+                cal_rows.append({
+                    "Model":       model,
+                    "Predictions": stats.get("predictions", 0),
+                    "Accuracy":    f"{stats.get('accuracy',0)*100:.0f}%",
+                    "Avg Score":   f"{stats.get('avg_score',0):+.3f}",
+                    "Score Std":   f"{stats.get('score_std',0):.3f}",
+                })
+            if cal_rows:
+                cal_df = pd.DataFrame(cal_rows)
+                st.dataframe(cal_df, use_container_width=True, hide_index=True)
+                st.caption("Higher accuracy → higher weight in ensemble. "
+                           "Low accuracy model (< 55%) may need retraining or reduced weight.")
+
+        st.markdown("---")
+
+        # ── Alerts & suggestions ──────────────────────────────────────────────
+        alerts = fb.get("alerts", [])
+        suggestions = fb.get("parameter_suggestions", [])
+
+        col_al, col_sg = st.columns(2)
+        with col_al:
+            st.markdown("#### Alerts")
+            for a in alerts:
+                if "below" in a.lower() or "negative" in a.lower() or "too many" in a.lower():
+                    st.warning(a)
+                elif "performing well" in a.lower() or "no anomalies" in a.lower():
+                    st.success(a)
+                else:
+                    st.info(a)
+
+        with col_sg:
+            st.markdown("#### Parameter Suggestions")
+            if suggestions:
+                for s in suggestions:
+                    st.info(s)
+            else:
+                st.success("No parameter changes suggested — strategy within expected range.")
+
+        # ── Return distribution ───────────────────────────────────────────────
+        ret_dist = fb.get("return_distribution", {})
+        if ret_dist:
+            st.markdown("---")
+            st.markdown("#### Return Distribution Summary")
+            d1, d2, d3 = st.columns(3)
+            d1.metric("Bottom Quartile", f"{ret_dist.get('bottom_quartile_return',0):+.1f}%")
+            d2.metric("Median Return",   f"{ret_dist.get('median_return',0):+.1f}%")
+            d3.metric("Top Quartile",    f"{ret_dist.get('top_quartile_return',0):+.1f}%")
+
+
+# ── Tab 6: Earnings Calls ──────────────────────────────────────────────────────
 with tab6:
     earnings = _load_earnings()
     if "confidence_score" not in earnings.columns:
@@ -797,8 +1046,8 @@ with tab6:
             st.plotly_chart(fig_e, use_container_width=True)
 
 
-# ── Tab 6: Pipeline Logs ──────────────────────────────────────────────────────
-with tab7:
+# ── Tab 8: Pipeline Logs ──────────────────────────────────────────────────────
+with tab8:
     st.subheader("Pipeline Logs")
 
     log_dir = cfg.logs_dir
