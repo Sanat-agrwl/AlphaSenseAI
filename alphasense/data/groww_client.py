@@ -234,9 +234,18 @@ class GrowwClient:
                 order_type="MARKET",
                 transaction_type=direction,
             )
-            order_id = result.get("data", {}).get("order_id") or str(result)
-            logger.info(f"Groww {direction} {symbol} ×{qty} placed → {order_id}")
-            return order_id
+            logger.info(f"Groww {direction} {symbol} ×{qty} placed → {result}")
+            # Explicit failure check — FAILED status means order was rejected
+            status = (result.get("order_status") or
+                      result.get("data", {}).get("order_status", ""))
+            if str(status).upper() == "FAILED":
+                remark = result.get("remark", "")
+                logger.error(f"Groww order FAILED {direction} {symbol}: {remark}")
+                return None
+            order_id = (result.get("data", {}).get("order_id") or
+                        result.get("groww_order_id") or
+                        result.get("order_id"))
+            return str(order_id) if order_id else None
         except Exception as e:
             logger.error(f"Groww order failed {direction} {symbol}: {e}")
             return None

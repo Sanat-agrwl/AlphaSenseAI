@@ -95,21 +95,22 @@ def run():
         if order_id:
             total_proceeds += est_val
             sold += 1
-            logger.info(f"    ✅ {sym} order {order_id}")
+            logger.info(f"    ✅ {sym} order placed: {order_id}")
         else:
-            # Order may still go through even if we get no ID back — count proceeds
-            total_proceeds += est_val
             failed += 1
-            logger.warning(f"    ⚠️  {sym}: no order ID returned (order may still execute)")
+            logger.warning(f"    ❌ {sym}: order FAILED — check Groww app")
 
-    logger.info(f"\nLiquidation complete: {sold} confirmed, {failed} uncertain")
-    logger.info(f"Estimated proceeds:   ₹{total_proceeds:,.0f}")
+    logger.info(f"\nLiquidation complete: {sold} placed, {failed} failed")
 
-    if total_proceeds <= 0:
-        logger.error("Proceeds are ₹0 — NOT writing real_state.json. "
-                     "Check Groww holdings/orders manually before trading.")
+    if sold == 0:
+        logger.error(
+            "ALL ORDERS FAILED — real_state.json NOT written.\n"
+            "Most likely cause: TPIN (CDSL demat authorization) not completed.\n"
+            "Fix: open Groww app → Portfolio → Holdings → authorize TPIN, then re-run."
+        )
         return
 
+    logger.info(f"Estimated proceeds:   ₹{total_proceeds:,.0f}")
     _write_real_state(total_proceeds)
     DONE_FLAG.touch()
     logger.info("Done-flag written — script will skip on next invocation.")
