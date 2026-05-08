@@ -724,7 +724,11 @@ with tab4:
 
 # ── Tab 4b: Real Portfolio ────────────────────────────────────────────────────
 with tab4b:
-    st.subheader("Real Portfolio — Groww Holdings")
+    hdr_col, btn_col = st.columns([5, 1])
+    hdr_col.subheader("Real Portfolio — Groww Holdings")
+    if btn_col.button("🔄 Refresh", key="refresh_real_port"):
+        st.cache_data.clear()
+
     st.caption("Live positions from your Groww demat account. Prices refresh every 60s.")
 
     @st.cache_data(ttl=60)

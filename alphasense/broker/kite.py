@@ -299,7 +299,7 @@ class RealStateManager:
     real_state.json is written on every mutation.
     """
 
-    MAX_PCT_CAPITAL = 0.10   # allocate at most 10% of free cash per position
+    MAX_PCT_CAPITAL = 0.25   # allocate at most 25% of free cash per position
 
     def __init__(self):
         self.capital:     float = 0.0
@@ -511,7 +511,7 @@ class Broker:
         """
         Fill pending orders at today's open price.
         Paper: fills at open + slippage, using paper capital sizing.
-        Real:  sizes independently from RealStateManager (10% of real cash),
+        Real:  sizes independently from RealStateManager (25% of real cash),
                places Groww market order, records in real_state.json.
         """
         if not isinstance(self._engine, PaperEngine):
