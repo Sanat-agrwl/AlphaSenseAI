@@ -16,6 +16,7 @@ import json, sys
 from datetime import datetime
 from pathlib import Path
 
+import pandas as pd
 from loguru import logger
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
