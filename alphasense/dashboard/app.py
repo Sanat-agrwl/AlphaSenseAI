@@ -551,10 +551,10 @@ with tab4:
                         for sym in missing2:
                             try:
                                 col = f"{sym}.NS"
-                                px = float(data["Close"].dropna().iloc[-1]) \
-                                     if len(tickers) == 1 \
-                                     else float(data["Close"][col].dropna().iloc[-1])
-                                prices[sym] = px
+                                last_px = float(data["Close"].dropna().iloc[-1]) \
+                                          if len(tickers) == 1 \
+                                          else float(data["Close"][col].dropna().iloc[-1])
+                                prices[sym] = last_px
                             except Exception:
                                 pass
                     except Exception:
@@ -865,20 +865,20 @@ with tab4b:
                     prices_now = _fetch_current_prices(tuple(uni_syms))
                     afford_rows = []
                     for sym in uni_syms:
-                        px = prices_now.get(sym, 0)
-                        if px <= 0:
+                        sym_px = prices_now.get(sym, 0)
+                        if sym_px <= 0:
                             continue
                         paper_alloc = cfg.signal.paper_capital * cfg.signal.max_pct_capital
-                        paper_qty  = max(0, int(paper_alloc / px))
-                        real_qty   = max(0, int(per_pos_budget / px)) if per_pos_budget > 0 else 0
+                        paper_qty  = max(0, int(paper_alloc / sym_px))
+                        real_qty   = max(0, int(per_pos_budget / sym_px)) if per_pos_budget > 0 else 0
                         afford_rows.append({
                             "Symbol":       sym,
-                            "Price ₹":      round(px, 2),
+                            "Price ₹":      round(sym_px, 2),
                             "Paper Qty":    paper_qty,
-                            "Paper Cost ₹": round(paper_qty * px, 0),
+                            "Paper Cost ₹": round(paper_qty * sym_px, 0),
                             "Real Qty":     real_qty,
-                            "Real Cost ₹":  round(real_qty * px, 0),
-                            "Affordable":   "✅" if real_qty >= 1 else "❌ < ₹" + str(int(px)),
+                            "Real Cost ₹":  round(real_qty * sym_px, 0),
+                            "Affordable":   "✅" if real_qty >= 1 else "❌ < ₹" + str(int(sym_px)),
                         })
                     if afford_rows:
                         adf = pd.DataFrame(afford_rows)
