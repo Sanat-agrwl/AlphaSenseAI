@@ -81,6 +81,25 @@ class SignalConfig:
     # Kelly sizing
     kelly_min_trades:    int   = 15     # min history before switching to Kelly
     kelly_max_fraction:  float = 0.25   # hard cap on Kelly fraction
+    # VIX Spike Buy — OOS 2023-26: Sharpe 2.74, WR 72.2%, MaxDD -8.6%
+    vix_spike_jump_pct:      float = 0.15   # 1-day VIX rise ≥ 15% triggers
+    vix_spike_z_thresh:      float = -2.0
+    vix_spike_stop_pct:      float = -0.10
+    vix_spike_profit_pct:    float = 0.08
+    vix_spike_time_stop:     int   = 15
+    # Quality Momentum — OOS 2023-26: Sharpe 2.90, WR 59.6%, MaxDD -14.2%, Ann 33.2%
+    qmom_z_thresh:           float = 2.0    # z > this = in strong uptrend
+    qmom_quality_min:        float = 75.0   # quality score gate
+    qmom_lookback_high:      int   = 20     # must be at N-day high
+    qmom_stop_pct:           float = -0.10
+    qmom_profit_pct:         float = 0.20
+    qmom_time_stop:          int   = 20
+    # Gap Fade — OOS 2023-26: Sharpe 2.19, WR 60.1%, MaxDD -6.0%, Ann 18.2%
+    gap_fade_threshold:      float = -0.03  # gap down ≥ 3% at open
+    gap_fade_quality_min:    float = 65.0
+    gap_fade_stop_pct:       float = -0.03
+    gap_fade_profit_pct:     float = 0.03
+    gap_fade_time_stop:      int   = 3
 
 
 @dataclass

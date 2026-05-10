@@ -75,6 +75,9 @@ class StrategyType(str, Enum):
     MOMENTUM          = "momentum"
     EARNINGS_SURPRISE = "earnings_surprise"
     BUYBACK_ARBIT     = "buyback_arbit"
+    VIX_SPIKE_BUY     = "vix_spike_buy"     # OOS Sharpe 2.74, WR 72.2%
+    QUALITY_MOMENTUM  = "quality_momentum"  # OOS Sharpe 2.90, WR 59.6%
+    GAP_FADE          = "gap_fade"          # OOS Sharpe 2.19, WR 60.1%
 
 
 @dataclass
@@ -100,6 +103,7 @@ class SignalEngine:
     def __init__(self):
         self.sc = cfg.signal
         self.open_positions: dict[str, Signal] = {}
+        self._vix_prev: float = 0.0   # previous day's VIX for spike detection
 
     def generate(
         self,
@@ -117,6 +121,8 @@ class SignalEngine:
         sc          = self.sc
         signals     = []
         recent_news = recent_news or {}
+        # Track VIX for spike detection (updated at end of this call)
+        vix_prev_snapshot = self._vix_prev
         bse         = bse_signals or {}
         bse_block   = bse.get("blocklist_hits", {})
         bse_boost   = bse.get("sentiment_boost", {})   # sym → threshold delta (+)
@@ -205,6 +211,8 @@ class SignalEngine:
                 fmod=fmod, fund_sent=fund_sent, fund_z=fund_z,
                 bse_boost=bse_boost, bse_drag=bse_drag,
                 price_df=price_df, sc=sc,
+                india_vix=india_vix, vix_prev=self._vix_prev,
+                quality_score=float(row.get("quality_score", 50)),
             )
             if strategy is None:
                 continue
@@ -225,36 +233,67 @@ class SignalEngine:
             if len(self.open_positions) >= sc.max_positions:
                 break
 
+        # Update VIX for next day's spike detection
+        self._vix_prev = india_vix
         return signals
 
     def _match_strategy(self, sym, z, sent, has_news, fmod, fund_sent, fund_z,
-                        bse_boost, bse_drag, price_df, sc) -> Optional[str]:
+                        bse_boost, bse_drag, price_df, sc,
+                        india_vix=0.0, vix_prev=0.0,
+                        quality_score=50.0) -> Optional[str]:
         """
         Returns the strategy name for this symbol, or None if no strategy fires.
-        Priority: earnings_surprise > buyback_arbit > mean_reversion > momentum
+        Priority order (highest → lowest):
+          gap_fade > vix_spike_buy > quality_momentum >
+          earnings_surprise(disabled) > buyback_arbit(disabled) > mean_reversion
         """
-        # ── 1. EARNINGS_SURPRISE — DISABLED (OOS: Sharpe -0.16, WR 46%) ────────
-        # Needs real audio sentiment_delta, not price-proxy. Re-enable when
-        # earnings audio pipeline is running and fmod data is validated.
+        # ── 1. GAP FADE — OOS Sharpe 2.19, WR 60.1%, Ann 18.2% ────────────────
+        # Gap down ≥ 3% at today's open vs yesterday's close → fade at open price
+        if "open" in price_df.columns and len(price_df) >= 2:
+            prev_close = float(price_df["close"].iloc[-2])
+            today_open = float(price_df["open"].iloc[-1])
+            if prev_close > 0:
+                gap_pct = (today_open - prev_close) / prev_close
+                if (gap_pct <= sc.gap_fade_threshold
+                        and quality_score >= sc.gap_fade_quality_min):
+                    return StrategyType.GAP_FADE
+
+        # ── 2. VIX SPIKE BUY — OOS Sharpe 2.74, WR 72.2%, Ann 6.5% ────────────
+        # India VIX jumps ≥ 15% in 1 day → buy oversold stocks
+        if (vix_prev > 0 and india_vix > 0
+                and (india_vix - vix_prev) / vix_prev >= sc.vix_spike_jump_pct
+                and z <= sc.vix_spike_z_thresh):
+            return StrategyType.VIX_SPIKE_BUY
+
+        # ── 3. QUALITY MOMENTUM — OOS Sharpe 2.90, WR 59.6%, Ann 33.2% ─────────
+        # z > +2.0 AND quality ≥ 75 AND price at 20d high → ride strong trend
+        if (z >= sc.qmom_z_thresh
+                and quality_score >= sc.qmom_quality_min
+                and len(price_df) >= sc.qmom_lookback_high + 1):
+            lookback = price_df["close"].iloc[-(sc.qmom_lookback_high + 1):-1]
+            today_c  = float(price_df["close"].iloc[-1])
+            if today_c >= float(lookback.max()):
+                return StrategyType.QUALITY_MOMENTUM
+
+        # ── 4. EARNINGS_SURPRISE — DISABLED (OOS: Sharpe -0.16, WR 46%) ────────
+        # Needs real audio sentiment_delta. Re-enable when fmod data is validated.
         # if (fmod and fmod.sentiment_delta >= sc.earnings_sent_delta_min
         #          and z >= -1.5):
         #     return StrategyType.EARNINGS_SURPRISE
 
-        # ── 2. BUYBACK_ARBIT — DISABLED (OOS: Sharpe -3.40, only 7 trades) ──
-        # Too few events in NIFTY-500 universe. Re-enable if buyback frequency
-        # increases or broader universe is used.
+        # ── 5. BUYBACK_ARBIT — DISABLED (OOS: Sharpe -3.40, only 7 trades) ─────
+        # Too few events. Re-enable if buyback frequency increases.
         # if sym in bse_boost and bse_boost[sym] >= 0.2 and z < 1.0:
         #     return StrategyType.BUYBACK_ARBIT
 
-        # Volume check applies to mean-reversion
+        # ── 6. MEAN_REVERSION — OOS Sharpe 2.85, WR 55%, Ann 8.6% (primary) ────
+        # Volume gate: skip if today's volume is below average (weak conviction)
         if "volume" in price_df.columns and len(price_df) >= 20:
             vol_today = float(price_df["volume"].iloc[-1])
             vol_avg   = float(price_df["volume"].iloc[-20:].mean())
             if vol_avg > 0 and vol_today < 1.5 * vol_avg:
                 return None
 
-        # ── 3. MEAN_REVERSION ────────────────────────────────────────────────
-        # 2σ price shock + negative sentiment → contrarian buy
         sent_thresh = (sc.sentiment_threshold
                        + bse_boost.get(sym, 0.0)
                        + bse_drag.get(sym, 0.0)
@@ -335,6 +374,35 @@ class SignalEngine:
             if pnl >= 0.08:                                  # 8% = typical buyback premium
                 return ExitReason.PROFIT_WITH_PENDING
             if days_held >= sc.time_stop_days:
+                return ExitReason.TIME_STOP
+
+        elif strategy == StrategyType.VIX_SPIKE_BUY:
+            # Quick recovery play on fear spike; tight stop, short hold
+            if pnl <= sc.vix_spike_stop_pct:
+                return ExitReason.STOP_LOSS
+            if pnl >= sc.vix_spike_profit_pct:
+                return ExitReason.PROFIT_WITH_PENDING
+            if days_held >= sc.vix_spike_time_stop:
+                return ExitReason.TIME_STOP
+
+        elif strategy == StrategyType.QUALITY_MOMENTUM:
+            # Trend-following; exit on reversal or profit target
+            if pnl <= sc.qmom_stop_pct:
+                return ExitReason.STOP_LOSS
+            if not pd.isna(curr_z) and curr_z < 0.5:   # trend weakening
+                return ExitReason.PRICE_RECOVERY
+            if pnl >= sc.qmom_profit_pct:
+                return ExitReason.PROFIT_WITH_PENDING
+            if days_held >= sc.qmom_time_stop:
+                return ExitReason.TIME_STOP
+
+        elif strategy == StrategyType.GAP_FADE:
+            # Very short hold — gap fills within 1-3 days or stop out
+            if pnl <= sc.gap_fade_stop_pct:
+                return ExitReason.STOP_LOSS
+            if pnl >= sc.gap_fade_profit_pct:
+                return ExitReason.PROFIT_WITH_PENDING
+            if days_held >= sc.gap_fade_time_stop:
                 return ExitReason.TIME_STOP
 
         else:  # MEAN_REVERSION (default)

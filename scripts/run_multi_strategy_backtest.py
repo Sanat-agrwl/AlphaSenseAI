@@ -74,8 +74,12 @@ def _load_vix() -> pd.Series:
     vdf = load_vix()
     if vdf.empty:
         return pd.Series(dtype=float)
-    vdf.index = pd.to_datetime(vdf["date"])
-    return vdf["vix_close"]
+    # load_vix may return date as index or as column
+    if "date" in vdf.columns:
+        vdf.index = pd.to_datetime(vdf["date"])
+    else:
+        vdf.index = pd.to_datetime(vdf.index)
+    return vdf["vix_close"].sort_index()
 
 
 def _load_quality() -> dict:

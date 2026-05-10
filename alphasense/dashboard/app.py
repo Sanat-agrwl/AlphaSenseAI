@@ -1494,9 +1494,48 @@ with tab9:
 # ── Tab 10: Strategies ────────────────────────────────────────────────────────
 with tab10:
     st.subheader("Strategy Status")
-    st.caption("1 strategy LIVE · 3 INACTIVE (failed OOS backtest). Engine priority when multiple fire: Earnings Surprise → Buyback Arbit → Mean Reversion")
+    st.caption("4 strategies LIVE · 3 INACTIVE. Engine priority: Gap Fade → VIX Spike Buy → Quality Momentum → Mean Reversion")
 
     STRATEGIES = [
+        {
+            "name": "Gap Fade",
+            "status": "LIVE",
+            "color": "#00d97e",
+            "type": "Mean Reversion",
+            "description": "Fade opening gaps down ≥ 3% on quality stocks (score ≥ 65). Short-duration 3-day trade capturing over-reaction at open.",
+            "entry": "Gap down ≥ -3% at open  AND  quality_score ≥ 65  AND  VIX < 28",
+            "exit":  "-3% stop-loss  OR  +3% profit-exit  OR  3 days",
+            "sizing": "Kelly Criterion (half-Kelly, ≤ 25% cap) · max 8% capital per trade",
+            "backtest": "OOS 2023–26: Sharpe 2.19 · WinRate 60.1% · MaxDD -6.0% · Ann +18.2% · 616 trades",
+            "fwd": "N/A (strategy added 2025-05)",
+            "icon": "⚡",
+        },
+        {
+            "name": "VIX Spike Buy",
+            "status": "LIVE",
+            "color": "#00d97e",
+            "type": "Fear Contrarian",
+            "description": "Buy quality stocks when India VIX spikes ≥ 15% in a single day AND z-score < -2.0. Exploits fear-driven overshoots during volatility surges.",
+            "entry": "VIX 1-day rise ≥ +15%  AND  z ≤ -2.0  AND  VIX < 28 (global cap)",
+            "exit":  "-10% stop-loss  OR  +8% profit-exit  OR  15 days",
+            "sizing": "Kelly Criterion (half-Kelly, ≤ 25% cap) · max 8% capital per trade",
+            "backtest": "OOS 2023–26: Sharpe 2.74 · WinRate 72.2% · MaxDD -8.6% · Ann +22.4% · 126 trades",
+            "fwd": "N/A (strategy added 2025-05)",
+            "icon": "🌩",
+        },
+        {
+            "name": "Quality Momentum",
+            "status": "LIVE",
+            "color": "#00d97e",
+            "type": "Trend-Following",
+            "description": "Buy high-quality stocks (score ≥ 75) breaking to 20-day highs with z-score > 2.0. Momentum with quality filter eliminates low-grade breakout traps.",
+            "entry": "z ≥ 2.0  AND  quality_score ≥ 75  AND  at 20-day close high  AND  VIX < 28",
+            "exit":  "-10% stop-loss  OR  +20% profit-exit  OR  20 days",
+            "sizing": "Kelly Criterion (half-Kelly, ≤ 25% cap) · max 8% capital per trade",
+            "backtest": "OOS 2023–26: Sharpe 2.90 · WinRate 59.6% · MaxDD -14.2% · Ann +33.2% · 364 trades",
+            "fwd": "N/A (strategy added 2025-05)",
+            "icon": "🚀",
+        },
         {
             "name": "Mean Reversion",
             "status": "LIVE",
@@ -1537,15 +1576,15 @@ with tab10:
             "icon": "🔄",
         },
         {
-            "name": "Momentum",
+            "name": "Momentum (Legacy)",
             "status": "INACTIVE",
             "color": "#888888",
             "type": "Trend-Following",
-            "description": "Trend-follow when z > +3.0 with positive sentiment. Removed after OOS test showed Sharpe 0.33, Max DD -50.6%.",
-            "entry": "z > +3.0  AND  sentiment > 0.3  (DISABLED)",
+            "description": "Superseded by Quality Momentum. Old version had no quality filter — OOS showed Sharpe 0.33, Max DD -50.6%. Replaced by quality-gated version above.",
+            "entry": "z > +3.0  AND  sentiment > 0.3  (DISABLED — use Quality Momentum instead)",
             "exit":  "N/A",
             "sizing": "N/A",
-            "backtest": "OOS: Sharpe 0.33 · WinRate 32.5% · MaxDD -50.6% → dropped",
+            "backtest": "OOS: Sharpe 0.33 · WinRate 32.5% · MaxDD -50.6% → replaced by Quality Momentum",
             "fwd": "N/A",
             "icon": "📈",
         },
