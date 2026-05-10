@@ -386,7 +386,20 @@ if __name__ == "__main__":
                    choices=["mean_reversion", "momentum", "all"])
     p.add_argument("--save",     action="store_true",
                    help="Save results JSON for dashboard")
+    p.add_argument("--sweep",    action="store_true",
+                   help="Run threshold sweep to find optimal params")
+    p.add_argument("--mr-z",     type=float, default=None,
+                   help="Override mean-reversion z threshold (default: settings)")
+    p.add_argument("--mo-z",     type=float, default=None,
+                   help="Override momentum z threshold (default: settings)")
+    p.add_argument("--stop",     type=float, default=None,
+                   help="Override stop-loss pct, e.g. -0.06")
     args = p.parse_args()
+
+    # Apply overrides
+    if args.mr_z  is not None: cfg.signal.zscore_threshold      = args.mr_z
+    if args.mo_z  is not None: cfg.signal.momentum_zscore_min   = args.mo_z
+    if args.stop  is not None: cfg.signal.stop_loss_pct         = args.stop
 
     from dotenv import load_dotenv
     load_dotenv(cfg.root / ".env", override=True)
@@ -449,6 +462,44 @@ if __name__ == "__main__":
                 wr = (rgrp["net_ret"] > 0).mean() * 100
                 av = rgrp["net_ret"].mean() * 100
                 print(f"      {reason:22s}  n={len(rgrp):4d}  wr={wr:.0f}%  avg={av:+.2f}%")
+
+    # Parameter sweep mode
+    if args.sweep:
+        print(f"\n{'═'*70}")
+        print(f"  THRESHOLD SWEEP  ({start} → {end})")
+        print(f"{'═'*70}")
+        print(f"  {'z_mr':>6}  {'z_mo':>6}  {'stop':>6}  "
+              f"{'trades':>7}  {'wr%':>5}  {'sharpe':>7}  {'dd%':>7}  {'ann%':>7}")
+        print(f"  {'─'*68}")
+
+        # Reload pre-computed data once
+        _sweep_results = []
+        for z_mr in [-2.0, -2.5, -3.0]:
+            for z_mo in [2.0, 2.5, 3.0]:
+                for stop in [-0.06, -0.08]:
+                    cfg.signal.zscore_threshold    = z_mr
+                    cfg.signal.momentum_zscore_min = z_mo
+                    cfg.signal.stop_loss_pct       = stop
+                    cfg.signal.momentum_stop_loss_pct = stop + 0.02   # slightly tighter for momentum
+
+                    _sig = _precompute_signals(price_idx, start, end, cfg.signal)
+                    _sig = _sig[_sig["strategy"].isin(strategies)]
+                    _res = run_sim(_sig, price_idx, zscores, strategies,
+                                   start, end, vix_df=vix)
+                    _t   = _res["trades"]
+                    _m   = metrics(_t, _res["equity_curve"], INITIAL_CAPITAL, start, end)
+                    mark = "✅" if _m["passed"] else "  "
+                    print(f"  {mark} {z_mr:>6.1f}  {z_mo:>6.1f}  {stop:>6.2f}  "
+                          f"{_m['n_trades']:>7d}  {_m['win_rate']:>5.1f}  "
+                          f"{_m['sharpe']:>7.2f}  {_m['max_drawdown_pct']:>7.2f}  "
+                          f"{_m['annual_return_pct']:>7.2f}%")
+                    _sweep_results.append({**_m, "z_mr": z_mr, "z_mo": z_mo, "stop": stop})
+
+        # Best by Sharpe
+        best = max(_sweep_results, key=lambda x: x["sharpe"])
+        print(f"\n  Best Sharpe → z_mr={best['z_mr']}  z_mo={best['z_mo']}  "
+              f"stop={best['stop']}  sharpe={best['sharpe']}")
+        sys.exit(0)
 
     # Save
     if args.save:

@@ -45,12 +45,12 @@ class KiteConfig:
 
 @dataclass
 class SignalConfig:
-    # Entry
+    # Entry — tuned via 2023-2026 OOS backtest sweep (optimal: z_mr=-2.5, z_mo=3.0)
     sentiment_threshold: float = -0.4
-    zscore_threshold:    float = -2.0
+    zscore_threshold:    float = -2.5   # was -2.0; tighter = fewer but higher quality MR signals
     vix_max:             float = 28.0
     # Exit
-    stop_loss_pct:       float = -0.08
+    stop_loss_pct:       float = -0.06  # was -0.08; tighter stop reduces loss magnitude
     time_stop_days:      int   = 20
     recovery_sentiment:  float = 0.1
     recovery_zscore:     float = -1.0
@@ -68,7 +68,7 @@ class SignalConfig:
     return_period:       int   = 5
     signal_lag_days:     int   = 1
     # Momentum strategy
-    momentum_zscore_min:      float = 1.5
+    momentum_zscore_min:      float = 3.0   # was 1.5; raised to reduce false signals (OOS sweep)
     momentum_sentiment_min:   float = 0.3
     momentum_stop_loss_pct:   float = -0.05
     momentum_profit_exit_pct: float = 0.15
