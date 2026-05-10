@@ -2,12 +2,17 @@
 AlphaSense AI — Streamlit Dashboard
 =====================================
 Tabs:
-  1. Backtest Results   — equity curve, drawdown, walk-forward metrics
+  1. Backtest Results   — walk-forward OOS metrics (2023-26), equity curve
   2. Forward Test       — 2025-2026 OOS validation with slider controls
   3. Live Signals       — today's FinBERT + Z-score candidates
-  4. Universe           — quality score rankings, sector distribution
-  5. Earnings Calls     — management confidence scores
-  6. Pipeline Logs      — cron output, paper trade history
+  4. Paper Trades       — paper trade history and PnL
+  5. Real Portfolio     — live portfolio via broker API
+  6. Universe           — quality score rankings, sector distribution
+  7. Earnings Calls     — management confidence scores
+  8. Feedback           — signal feedback loop analysis
+  9. Logs               — cron output, pipeline logs
+  10. Labels            — FinBERT training label browser
+  11. Strategies        — live/inactive strategy cards with entry/exit/sizing rules
 """
 import sys, json
 from pathlib import Path
@@ -188,49 +193,105 @@ st.markdown("---")
 
 # ─── Tabs ─────────────────────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4, tab4b, tab5, tab6, tab7, tab8, tab9 = st.tabs([
+tab1, tab2, tab3, tab4, tab4b, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs([
     "📈 Backtest", "🔭 Forward Test",
     "🚨 Live Signals", "💼 Paper Trades", "📊 Real Portfolio",
     "🏛 Universe", "🎙 Earnings", "🔁 Feedback", "🖥 Logs", "🏷 Labels",
+    "🎯 Strategies",
 ])
 
 
 # ── Tab 1: Backtest ───────────────────────────────────────────────────────────
 with tab1:
-    st.subheader("Walk-Forward Backtest Results (2022–2024 OOS)")
+    @st.cache_data(ttl=120)
+    def _load_wf_backtest() -> dict:
+        p = cfg.results_dir / "strategy_backtest_test.json"
+        if p.exists():
+            return json.loads(p.read_text())
+        return {}
 
-    col_t, col_v = st.columns(2)
+    wf = _load_wf_backtest()
 
-    for period, col in [("test", col_t), ("validation", col_v)]:
-        r = _load_backtest_result(period)
-        label = "Test 2022–2024" if period == "test" else "Validation 2021"
-        with col:
-            st.markdown(f"**{label}**")
-            m1,m2,m3 = st.columns(3)
-            m1.metric("Sharpe",    f"{r.get('sharpe',0):.2f}")
-            m2.metric("Max DD",    f"{r.get('max_drawdown_pct',0):.1f}%")
-            m3.metric("Win Rate",  f"{r.get('win_rate',0):.1f}%")
-            eq = r.get("equity_curve", [])
-            if eq:
-                st.plotly_chart(_equity_chart(eq, label), use_container_width=True)
-                st.plotly_chart(_dd_chart(eq), use_container_width=True)
-            else:
-                st.info("Run `python scripts/run_backtest.py --period all` to generate equity curve.")
+    if wf:
+        st.subheader("Walk-Forward Backtest — Mean Reversion (Unbiased)")
+        st.caption(f"Params locked from TRAIN: z < {wf.get('z_thresh', -3.0)}  stop = {wf.get('stop', -0.10)*100:.0f}%")
 
-    st.markdown("---")
-    st.subheader("Criteria Checklist")
-    for period in ["validation", "test"]:
-        r   = _load_backtest_result(period)
-        lbl = "Validation 2021" if period == "validation" else "Test 2022–2024"
-        sh  = r.get("sharpe", 0)
-        dd  = r.get("max_drawdown_pct", -99)
-        wr  = r.get("win_rate", 0)
-        st.markdown(
-            f"**{lbl}** — "
-            f"{'✅' if sh > 1.2 else '❌'} Sharpe {sh:.2f} "
-            f"{'✅' if dd > -18 else '❌'} MaxDD {dd:.1f}% "
-            f"{'✅' if wr > 50 else '❌'} WinRate {wr:.1f}%"
-        )
+        # 3-period summary row
+        periods = [
+            ("train",      "Train 2020–21",  wf.get("train", {})),
+            ("validation", "Val 2022",       wf.get("validation", {})),
+            ("oos_test",   "OOS Test 2023–26", wf.get("oos_test", {})),
+        ]
+        cols = st.columns(3)
+        for (key, label, r), col in zip(periods, cols):
+            with col:
+                st.markdown(f"**{label}**")
+                c1, c2, c3 = st.columns(3)
+                c1.metric("Sharpe",   f"{r.get('sharpe', 0):.2f}",
+                          delta="✅" if r.get("sharpe", 0) > 2.0 else "⚠")
+                c2.metric("Max DD",   f"{r.get('max_drawdown_pct', 0):.1f}%",
+                          delta="✅" if r.get("max_drawdown_pct", -99) > -10 else "⚠")
+                c3.metric("Win Rate", f"{r.get('win_rate', 0):.1f}%",
+                          delta="✅" if r.get("win_rate", 0) > 50 else "⚠")
+                st.caption(
+                    f"Trades: {r.get('n_trades', r.get('trades', 0))}  |  "
+                    f"Ann: {r.get('annual_return_pct', 0):.1f}%  |  "
+                    f"PF: {r.get('profit_factor', 0):.2f}"
+                )
+
+        # OOS equity curve if available
+        oos = wf.get("oos_test", {})
+        eq  = oos.get("equity_curve", [])
+        if eq:
+            st.plotly_chart(_equity_chart(eq, "OOS Test 2023–2026"), use_container_width=True)
+            st.plotly_chart(_dd_chart(eq), use_container_width=True)
+        else:
+            st.info("Re-run `python scripts/run_strategy_backtest.py --save` to generate equity curve.")
+
+        st.markdown("---")
+        # Forward test trades
+        fwd_trades = wf.get("forward_trades", [])
+        if fwd_trades:
+            st.subheader("Live Forward Trades (Actual Paper Results)")
+            fdf = pd.DataFrame(fwd_trades)
+            st.dataframe(fdf.style.format({
+                "entry_price": "₹{:,.2f}", "exit_price": "₹{:,.2f}",
+                "pnl_pct": "{:+.1%}",
+            }), use_container_width=True, hide_index=True)
+
+    else:
+        st.subheader("Walk-Forward Backtest Results")
+        col_t, col_v = st.columns(2)
+        for period, col in [("test", col_t), ("validation", col_v)]:
+            r = _load_backtest_result(period)
+            label = "Test 2022–2024" if period == "test" else "Validation 2021"
+            with col:
+                st.markdown(f"**{label}**")
+                m1,m2,m3 = st.columns(3)
+                m1.metric("Sharpe",   f"{r.get('sharpe',0):.2f}")
+                m2.metric("Max DD",   f"{r.get('max_drawdown_pct',0):.1f}%")
+                m3.metric("Win Rate", f"{r.get('win_rate',0):.1f}%")
+                eq = r.get("equity_curve", [])
+                if eq:
+                    st.plotly_chart(_equity_chart(eq, label), use_container_width=True)
+                    st.plotly_chart(_dd_chart(eq), use_container_width=True)
+                else:
+                    st.info("Run `python scripts/run_backtest.py --period all` to generate equity curve.")
+
+        st.markdown("---")
+        st.subheader("Criteria Checklist")
+        for period in ["validation", "test"]:
+            r   = _load_backtest_result(period)
+            lbl = "Validation 2021" if period == "validation" else "Test 2022–2024"
+            sh  = r.get("sharpe", 0)
+            dd  = r.get("max_drawdown_pct", -99)
+            wr  = r.get("win_rate", 0)
+            st.markdown(
+                f"**{lbl}** — "
+                f"{'✅' if sh > 1.2 else '❌'} Sharpe {sh:.2f} "
+                f"{'✅' if dd > -18 else '❌'} MaxDD {dd:.1f}% "
+                f"{'✅' if wr > 50 else '❌'} WinRate {wr:.1f}%"
+            )
 
 
 # ── Tab 2: Forward Test ───────────────────────────────────────────────────────
@@ -1415,6 +1476,136 @@ with tab9:
             data=csv_bytes,
             file_name=f"alphasense_labels_{datetime.now().strftime('%Y%m%d')}.csv",
             mime="text/csv",
+        )
+
+
+# ── Tab 10: Strategies ────────────────────────────────────────────────────────
+with tab10:
+    st.subheader("Active Strategies")
+    st.caption("Engine priority order: Earnings Surprise → Buyback Arbit → Mean Reversion")
+
+    STRATEGIES = [
+        {
+            "name": "Mean Reversion",
+            "status": "LIVE",
+            "color": "#00d97e",
+            "type": "Contrarian",
+            "description": "Buy when price overshoots down (z < -3.0) with negative/neutral sentiment. Exit on recovery or 20-day time-stop.",
+            "entry": "Z-score < -3.0  AND  sentiment < -0.4  AND  VIX < 28",
+            "exit":  "Z-score > -1.0 (recovery)  OR  -10% stop-loss  OR  20 days",
+            "sizing": "Kelly Criterion (half-Kelly, ≤ 25% cap) · max 8% capital per trade",
+            "backtest": "OOS 2023–26: Sharpe 2.85 · WinRate 55% · MaxDD -5.9% · Ann +8.6%",
+            "fwd": "GESHIP +17.4% · COALINDIA +3.8% (2 live trades)",
+            "icon": "📉",
+        },
+        {
+            "name": "Earnings Surprise",
+            "status": "LIVE",
+            "color": "#f4c430",
+            "type": "Event-Driven",
+            "description": "Enter after a post-earnings beat: XBRL sentiment delta ≥ 0.10 and price hasn't already crashed (z ≥ -1.5). Rides the post-announcement drift.",
+            "entry": "sentiment_delta ≥ 0.10  AND  z ≥ -1.5",
+            "exit":  "-6% stop-loss  OR  10% profit-exit  OR  10 days",
+            "sizing": "Fixed max 8% capital (Kelly requires ≥15 trades to activate)",
+            "backtest": "Event-driven — limited OOS history; activates when earnings audio available",
+            "fwd": "No live trades yet (activates post-earnings season)",
+            "icon": "📢",
+        },
+        {
+            "name": "Buyback Arbit",
+            "status": "LIVE",
+            "color": "#3a9de1",
+            "type": "Event-Driven",
+            "description": "Enter on BSE buyback announcement before price fully recovers. BSE boost score ≥ 0.20 and z < 1.0 (price hasn't run up yet).",
+            "entry": "BSE buyback boost ≥ 0.20  AND  z < 1.0",
+            "exit":  "-6% stop-loss  OR  profit-exit  OR  15 days",
+            "sizing": "Fixed max 8% capital",
+            "backtest": "Event-driven — depends on BSE announcement data quality",
+            "fwd": "No live trades yet (depends on buyback announcements)",
+            "icon": "🔄",
+        },
+        {
+            "name": "Momentum",
+            "status": "INACTIVE",
+            "color": "#888888",
+            "type": "Trend-Following",
+            "description": "Trend-follow when z > +3.0 with positive sentiment. Removed after OOS test showed Sharpe 0.33, Max DD -50.6%.",
+            "entry": "z > +3.0  AND  sentiment > 0.3  (DISABLED)",
+            "exit":  "N/A",
+            "sizing": "N/A",
+            "backtest": "OOS: Sharpe 0.33 · WinRate 32.5% · MaxDD -50.6% → dropped",
+            "fwd": "N/A",
+            "icon": "📈",
+        },
+    ]
+
+    for s in STRATEGIES:
+        is_live = s["status"] == "LIVE"
+        badge   = f'<span style="background:{s["color"]};color:#111;padding:2px 10px;border-radius:12px;font-size:0.85em;font-weight:bold">{s["status"]}</span>'
+        with st.expander(f'{s["icon"]}  {s["name"]}  —  {s["type"]}', expanded=is_live):
+            st.markdown(badge, unsafe_allow_html=True)
+            st.markdown(f"**{s['description']}**")
+            st.markdown("---")
+
+            c1, c2 = st.columns(2)
+            with c1:
+                st.markdown("**Entry Conditions**")
+                st.code(s["entry"], language=None)
+                st.markdown("**Exit Rules**")
+                st.code(s["exit"], language=None)
+            with c2:
+                st.markdown("**Position Sizing**")
+                st.code(s["sizing"], language=None)
+                st.markdown("**Backtest Performance**")
+                st.info(s["backtest"])
+                if s["fwd"] != "N/A":
+                    st.success(f"Forward: {s['fwd']}")
+
+    st.markdown("---")
+    st.subheader("Strategy Breakdown — Live Paper Trades")
+
+    @st.cache_data(ttl=60)
+    def _trades_by_strategy():
+        p = cfg.data_dir / "paper_state.json"
+        if not p.exists():
+            return pd.DataFrame()
+        try:
+            state  = json.loads(p.read_text())
+            trades = state.get("closed_trades", [])
+            if not trades:
+                return pd.DataFrame()
+            df = pd.DataFrame(trades)
+            return df
+        except Exception:
+            return pd.DataFrame()
+
+    tdf = _trades_by_strategy()
+    if tdf.empty:
+        st.info("No closed paper trades yet.")
+    else:
+        strat_col = "strategy" if "strategy" in tdf.columns else None
+        if strat_col:
+            by_strat = tdf.groupby("strategy").agg(
+                trades=("pnl_pct", "count"),
+                win_rate=("pnl_pct", lambda x: (x > 0).mean() * 100),
+                avg_pnl=("pnl_pct", "mean"),
+                total_pnl=("pnl_pct", "sum"),
+            ).reset_index()
+            by_strat["win_rate"] = by_strat["win_rate"].map("{:.1f}%".format)
+            by_strat["avg_pnl"]  = by_strat["avg_pnl"].map("{:+.2%}".format)
+            by_strat["total_pnl"]= by_strat["total_pnl"].map("{:+.2%}".format)
+            st.dataframe(by_strat, use_container_width=True, hide_index=True)
+        else:
+            st.caption("Trades don't have strategy tags yet (older paper trades).")
+
+        show_cols = [c for c in ["symbol","strategy","entry_price","exit_price",
+                                 "pnl_pct","days_held","exit_reason"] if c in tdf.columns]
+        st.dataframe(
+            tdf[show_cols].sort_values("pnl_pct", ascending=False)
+            .style.format({k: "{:+.2%}" for k in ["pnl_pct"] if k in show_cols}),
+            use_container_width=True,
+            hide_index=True,
+            height=300,
         )
 
 
