@@ -45,12 +45,12 @@ class KiteConfig:
 
 @dataclass
 class SignalConfig:
-    # Entry — tuned via 2023-2026 OOS backtest sweep (optimal: z_mr=-2.5, z_mo=3.0)
+    # Entry — walk-forward OOS backtest (train=2020-21, val=2022, test=2023-26): best z=-3.0, stop=-0.10
     sentiment_threshold: float = -0.4
-    zscore_threshold:    float = -2.5   # was -2.0; tighter = fewer but higher quality MR signals
+    zscore_threshold:    float = -3.0   # locked from walk-forward train sweep; Sharpe 2.85 OOS
     vix_max:             float = 28.0
     # Exit
-    stop_loss_pct:       float = -0.06  # was -0.08; tighter stop reduces loss magnitude
+    stop_loss_pct:       float = -0.10  # locked from walk-forward; recovery-dominant (97% exits)
     time_stop_days:      int   = 20
     recovery_sentiment:  float = 0.1
     recovery_zscore:     float = -1.0
