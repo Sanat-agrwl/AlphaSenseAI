@@ -218,27 +218,157 @@ def fetch_stock_news(symbols: list[str], max_per_stock: int = 3) -> list[dict]:
     return articles
 
 
+def fetch_deep_news(symbols: list[str]) -> list[dict]:
+    """
+    Firecrawl search for full article text for z-score candidates + held positions.
+    Uses ~2 credits per symbol. Only runs when FIRECRAWL_API_KEY is set.
+    Returns articles with full body text (up to 2000 chars vs RSS 1000 char truncation).
+    """
+    import os
+    api_key = os.getenv("FIRECRAWL_API_KEY")
+    if not api_key or not symbols:
+        return []
+    try:
+        from firecrawl import FirecrawlApp
+        app = FirecrawlApp(api_key=api_key)
+    except ImportError:
+        logger.warning("firecrawl-py not installed — skipping deep news fetch")
+        return []
+
+    articles   = []
+    seen_urls: set[str] = set()
+
+    for sym in symbols:
+        query_terms  = COMPANY_ALIASES.get(sym, [sym.lower()])
+        company_name = query_terms[0]
+        query        = f'"{company_name}" NSE India stock news'
+        try:
+            result = app.search(
+                query,
+                params={
+                    "limit": 5,
+                    "scrapeOptions": {"formats": ["markdown"], "onlyMainContent": True},
+                },
+            )
+            items = result.get("data", []) if isinstance(result, dict) else (result or [])
+            for item in items:
+                url = item.get("url", "")
+                if not url or url in seen_urls:
+                    continue
+                body = (item.get("markdown") or item.get("content")
+                        or item.get("description", ""))
+                articles.append({
+                    "headline":        (item.get("title") or "").strip(),
+                    "body":            body[:2000] if body else "",
+                    "url":             url,
+                    "source":          "Firecrawl",
+                    "published_at":    datetime.now().isoformat(),
+                    "matched_symbols": [sym],
+                })
+                seen_urls.add(url)
+            logger.debug(f"  Firecrawl {sym}: {len(items)} articles")
+            time.sleep(0.2)
+        except Exception as e:
+            logger.warning(f"  Firecrawl {sym}: {e}")
+
+    logger.info(f"Firecrawl deep news: {len(articles)} articles for {len(symbols)} stocks")
+    return articles
+
+
+def fetch_regulatory() -> list[dict]:
+    """
+    Scrape SEBI enforcement orders + RBI press releases for any company mentions.
+    Uses ~4 credits/day flat. Only runs when FIRECRAWL_API_KEY is set.
+    """
+    import os
+    api_key = os.getenv("FIRECRAWL_API_KEY")
+    if not api_key:
+        return []
+    try:
+        from firecrawl import FirecrawlApp
+        app = FirecrawlApp(api_key=api_key)
+    except ImportError:
+        return []
+
+    REGULATORY_SOURCES = [
+        ("https://www.sebi.gov.in/enforcement/orders/latest.html", "SEBI"),
+        ("https://www.rbi.org.in/Scripts/BS_PressReleaseDisplay.aspx",  "RBI"),
+    ]
+
+    articles = []
+    matcher  = StockMatcher()
+
+    for url, source in REGULATORY_SOURCES:
+        try:
+            result  = app.scrape_url(
+                url,
+                params={"formats": ["markdown"], "onlyMainContent": True},
+            )
+            content = result.get("markdown", "") if isinstance(result, dict) else ""
+            if not content:
+                continue
+            paragraphs = [p.strip() for p in content.split("\n\n") if len(p.strip()) > 50]
+            for para in paragraphs[:20]:
+                syms = matcher.match(para)
+                if syms:
+                    articles.append({
+                        "headline":        para[:120],
+                        "body":            para[:1000],
+                        "url":             url,
+                        "source":          source,
+                        "published_at":    datetime.now().isoformat(),
+                        "matched_symbols": syms,
+                    })
+            logger.debug(f"  Regulatory {source}: {len(articles)} matched items")
+            time.sleep(0.5)
+        except Exception as e:
+            logger.warning(f"  Regulatory {source}: {e}")
+
+    logger.info(f"Regulatory news: {len(articles)} matched items")
+    return articles
+
+
 def fetch_and_save(extra_symbols: list[str] = None) -> list[dict]:
     """
     Fetch today's news, match to stocks, save to disk.
-    extra_symbols: specific stocks to search Google News for (signal candidates).
+    extra_symbols: specific stocks to search for (signal candidates + held positions).
+      - Google News RSS (always, free)
+      - Firecrawl deep search (if FIRECRAWL_API_KEY set; full article text)
+    Also appends SEBI/RBI regulatory items when Firecrawl key is set.
     """
+    import os
     matcher  = StockMatcher()
     articles = fetch_all_feeds()
 
     for a in articles:
         a["matched_symbols"] = matcher.match(f"{a['headline']} {a['body']}")
 
-    # Top-up with stock-specific Google News for any requested symbols
+    existing_urls = {a["url"] for a in articles}
+
+    # Google News RSS for candidates (free)
     if extra_symbols:
         stock_articles = fetch_stock_news(extra_symbols)
-        # Dedup by URL against what we already have
-        existing_urls = {a["url"] for a in articles}
         new_ones = [a for a in stock_articles if a["url"] not in existing_urls]
         articles.extend(new_ones)
+        existing_urls.update(a["url"] for a in new_ones)
         logger.info(f"Added {len(new_ones)} stock-specific articles from Google News")
 
-    matched = sum(1 for a in articles if a["matched_symbols"])
+    # Firecrawl deep search for candidates (full article body, uses credits)
+    if extra_symbols and os.getenv("FIRECRAWL_API_KEY"):
+        deep = fetch_deep_news(extra_symbols)
+        new_deep = [a for a in deep if a["url"] not in existing_urls]
+        articles.extend(new_deep)
+        existing_urls.update(a["url"] for a in new_deep)
+        logger.info(f"Added {len(new_deep)} Firecrawl deep articles")
+
+    # Regulatory scrape (SEBI/RBI — flat ~4 credits/day)
+    if os.getenv("FIRECRAWL_API_KEY"):
+        reg = fetch_regulatory()
+        new_reg = [a for a in reg if a["url"] not in existing_urls]
+        articles.extend(new_reg)
+        logger.info(f"Added {len(new_reg)} regulatory articles")
+
+    matched = sum(1 for a in articles if a.get("matched_symbols"))
     logger.info(f"Matched {matched}/{len(articles)} articles to stocks")
 
     cfg.news_dir.mkdir(parents=True, exist_ok=True)

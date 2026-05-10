@@ -342,12 +342,23 @@ def run_pre_market():
     step_fetch()   # update prices only — today's open not available yet (pre-market)
 
 
+def step_label():
+    """Incrementally label today's news for FinBERT training data."""
+    logger.info("── STEP 1b: Label news (FinBERT training data) ─────────")
+    try:
+        from alphasense.data.labeler import run_daily
+        run_daily()
+    except Exception as e:
+        logger.warning(f"Daily labeling failed (non-fatal): {e}")
+
+
 def run_post_close():
     logger.info(f"\n{'#'*55}")
     logger.info(f"POST-CLOSE  {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     logger.info(f"{'#'*55}")
     candidates = _get_zscore_candidates()
     step_fetch(extra_symbols=candidates)
+    step_label()
     step_fill_pending()                      # fill yesterday's pending at today's open
     sentiment = step_sentiment()
     buy_signals, sell_signals = step_signals(sentiment)
@@ -361,6 +372,7 @@ def run_full():
     logger.info(f"{'#'*55}")
     candidates = _get_zscore_candidates()
     step_fetch(extra_symbols=candidates)
+    step_label()
     step_fill_pending()
     sentiment = step_sentiment()
     buy_signals, sell_signals = step_signals(sentiment)
