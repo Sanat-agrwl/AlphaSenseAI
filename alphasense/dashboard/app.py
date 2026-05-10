@@ -1481,8 +1481,8 @@ with tab9:
 
 # ── Tab 10: Strategies ────────────────────────────────────────────────────────
 with tab10:
-    st.subheader("Active Strategies")
-    st.caption("Engine priority order: Earnings Surprise → Buyback Arbit → Mean Reversion")
+    st.subheader("Strategy Status")
+    st.caption("1 strategy LIVE · 3 INACTIVE (failed OOS backtest). Engine priority when multiple fire: Earnings Surprise → Buyback Arbit → Mean Reversion")
 
     STRATEGIES = [
         {
@@ -1500,28 +1500,28 @@ with tab10:
         },
         {
             "name": "Earnings Surprise",
-            "status": "LIVE",
-            "color": "#f4c430",
+            "status": "INACTIVE",
+            "color": "#888888",
             "type": "Event-Driven",
-            "description": "Enter after a post-earnings beat: XBRL sentiment delta ≥ 0.10 and price hasn't already crashed (z ≥ -1.5). Rides the post-announcement drift.",
-            "entry": "sentiment_delta ≥ 0.10  AND  z ≥ -1.5",
-            "exit":  "-6% stop-loss  OR  10% profit-exit  OR  10 days",
-            "sizing": "Fixed max 8% capital (Kelly requires ≥15 trades to activate)",
-            "backtest": "Event-driven — limited OOS history; activates when earnings audio available",
-            "fwd": "No live trades yet (activates post-earnings season)",
+            "description": "OOS backtest FAILED. 137 trades, 46% win rate, Sharpe -0.16. Price-only surprise proxy is not a reliable signal — needs real earnings audio sentiment (fmod.sentiment_delta) to be viable.",
+            "entry": "sentiment_delta ≥ 0.10  AND  z ≥ -1.5  (engine condition, not yet firing)",
+            "exit":  "-8% stop-loss  OR  8% profit-exit  OR  10 days  (locked from train)",
+            "sizing": "Fixed max 8% capital",
+            "backtest": "OOS 2024-H2→2026: Sharpe -0.16 · WinRate 46% · MaxDD -8.7% · Ann -1.2% → FAIL",
+            "fwd": "N/A",
             "icon": "📢",
         },
         {
             "name": "Buyback Arbit",
-            "status": "LIVE",
-            "color": "#3a9de1",
+            "status": "INACTIVE",
+            "color": "#888888",
             "type": "Event-Driven",
-            "description": "Enter on BSE buyback announcement before price fully recovers. BSE boost score ≥ 0.20 and z < 1.0 (price hasn't run up yet).",
-            "entry": "BSE buyback boost ≥ 0.20  AND  z < 1.0",
-            "exit":  "-6% stop-loss  OR  profit-exit  OR  15 days",
+            "description": "OOS backtest FAILED. Only 7 OOS trades — too few buyback events in NSE universe. Win rate 28.6%, Sharpe -3.4. Insufficient signal frequency to deploy.",
+            "entry": "NSE Buyback announcement  AND  z < 1.0  (engine condition, not firing)",
+            "exit":  "-6% stop-loss  OR  10% profit-exit  OR  15 days  (locked from train)",
             "sizing": "Fixed max 8% capital",
-            "backtest": "Event-driven — depends on BSE announcement data quality",
-            "fwd": "No live trades yet (depends on buyback announcements)",
+            "backtest": "OOS 2024-H2→2026: Sharpe -3.40 · WinRate 28.6% · 7 trades only → FAIL",
+            "fwd": "N/A",
             "icon": "🔄",
         },
         {

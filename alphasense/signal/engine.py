@@ -233,18 +233,20 @@ class SignalEngine:
         Returns the strategy name for this symbol, or None if no strategy fires.
         Priority: earnings_surprise > buyback_arbit > mean_reversion > momentum
         """
-        # ── 1. EARNINGS_SURPRISE ─────────────────────────────────────────────
-        # XBRL beat + audio confidence spike → post-beat momentum
-        if (fmod and fmod.sentiment_delta >= sc.earnings_sent_delta_min
-                 and z >= -1.5):   # price hasn't already crashed, some momentum room
-            return StrategyType.EARNINGS_SURPRISE
+        # ── 1. EARNINGS_SURPRISE — DISABLED (OOS: Sharpe -0.16, WR 46%) ────────
+        # Needs real audio sentiment_delta, not price-proxy. Re-enable when
+        # earnings audio pipeline is running and fmod data is validated.
+        # if (fmod and fmod.sentiment_delta >= sc.earnings_sent_delta_min
+        #          and z >= -1.5):
+        #     return StrategyType.EARNINGS_SURPRISE
 
-        # ── 2. BUYBACK_ARBIT ─────────────────────────────────────────────────
-        # BSE buyback announcement + price hasn't yet recovered (z < +1.0)
-        if sym in bse_boost and bse_boost[sym] >= 0.2 and z < 1.0:
-            return StrategyType.BUYBACK_ARBIT
+        # ── 2. BUYBACK_ARBIT — DISABLED (OOS: Sharpe -3.40, only 7 trades) ──
+        # Too few events in NIFTY-500 universe. Re-enable if buyback frequency
+        # increases or broader universe is used.
+        # if sym in bse_boost and bse_boost[sym] >= 0.2 and z < 1.0:
+        #     return StrategyType.BUYBACK_ARBIT
 
-        # Volume check applies to mean-reversion and momentum (event-driven strategies skip)
+        # Volume check applies to mean-reversion
         if "volume" in price_df.columns and len(price_df) >= 20:
             vol_today = float(price_df["volume"].iloc[-1])
             vol_avg   = float(price_df["volume"].iloc[-20:].mean())
