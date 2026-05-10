@@ -42,6 +42,23 @@ h1,h2 { color:#00d97e; }
 </style>""", unsafe_allow_html=True)
 
 
+# ─── Style helper (jinja2-free formatting) ───────────────────────────────────
+
+def _fmt_df(df: pd.DataFrame, fmt: dict) -> pd.DataFrame:
+    """Return a copy of df with columns formatted as strings (no jinja2 needed)."""
+    out = df.copy()
+    for col, spec in fmt.items():
+        if col not in out.columns:
+            continue
+        if callable(spec):
+            out[col] = out[col].apply(lambda v: spec(v) if pd.notna(v) else "—")
+        else:
+            out[col] = out[col].apply(
+                lambda v: spec.format(v) if pd.notna(v) else "—"
+            )
+    return out
+
+
 # ─── Cached data loaders ─────────────────────────────────────────────────────
 
 @st.cache_data(ttl=300)
@@ -254,9 +271,9 @@ with tab1:
         if fwd_trades:
             st.subheader("Live Forward Trades (Actual Paper Results)")
             fdf = pd.DataFrame(fwd_trades)
-            st.dataframe(fdf.style.format({
+            st.dataframe(_fmt_df(fdf, {
                 "entry_price": "₹{:,.2f}", "exit_price": "₹{:,.2f}",
-                "pnl_pct": "{:+.1%}",
+                "pnl_pct": lambda v: f"{v:+.1%}",
             }), use_container_width=True, hide_index=True)
 
     else:
@@ -417,18 +434,18 @@ with tab2:
                 if pd.isna(v): return ""
                 return "color:#00d97e;font-weight:bold" if v > 0 else "color:#e63757;font-weight:bold"
 
-            fmt = {"zscore": "{:.2f}", "return_pct": "{:+.2f}%",
-                   "pnl": "₹{:,.0f}", "entry_price": "₹{:,.1f}"}
+            fmt = {"zscore": "{:.2f}", "entry_price": "₹{:,.1f}",
+                   "pnl": lambda v: f"₹{v:,.0f}",
+                   "return_pct": lambda v: f"{v:+.2f}%"}
             fmt = {k: v for k, v in fmt.items() if k in show_cols}
 
-            styled = (sdf_filtered[show_cols]
-                      .sort_values("date", ascending=False)
-                      .style.format(fmt))
-            if "return_pct" in show_cols:
-                styled = styled.applymap(_colour_ret, subset=["return_pct"])
+            disp = _fmt_df(
+                sdf_filtered[show_cols].sort_values("date", ascending=False),
+                fmt
+            )
 
             # Show full table — no row limit
-            st.dataframe(styled, use_container_width=True,
+            st.dataframe(disp, use_container_width=True,
                          height=min(600, 35 * len(sdf_filtered) + 38),
                          hide_index=True)
 
@@ -509,10 +526,10 @@ with tab3:
 
         show = [c for c in ["symbol","zscore","price","sentiment","vix_ok"] if c in live_df.columns]
         st.dataframe(
-            live_df[show].style.format({
+            _fmt_df(live_df[show], {
                 "zscore":    "{:.2f}",
                 "price":     "₹{:,.1f}",
-                "sentiment": lambda x: f"{x:+.3f}" if pd.notna(x) else "—",
+                "sentiment": lambda x: f"{x:+.3f}",
             }),
             use_container_width=True,
             hide_index=True,
@@ -718,17 +735,15 @@ with tab4:
                     return "color:#00d97e;font-weight:bold" if v >= 0 else "color:#e63757;font-weight:bold"
 
                 price_col = f"Price ({price_date or 'latest'})"
-                styled = pos_df.style.format({
+                st.dataframe(_fmt_df(pos_df, {
                     "Signal ₹":     "₹{:,.2f}",
                     "Entry ₹":      "₹{:,.2f}",
                     "Slip ₹/share": "₹{:+.2f}",
                     price_col:      "₹{:,.2f}",
                     "Invested ₹":   "₹{:,.0f}",
-                    "Unrealised ₹": "₹{:+,.0f}",
-                    "Return %":     "{:+.2f}%",
-                }).applymap(_colour, subset=["Return %", "Unrealised ₹"])
-
-                st.dataframe(styled, use_container_width=True, hide_index=True)
+                    "Unrealised ₹": lambda v: f"₹{v:+,.0f}",
+                    "Return %":     lambda v: f"{v:+.2f}%",
+                }), use_container_width=True, hide_index=True)
                 st.caption(
                     f"Prices as of **{price_date or 'latest available'}**. "
                     "Positions auto-exit after 20 days or at -8% stop-loss. "
@@ -768,9 +783,11 @@ with tab4:
                 show = [c for c in ["entry_date","exit_date","symbol","qty",
                                     "entry_price","exit_price","pnl","pnl_pct"] if c in cdf.columns]
                 st.dataframe(
-                    cdf[show].sort_values("exit_date", ascending=False)
-                    .style.format({"entry_price": "₹{:,.2f}", "exit_price": "₹{:,.2f}",
-                                   "pnl": "₹{:+,.0f}", "pnl_pct": "{:+.2%}"}),
+                    _fmt_df(cdf[show].sort_values("exit_date", ascending=False), {
+                        "entry_price": "₹{:,.2f}", "exit_price": "₹{:,.2f}",
+                        "pnl":         lambda v: f"₹{v:+,.0f}",
+                        "pnl_pct":     lambda v: f"{v:+.2%}",
+                    }),
                     use_container_width=True, hide_index=True
                 )
                 csv = cdf[show].to_csv(index=False)
@@ -858,14 +875,13 @@ with tab4b:
             if pd.isna(v): return ""
             return "color:#00d97e;font-weight:bold" if v >= 0 else "color:#e63757;font-weight:bold"
 
-        styled = port_df.style.format({
+        st.dataframe(_fmt_df(port_df, {
             "Avg Cost ₹":   "₹{:,.2f}",
             "LTP ₹":        "₹{:,.2f}",
             "Invested ₹":   "₹{:,.0f}",
-            "Unrealised ₹": "₹{:+,.0f}",
-            "Return %":     "{:+.2f}%",
-        }).applymap(_col, subset=["Return %", "Unrealised ₹"])
-        st.dataframe(styled, use_container_width=True, hide_index=True)
+            "Unrealised ₹": lambda v: f"₹{v:+,.0f}",
+            "Return %":     lambda v: f"{v:+.2f}%",
+        }), use_container_width=True, hide_index=True)
 
         col_a, col_b = st.columns(2)
         with col_a:
@@ -954,19 +970,15 @@ with tab4b:
 
                         col_af, col_dist = st.columns([3, 2])
                         with col_af:
-                            def _afford_color(val):
-                                if isinstance(val, str) and val.startswith("✅"):
-                                    return "color:#00d97e"
-                                if isinstance(val, str) and val.startswith("❌"):
-                                    return "color:#e63757"
-                                return ""
-                            styled_af = adf.style.format({
-                                "Price ₹":      "₹{:,.2f}",
-                                "Paper Cost ₹": "₹{:,.0f}",
-                                "Real Cost ₹":  "₹{:,.0f}",
-                            }).applymap(_afford_color, subset=["Affordable"])
-                            st.dataframe(styled_af, use_container_width=True,
-                                         hide_index=True, height=320)
+                            st.dataframe(
+                                _fmt_df(adf, {
+                                    "Price ₹":      "₹{:,.2f}",
+                                    "Paper Cost ₹": "₹{:,.0f}",
+                                    "Real Cost ₹":  "₹{:,.0f}",
+                                }),
+                                use_container_width=True,
+                                hide_index=True, height=320,
+                            )
 
                         with col_dist:
                             price_bins = pd.cut(adf["Price ₹"],
@@ -1601,8 +1613,8 @@ with tab10:
         show_cols = [c for c in ["symbol","strategy","entry_price","exit_price",
                                  "pnl_pct","days_held","exit_reason"] if c in tdf.columns]
         st.dataframe(
-            tdf[show_cols].sort_values("pnl_pct", ascending=False)
-            .style.format({k: "{:+.2%}" for k in ["pnl_pct"] if k in show_cols}),
+            _fmt_df(tdf[show_cols].sort_values("pnl_pct", ascending=False),
+                    {"pnl_pct": lambda v: f"{v:+.2%}"}),
             use_container_width=True,
             hide_index=True,
             height=300,
