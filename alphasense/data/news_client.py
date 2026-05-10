@@ -220,17 +220,18 @@ def fetch_stock_news(symbols: list[str], max_per_stock: int = 3) -> list[dict]:
 
 def fetch_deep_news(symbols: list[str]) -> list[dict]:
     """
-    Firecrawl search for full article text for z-score candidates + held positions.
+    Firecrawl search for full article content for z-score candidates + held positions.
     Uses ~2 credits per symbol. Only runs when FIRECRAWL_API_KEY is set.
-    Returns articles with full body text (up to 2000 chars vs RSS 1000 char truncation).
+    Returns articles with richer body text than RSS (description + scraped markdown).
     """
     import os
     api_key = os.getenv("FIRECRAWL_API_KEY")
     if not api_key or not symbols:
         return []
     try:
-        from firecrawl import FirecrawlApp
-        app = FirecrawlApp(api_key=api_key)
+        from firecrawl import V1FirecrawlApp
+        from firecrawl.v1.client import V1ScrapeOptions
+        app = V1FirecrawlApp(api_key=api_key)
     except ImportError:
         logger.warning("firecrawl-py not installed — skipping deep news fetch")
         return []
@@ -241,25 +242,26 @@ def fetch_deep_news(symbols: list[str]) -> list[dict]:
     for sym in symbols:
         query_terms  = COMPANY_ALIASES.get(sym, [sym.lower()])
         company_name = query_terms[0]
-        query        = f'"{company_name}" NSE India stock news'
+        query        = f"{company_name} NSE India stock news"
         try:
-            result = app.search(
+            resp  = app.search(
                 query,
-                params={
-                    "limit": 5,
-                    "scrapeOptions": {"formats": ["markdown"], "onlyMainContent": True},
-                },
+                limit=5,
+                scrape_options=V1ScrapeOptions(
+                    formats=["markdown"], only_main_content=True
+                ),
             )
-            items = result.get("data", []) if isinstance(result, dict) else (result or [])
+            items = resp.data or []
             for item in items:
-                url = item.get("url", "")
+                url  = item.get("url", "")
                 if not url or url in seen_urls:
                     continue
-                body = (item.get("markdown") or item.get("content")
-                        or item.get("description", ""))
+                # Prefer scraped markdown; fall back to description snippet
+                body = (item.get("markdown") or item.get("description") or "")
+                body = body[:2000]
                 articles.append({
                     "headline":        (item.get("title") or "").strip(),
-                    "body":            body[:2000] if body else "",
+                    "body":            body,
                     "url":             url,
                     "source":          "Firecrawl",
                     "published_at":    datetime.now().isoformat(),
@@ -277,7 +279,7 @@ def fetch_deep_news(symbols: list[str]) -> list[dict]:
 
 def fetch_regulatory() -> list[dict]:
     """
-    Scrape SEBI enforcement orders + RBI press releases for any company mentions.
+    Scrape SEBI enforcement orders + RBI press releases for company mentions.
     Uses ~4 credits/day flat. Only runs when FIRECRAWL_API_KEY is set.
     """
     import os
@@ -285,8 +287,8 @@ def fetch_regulatory() -> list[dict]:
     if not api_key:
         return []
     try:
-        from firecrawl import FirecrawlApp
-        app = FirecrawlApp(api_key=api_key)
+        from firecrawl import V1FirecrawlApp
+        app = V1FirecrawlApp(api_key=api_key)
     except ImportError:
         return []
 
@@ -300,11 +302,10 @@ def fetch_regulatory() -> list[dict]:
 
     for url, source in REGULATORY_SOURCES:
         try:
-            result  = app.scrape_url(
-                url,
-                params={"formats": ["markdown"], "onlyMainContent": True},
+            resp    = app.scrape_url(
+                url, formats=["markdown"], only_main_content=True
             )
-            content = result.get("markdown", "") if isinstance(result, dict) else ""
+            content = resp.markdown or ""
             if not content:
                 continue
             paragraphs = [p.strip() for p in content.split("\n\n") if len(p.strip()) > 50]
