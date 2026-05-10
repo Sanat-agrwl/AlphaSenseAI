@@ -262,13 +262,6 @@ class SignalEngine:
                 and (not has_news or sent < sent_thresh)):
             return StrategyType.MEAN_REVERSION
 
-        # ── 4. MOMENTUM ──────────────────────────────────────────────────────
-        # Strong uptrend + positive news → ride the wave
-        if (z > sc.momentum_zscore_min
-                and has_news
-                and sent > sc.momentum_sentiment_min):
-            return StrategyType.MOMENTUM
-
         return None
 
     def _check_exit(self, pos: Signal, date: pd.Timestamp,
