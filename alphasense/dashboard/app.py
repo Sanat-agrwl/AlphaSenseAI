@@ -188,10 +188,10 @@ st.markdown("---")
 
 # ─── Tabs ─────────────────────────────────────────────────────────────────────
 
-tab1, tab2, tab3, tab4, tab4b, tab5, tab6, tab7, tab8 = st.tabs([
+tab1, tab2, tab3, tab4, tab4b, tab5, tab6, tab7, tab8, tab9 = st.tabs([
     "📈 Backtest", "🔭 Forward Test",
     "🚨 Live Signals", "💼 Paper Trades", "📊 Real Portfolio",
-    "🏛 Universe", "🎙 Earnings", "🔁 Feedback", "🖥 Logs",
+    "🏛 Universe", "🎙 Earnings", "🔁 Feedback", "🖥 Logs", "🏷 Labels",
 ])
 
 
@@ -1261,6 +1261,161 @@ with tab8:
                     "# Pre-market:  08:30 IST (03:00 UTC)\n"
                     "# Post-close:  15:45 IST (10:15 UTC)", language="bash")
 
+
+# ── Tab 9: FinBERT Labels ─────────────────────────────────────────────────────
+with tab9:
+    st.subheader("FinBERT Training Labels")
+
+    labels_dir = cfg.data_dir / "labels"
+
+    @st.cache_data(ttl=300)
+    def _load_labels():
+        records = []
+        for jf in sorted(labels_dir.glob("labeled_*.jsonl")):
+            for line in jf.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if line:
+                    try:
+                        records.append(json.loads(line))
+                    except Exception:
+                        pass
+        return pd.DataFrame(records) if records else pd.DataFrame()
+
+    hdr_col, btn_col = st.columns([5, 1])
+    hdr_col.caption("Multi-source labels from news + BSE announcements for FinBERT fine-tuning")
+    if btn_col.button("🔄 Refresh", key="refresh_labels"):
+        st.cache_data.clear()
+
+    ldf = _load_labels()
+
+    if ldf.empty:
+        st.info("No labeled data yet. Run `python alphasense/data/labeler.py --backfill` on the server.")
+    else:
+        # ── Summary metrics ──────────────────────────────────────────────────
+        total   = len(ldf)
+        n_pos   = (ldf["label"] == "positive").sum()
+        n_neg   = (ldf["label"] == "negative").sum()
+        n_neu   = (ldf["label"] == "neutral").sum()
+        n_high  = (ldf["confidence"] == "high").sum()
+
+        m1, m2, m3, m4, m5 = st.columns(5)
+        m1.metric("Total samples",  f"{total:,}")
+        m2.metric("Positive",       f"{n_pos:,}",  f"{n_pos/total*100:.0f}%")
+        m3.metric("Negative",       f"{n_neg:,}",  f"{n_neg/total*100:.0f}%")
+        m4.metric("Neutral",        f"{n_neu:,}",  f"{n_neu/total*100:.0f}%")
+        m5.metric("High confidence",f"{n_high:,}", f"{n_high/total*100:.0f}%")
+
+        st.markdown("---")
+
+        # ── Charts ───────────────────────────────────────────────────────────
+        ch1, ch2 = st.columns(2)
+
+        with ch1:
+            label_counts = ldf["label"].value_counts().reset_index()
+            label_counts.columns = ["label", "count"]
+            color_map = {"positive": "#2ecc71", "neutral": "#95a5a6", "negative": "#e74c3c"}
+            fig_lbl = px.bar(label_counts, x="label", y="count",
+                             color="label", color_discrete_map=color_map,
+                             title="Label Distribution",
+                             labels={"count": "Samples", "label": ""})
+            fig_lbl.update_layout(showlegend=False, height=280,
+                                  margin=dict(t=40, b=20, l=20, r=20))
+            st.plotly_chart(fig_lbl, use_container_width=True)
+
+        with ch2:
+            src_counts = ldf["label_source"].value_counts().reset_index()
+            src_counts.columns = ["source", "count"]
+            fig_src = px.bar(src_counts, x="source", y="count",
+                             title="Label Source",
+                             labels={"count": "Samples", "source": ""})
+            fig_src.update_layout(showlegend=False, height=280,
+                                  margin=dict(t=40, b=20, l=20, r=20))
+            st.plotly_chart(fig_src, use_container_width=True)
+
+        # Confidence + label-source breakdown
+        ch3, ch4 = st.columns(2)
+
+        with ch3:
+            conf_counts = ldf["confidence"].value_counts().reset_index()
+            conf_counts.columns = ["confidence", "count"]
+            conf_color = {"high": "#2ecc71", "medium": "#f39c12", "low": "#e74c3c"}
+            fig_conf = px.pie(conf_counts, names="confidence", values="count",
+                              color="confidence", color_discrete_map=conf_color,
+                              title="Confidence Tier")
+            fig_conf.update_layout(height=260, margin=dict(t=40, b=20, l=20, r=20))
+            st.plotly_chart(fig_conf, use_container_width=True)
+
+        with ch4:
+            if "date" in ldf.columns:
+                ldf2 = ldf.copy()
+                ldf2["date"] = pd.to_datetime(ldf2["date"], errors="coerce")
+                daily = (ldf2.groupby(ldf2["date"].dt.date)["label"]
+                            .count().reset_index())
+                daily.columns = ["date", "count"]
+                fig_daily = px.bar(daily, x="date", y="count",
+                                   title="Samples per Day",
+                                   labels={"count": "Samples", "date": ""})
+                fig_daily.update_layout(height=260,
+                                        margin=dict(t=40, b=20, l=20, r=20))
+                st.plotly_chart(fig_daily, use_container_width=True)
+
+        st.markdown("---")
+
+        # ── Filters + sample browser ─────────────────────────────────────────
+        st.markdown("**Browse Samples**")
+        fc1, fc2, fc3, fc4 = st.columns([2, 2, 2, 2])
+        f_label  = fc1.selectbox("Label",      ["all", "positive", "negative", "neutral"])
+        f_source = fc2.selectbox("Label source",
+                                 ["all"] + sorted(ldf["label_source"].unique().tolist()))
+        f_conf   = fc3.selectbox("Confidence", ["all", "high", "medium", "low"])
+        f_sym    = fc4.text_input("Symbol filter", placeholder="e.g. RELIANCE")
+
+        view = ldf.copy()
+        if f_label  != "all": view = view[view["label"]        == f_label]
+        if f_source != "all": view = view[view["label_source"] == f_source]
+        if f_conf   != "all": view = view[view["confidence"]   == f_conf]
+        if f_sym.strip():
+            view = view[view["symbol"].str.upper() == f_sym.strip().upper()]
+
+        st.caption(f"Showing {min(len(view), 200):,} of {len(view):,} filtered samples")
+
+        display_cols = ["symbol", "date", "label", "label_source", "confidence",
+                        "return_5d", "return_20d", "source", "headline"]
+        show_cols = [c for c in display_cols if c in view.columns]
+        st.dataframe(
+            view[show_cols].head(200).reset_index(drop=True),
+            use_container_width=True,
+            height=400,
+        )
+
+        # ── Return distribution for high-conf samples ─────────────────────────
+        hi_conf = ldf[ldf["confidence"] == "high"].dropna(subset=["return_5d"])
+        if not hi_conf.empty:
+            st.markdown("---")
+            st.markdown("**Return distribution — high-confidence samples**")
+            fig_ret = px.histogram(
+                hi_conf, x="return_5d", color="label",
+                nbins=60, barmode="overlay",
+                color_discrete_map={"positive": "#2ecc71",
+                                    "neutral": "#95a5a6",
+                                    "negative": "#e74c3c"},
+                labels={"return_5d": "5-day forward return"},
+                title="5d Return Distribution (high-confidence labels)",
+            )
+            fig_ret.update_layout(height=300,
+                                  margin=dict(t=40, b=20, l=20, r=20))
+            st.plotly_chart(fig_ret, use_container_width=True)
+
+        # ── Download ──────────────────────────────────────────────────────────
+        st.markdown("---")
+        dl_col, _ = st.columns([2, 5])
+        csv_bytes = ldf.to_csv(index=False).encode()
+        dl_col.download_button(
+            "⬇ Download full dataset (CSV)",
+            data=csv_bytes,
+            file_name=f"alphasense_labels_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv",
+        )
 
 
 # ─── Footer ───────────────────────────────────────────────────────────────────
