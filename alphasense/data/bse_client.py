@@ -77,6 +77,10 @@ def _fetch_raw(from_dt: str, to_dt: str, retries: int = 3) -> list[dict]:
     return []
 
 
+def fetch_today() -> list[Announcement]:
+    return fetch_day(datetime.now())
+
+
 def fetch_day(date: datetime) -> list[Announcement]:
     ds   = date.strftime("%d/%m/%Y")
     raw  = _fetch_raw(ds, ds)
@@ -97,9 +101,13 @@ def fetch_day(date: datetime) -> list[Announcement]:
     return anns
 
 
-def backfill(start: datetime, end: datetime = None):
+def backfill(start: datetime | str, end: datetime | str = None):
     """Download day-by-day, skip weekends and existing files."""
-    end = end or datetime.now()
+    if isinstance(start, str):
+        start = datetime.strptime(start, "%Y-%m-%d")
+    end = datetime.now() if end is None else (
+        datetime.strptime(end, "%Y-%m-%d") if isinstance(end, str) else end
+    )
     cfg.bse_dir.mkdir(parents=True, exist_ok=True)
     cur = start
     while cur <= end:

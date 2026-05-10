@@ -22,7 +22,7 @@ if args.today:
         print(pd.DataFrame(anns).tail(args.tail).to_string())
 
 elif args.backfill:
-    backfill(from_date=args.from_date)
+    backfill(start=args.from_date)
 
 elif args.load:
     df = load_announcements()
