@@ -67,6 +67,20 @@ class SignalConfig:
     rolling_window:      int   = 252
     return_period:       int   = 5
     signal_lag_days:     int   = 1
+    # Momentum strategy
+    momentum_zscore_min:      float = 1.5
+    momentum_sentiment_min:   float = 0.3
+    momentum_stop_loss_pct:   float = -0.05
+    momentum_profit_exit_pct: float = 0.15
+    momentum_time_stop_days:  int   = 15
+    # Earnings-surprise strategy
+    earnings_sent_delta_min:  float = 0.10  # fmod.sentiment_delta threshold
+    earnings_time_stop_days:  int   = 10
+    earnings_stop_loss_pct:   float = -0.06
+    earnings_profit_exit_pct: float = 0.10
+    # Kelly sizing
+    kelly_min_trades:    int   = 15     # min history before switching to Kelly
+    kelly_max_fraction:  float = 0.25   # hard cap on Kelly fraction
 
 
 @dataclass
