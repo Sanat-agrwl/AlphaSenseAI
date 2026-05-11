@@ -227,23 +227,40 @@ def job_intraday_sell():
 
             pnl       = (ltp - pos.entry_price) / pos.entry_price
             days_held = (today - pd.Timestamp(pos.entry_date)).days
+            strategy  = getattr(pos, "strategy", "mean_reversion")
 
-            # Only check recovery exits intraday — stop-loss handled in job_stoploss
             exit_reason = None
-            if pnl >= sc.profit_exit_pct and len(broker.paper.pending) > 0:
-                exit_reason = "profit+pending (intraday)"
-            elif days_held >= sc.time_stop_days:
-                exit_reason = f"time_stop ({days_held}d, intraday)"
 
-            if prices.get(sym) is not None and not prices[sym].empty:
-                z_series  = rolling_zscore(prices[sym]["close"])
-                curr_z    = float(z_series.iloc[-1]) if not z_series.empty else 0.0
-                if not pd.isna(curr_z) and curr_z > sc.recovery_zscore:
-                    exit_reason = exit_reason or "price_recovery (intraday)"
+            # ── Gap Fade: only dynamic stop/profit — no z-score logic ────────
+            if strategy == "gap_fade":
+                stop_thr   = getattr(pos, "stop_pct",   0.0) or sc.gap_fade_stop_pct
+                profit_thr = getattr(pos, "profit_pct", 0.0) or sc.gap_fade_profit_pct
+                if pnl <= stop_thr:
+                    exit_reason = f"stop_loss (gap_fade {stop_thr*100:.1f}%)"
+                elif pnl >= profit_thr:
+                    exit_reason = f"profit_target (gap_fade +{profit_thr*100:.1f}%)"
+                elif days_held >= sc.gap_fade_time_stop:
+                    exit_reason = f"time_stop ({days_held}d)"
+
+            # ── All other strategies: z-score + time/profit recovery ─────────
+            else:
+                if pnl >= sc.profit_exit_pct and len(broker.paper.pending) > 0:
+                    exit_reason = "profit+pending (intraday)"
+                elif days_held >= sc.time_stop_days:
+                    exit_reason = f"time_stop ({days_held}d, intraday)"
+
+                if prices.get(sym) is not None and not prices[sym].empty:
+                    # Substitute live LTP as last close so z-score is current
+                    close_series = prices[sym]["close"].copy()
+                    close_series.iloc[-1] = ltp
+                    z_series = rolling_zscore(close_series)
+                    curr_z   = float(z_series.iloc[-1]) if not z_series.empty else 0.0
+                    if not pd.isna(curr_z) and curr_z > sc.recovery_zscore:
+                        exit_reason = exit_reason or "price_recovery (intraday)"
 
             if exit_reason:
                 logger.info(f"  🔴 INTRADAY SELL {sym} @ ₹{ltp:.2f} | "
-                            f"PnL={pnl*100:.1f}% | {exit_reason}")
+                            f"PnL={pnl*100:.1f}% | {exit_reason} | strat={strategy}")
                 result = broker.place(sym, "SELL", pos.qty, ltp,
                                       signal_id=pos.signal_id,
                                       exit_reason=exit_reason)
