@@ -235,12 +235,12 @@ class GrowwClient:
                 transaction_type=direction,
             )
             logger.info(f"Groww {direction} {symbol} ×{qty} placed → {result}")
-            # Explicit failure check — FAILED status means order was rejected
+            # Treat FAILED or REJECTED as failure
             status = (result.get("order_status") or
                       result.get("data", {}).get("order_status", ""))
-            if str(status).upper() == "FAILED":
+            if str(status).upper() in ("FAILED", "REJECTED"):
                 remark = result.get("remark", "")
-                logger.error(f"Groww order FAILED {direction} {symbol}: {remark}")
+                logger.error(f"Groww order {status} {direction} {symbol}: {remark}")
                 return None
             order_id = (result.get("data", {}).get("order_id") or
                         result.get("groww_order_id") or
@@ -251,16 +251,52 @@ class GrowwClient:
             return None
 
     def get_holdings(self) -> pd.DataFrame:
+        """
+        Returns combined demat holdings + intraday positions.
+        Holdings = T+1 settled (carry-forward). Positions = same-day trades.
+        Merges both so the dashboard shows the complete real portfolio.
+        """
         if not self.available:
             return pd.DataFrame()
+
+        rows = []
+
+        # 1. Carry-forward holdings (settled demat)
         try:
             result = self._api.get_holdings_for_user()
             data   = result.get("data") or result.get("holdings") or \
                      (result if isinstance(result, list) else [])
-            return pd.DataFrame(data) if data else pd.DataFrame()
+            for h in (data or []):
+                rows.append({
+                    "trading_symbol": h.get("trading_symbol", ""),
+                    "quantity":       h.get("quantity", 0),
+                    "average_price":  h.get("average_price", 0),
+                    "source":         "holdings",
+                })
         except Exception as e:
             logger.warning(f"Groww holdings: {e}")
-            return pd.DataFrame()
+
+        # 2. Intraday positions (same-day buys not yet settled)
+        try:
+            result = self._api.get_positions_for_user()
+            for p in (result.get("positions") or []):
+                sym = p.get("trading_symbol", "")
+                qty = int(p.get("quantity", 0) or 0)
+                if qty <= 0:
+                    continue
+                # Skip if already in holdings
+                if any(r["trading_symbol"] == sym for r in rows):
+                    continue
+                rows.append({
+                    "trading_symbol": sym,
+                    "quantity":       qty,
+                    "average_price":  float(p.get("net_price", 0) or 0),
+                    "source":         "positions",
+                })
+        except Exception as e:
+            logger.warning(f"Groww positions: {e}")
+
+        return pd.DataFrame(rows) if rows else pd.DataFrame()
 
 
 # ── Module-level singleton ────────────────────────────────────────────────────
