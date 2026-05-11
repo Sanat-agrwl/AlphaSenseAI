@@ -95,6 +95,8 @@ class Signal:
     exit_reason:     Optional[str]          = None
     pnl_pct:         Optional[float]        = None
     strategy:        str                    = StrategyType.MEAN_REVERSION
+    stop_pct:        float                  = 0.0   # 0 = use strategy default
+    profit_pct:      float                  = 0.0   # 0 = use strategy default
 
 
 # ─── Engine ───────────────────────────────────────────────────────────────────
@@ -142,6 +144,9 @@ class SignalEngine:
                         quality_score=50.0,
                         india_vix=india_vix,
                         entry_price=pos.entry_price,
+                        strategy=getattr(pos, "strategy", StrategyType.MEAN_REVERSION),
+                        stop_pct=getattr(pos, "stop_pct", 0.0),
+                        profit_pct=getattr(pos, "profit_pct", 0.0),
                     )
 
         # ── Check exits ──────────────────────────────────────────────────────
@@ -397,10 +402,12 @@ class SignalEngine:
                 return ExitReason.TIME_STOP
 
         elif strategy == StrategyType.GAP_FADE:
-            # Very short hold — gap fills within 1-3 days or stop out
-            if pnl <= sc.gap_fade_stop_pct:
+            # Use per-trade dynamic levels if set; fall back to global defaults
+            stop_thr   = pos.stop_pct   if pos.stop_pct   < 0 else sc.gap_fade_stop_pct
+            profit_thr = pos.profit_pct if pos.profit_pct > 0 else sc.gap_fade_profit_pct
+            if pnl <= stop_thr:
                 return ExitReason.STOP_LOSS
-            if pnl >= sc.gap_fade_profit_pct:
+            if pnl >= profit_thr:
                 return ExitReason.PROFIT_WITH_PENDING
             if days_held >= sc.gap_fade_time_stop:
                 return ExitReason.TIME_STOP

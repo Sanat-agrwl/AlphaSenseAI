@@ -39,6 +39,9 @@ class Position:
     signal_id:    str   = ""
     signal_price: float = 0.0   # yesterday's close that triggered the signal
     slippage:     float = 0.0   # rupee slippage paid (entry_price - signal_price)
+    stop_pct:     float = 0.0   # dynamic stop loss (0 = use strategy default)
+    profit_pct:   float = 0.0   # dynamic profit target (0 = use strategy default)
+    strategy:     str   = ""    # strategy that opened this position
 
 
 @dataclass
@@ -47,7 +50,10 @@ class PendingOrder:
     qty:          int
     signal_price: float   # yesterday's close that triggered the signal
     signal_date:  str     # date the signal fired (post-close)
-    signal_id:    str = ""
+    signal_id:    str   = ""
+    stop_pct:     float = 0.0   # dynamic stop loss (0 = use strategy default)
+    profit_pct:   float = 0.0   # dynamic profit target (0 = use strategy default)
+    strategy:     str   = ""    # strategy that opened this position
 
 
 @dataclass
@@ -124,10 +130,12 @@ class PaperEngine:
             self._daily_date  = today
 
     def stage(self, symbol: str, qty: int, signal_price: float,
-              signal_id: str = "") -> Optional[str]:
+              signal_id: str = "", stop_pct: float = 0.0,
+              profit_pct: float = 0.0, strategy: str = "") -> Optional[str]:
         """
         Queue a BUY signal as a pending order (post-close step).
         The order will fill at next-day open via fill_pending().
+        stop_pct / profit_pct: per-trade dynamic levels (0 = use strategy default).
         """
         if symbol in self.positions:
             logger.info(f"⏭  SKIP {symbol} — already in position "
@@ -150,9 +158,14 @@ class PaperEngine:
             signal_price=signal_price,
             signal_date=datetime.now().isoformat(),
             signal_id=signal_id,
+            stop_pct=stop_pct,
+            profit_pct=profit_pct,
+            strategy=strategy,
         )
-        logger.info(f"⏳ PENDING BUY {symbol} ×{qty} | signal @ ₹{signal_price:.2f} "
-                    f"— will fill at tomorrow's open")
+        stop_str = f" | stop={stop_pct*100:.1f}%" if stop_pct else ""
+        profit_str = f" profit={profit_pct*100:.1f}%" if profit_pct else ""
+        logger.info(f"⏳ PENDING BUY {symbol} ×{qty} | signal @ ₹{signal_price:.2f}"
+                    f"{stop_str}{profit_str} — will fill at tomorrow's open")
         self.save()
         return f"PENDING-{symbol}"
 
@@ -206,6 +219,9 @@ class PaperEngine:
                 entry_date=datetime.now().isoformat(),
                 signal_id=order.signal_id, signal_price=order.signal_price,
                 slippage=slip_rs,
+                stop_pct=order.stop_pct,
+                profit_pct=order.profit_pct,
+                strategy=order.strategy,
             )
             del self.pending[sym]
             filled += 1

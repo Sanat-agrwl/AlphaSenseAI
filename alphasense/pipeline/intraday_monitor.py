@@ -71,9 +71,17 @@ def job_stoploss():
         if ltp is None:
             continue
         pnl = (ltp - pos.entry_price) / pos.entry_price
-        logger.debug(f"  {sym}: entry ₹{pos.entry_price:.2f} | ltp ₹{ltp:.2f} | {pnl*100:.1f}%")
-        if pnl <= sc.stop_loss_pct:
-            logger.info(f"  🔴 INTRADAY STOP-LOSS {sym}: {pnl*100:.1f}% ≤ {sc.stop_loss_pct*100:.1f}%")
+
+        # Use per-position dynamic stop if set (gap_fade stores it here),
+        # otherwise fall back to global strategy default
+        dynamic_stop = getattr(pos, "stop_pct", 0.0)
+        stop_threshold = dynamic_stop if dynamic_stop < 0 else sc.stop_loss_pct
+
+        logger.debug(f"  {sym}: entry ₹{pos.entry_price:.2f} | ltp ₹{ltp:.2f} | "
+                     f"{pnl*100:.1f}% | stop={stop_threshold*100:.1f}%")
+        if pnl <= stop_threshold:
+            logger.info(f"  🔴 INTRADAY STOP-LOSS {sym}: {pnl*100:.1f}% ≤ {stop_threshold*100:.1f}%"
+                        f"{' (dynamic)' if dynamic_stop < 0 else ''}")
             result = broker.place(sym, "SELL", pos.qty, ltp, signal_id=pos.signal_id,
                                   exit_reason="stop_loss")
             if result:

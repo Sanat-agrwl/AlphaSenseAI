@@ -61,6 +61,26 @@ def _prev_close(sym: str) -> float | None:
         return None
 
 
+def _load_sentiment() -> dict[str, float]:
+    """Load today's FinBERT sentiment scores if available."""
+    sent_dir = cfg.data_dir / "sentiment"
+    records: list[dict] = []
+    if sent_dir.exists():
+        today_str = datetime.now().strftime("%Y%m%d")
+        for f in sorted(sent_dir.glob(f"ensemble_{today_str}*.json"), reverse=True)[:1]:
+            try:
+                import json
+                records.extend(json.load(open(f)))
+            except Exception:
+                pass
+    if not records:
+        return {}
+    df = pd.DataFrame(records)
+    if "symbol" not in df.columns or "final_score" not in df.columns:
+        return {}
+    return df.groupby("symbol")["final_score"].mean().to_dict()
+
+
 def _scan_gap_fades(groww, universe: pd.DataFrame,
                     existing_syms: set, vix: float) -> list[dict]:
     """
@@ -90,9 +110,10 @@ def _scan_gap_fades(groww, universe: pd.DataFrame,
 
     logger.info(f"  OHLC fetched for {len(ohlc_map)}/{len(all_syms)} symbols")
 
-    signals = []
-    qual_map = (universe.set_index("symbol")["quality_score"].to_dict()
-                if "quality_score" in universe.columns else {})
+    sentiment = _load_sentiment()
+    signals   = []
+    qual_map  = (universe.set_index("symbol")["quality_score"].to_dict()
+                 if "quality_score" in universe.columns else {})
 
     for _, row in universe.iterrows():
         sym = row["symbol"]
@@ -117,20 +138,36 @@ def _scan_gap_fades(groww, universe: pd.DataFrame,
         if gap_pct > sc.gap_fade_threshold:   # threshold is -0.03 (negative)
             continue
 
-        # Use today's open as entry price — Groww OHLC "close" returns prev day's close
+        # Sentiment gate — skip if bad news caused the gap (score < -0.2)
+        sent_score = sentiment.get(sym)
+        if sent_score is not None and sent_score < -0.2:
+            logger.info(f"  SKIP {sym}: gap={gap_pct*100:.1f}% but sentiment={sent_score:.2f} "
+                        f"(likely fundamental — not a fade candidate)")
+            continue
+
+        # Dynamic stop/profit scaled to gap size
+        gap_abs    = abs(gap_pct)
+        stop_pct   = -round(max(0.02, min(gap_abs * 0.5, 0.05)), 3)   # 50% of gap, capped 2-5%
+        profit_pct =  round(max(0.02, min(gap_abs * 0.7, 0.10)), 3)   # 70% of gap, capped 2-10%
+
         signals.append({
-            "symbol":    sym,
-            "gap_pct":   round(gap_pct * 100, 2),
+            "symbol":     sym,
+            "gap_pct":    round(gap_pct * 100, 2),
             "prev_close": round(prev_c, 2),
-            "open":      round(today_open, 2),
-            "ltp":       round(today_open, 2),   # entry at today's open
-            "quality":   round(quality, 1),
-            "vix":       round(vix, 1),
+            "open":       round(today_open, 2),
+            "ltp":        round(today_open, 2),   # entry at today's open
+            "quality":    round(quality, 1),
+            "vix":        round(vix, 1),
+            "stop_pct":   stop_pct,
+            "profit_pct": profit_pct,
+            "sentiment":  sent_score,
         })
         logger.info(
             f"  GAP FADE {sym}: gap={gap_pct*100:.1f}%  "
             f"prev_close=₹{prev_c:.2f} → open=₹{today_open:.2f}  "
-            f"quality={quality:.0f}"
+            f"quality={quality:.0f}  stop={stop_pct*100:.1f}%  "
+            f"profit={profit_pct*100:.1f}%"
+            + (f"  sent={sent_score:.2f}" if sent_score is not None else "")
         )
 
     logger.info(f"Gap Fade signals found: {len(signals)}")
@@ -220,12 +257,15 @@ def run():
         order_id = broker.stage(
             symbol=sym, qty=qty, signal_price=ltp,
             signal_id=f"GAP-{datetime.now().strftime('%Y%m%d')}-{sym}",
+            stop_pct=sig["stop_pct"], profit_pct=sig["profit_pct"],
+            strategy="gap_fade",
         )
         if order_id:
             fill_map[sym] = ltp   # fill at today's open immediately
             logger.info(
                 f"  STAGED gap_fade {sym} × {qty} @ ₹{ltp:.2f} "
-                f"(gap={sig['gap_pct']:.1f}%  quality={sig['quality']})"
+                f"(gap={sig['gap_pct']:.1f}%  stop={sig['stop_pct']*100:.1f}%  "
+                f"profit={sig['profit_pct']*100:.1f}%)"
             )
 
     if fill_map:
